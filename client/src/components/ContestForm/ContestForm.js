@@ -11,7 +11,7 @@ import SelectInput from '../SelectInput/SelectInput'
 import FieldFileInput from '../InputComponents/FieldFileInput/FieldFileInput'
 import FormTextArea from '../InputComponents/FormTextArea/FormTextArea'
 import TryAgain from '../TryAgain/TryAgain'
-import Schems from '../../validators/validationSchems'
+import Schemas from '../../validators/validationSchemas'
 import OptionalSelects from '../OptionalSelects/OptionalSelects'
 
 const variableOptions = {
@@ -51,11 +51,11 @@ class ContestForm extends React.Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getPreference()
   }
 
-  render () {
+  render() {
     const { isFetching, error } = this.props.dataForContest
     if (error) {
       return <TryAgain getData={this.getPreference} />
@@ -77,7 +77,7 @@ class ContestForm extends React.Component {
               ...this.props.initialValues
             }}
             onSubmit={this.props.handleSubmit}
-            validationSchema={Schems.ContestSchem}
+            validationSchema={Schemas.ContestSchem}
             innerRef={this.props.formRef}
             enableReinitialize
           >

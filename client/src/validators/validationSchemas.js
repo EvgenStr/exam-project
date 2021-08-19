@@ -1,12 +1,12 @@
 import * as yup from 'yup';
 import valid from 'card-validator';
 
-export default {
-  LoginSchem: yup.object().shape({
+const VALIDATION_SCHEMAS = {
+  LoginSchema: yup.object().shape({
     email: yup.string().email('check email').required('required'),
     password: yup.string().test('test-password', 'min 6 symbols', (value) => (value && value.trim().length >= 6)).required('required'),
   }),
-  RegistrationSchem: yup.object().shape({
+  RegistrationSchema: yup.object().shape({
     email: yup.string().email('check email').required('Email is required'),
     password: yup.string().test('test-password', 'min 6 symbols', (value) => (value && value.trim().length >= 6)).required('required'),
     confirmPassword: yup.string().required('confirm password is required').oneOf([yup.ref('password')], 'confirmation pass must match password'),
@@ -16,7 +16,7 @@ export default {
     role: yup.string().matches(/(customer|creator)/).required('Role is required'),
     agreeOfTerms: yup.boolean().oneOf([true], 'Must Accept Terms and Conditions').required('Must Accept Terms and Conditions'),
   }),
-  ContestSchem: yup.object({
+  ContestSchema: yup.object({
     nameVenture: yup.string().min(3),
     contestType: yup.string().matches(/(name|tagline|logo)/).required(),
     title: yup.string().test('test-title', 'required', (value) => (value && value.trim().length >= 1)).required('title of contest required'),
@@ -29,7 +29,7 @@ export default {
     brandStyle: yup.string().min(1),
     file: yup.mixed(),
   }),
-  filterSchem: yup.object().shape({
+  filterSchema: yup.object().shape({
     typeIndex: yup.number().oneOf[1, 2, 3, 4, 5, 6, 7],
     contestId: yup.string(),
     awardSort: yup.string().matches(/(desc|asc)/),
@@ -61,9 +61,10 @@ export default {
     file: yup.mixed(),
   }),
   MessageSchema: yup.object({
-    message: yup.string().test('test-message', 'required', (value) => value && value.trim().length >= 1).required('required'),
+    message: yup.string().test('test-message', '', (value) => value && value.trim().length >= 1),
   }),
   CatalogSchema: yup.object({
     catalogName: yup.string().test('test-catalogName', 'required', (value) => value && value.trim().length >= 1).required('required'),
   }),
 };
+export default VALIDATION_SCHEMAS;

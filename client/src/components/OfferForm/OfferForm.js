@@ -6,7 +6,7 @@ import { setOffer, clearAddOfferError } from '../../actions/actionCreator';
 import styles from './OfferForm.module.sass';
 import ImageUpload from '../InputComponents/ImageUpload/ImageUpload';
 import FormInput from '../FormInput/FormInput';
-import Schems from '../../validators/validationSchems';
+import Schemas from '../../validators/validationSchemas';
 import Error from '../Error/Error';
 
 const OfferForm = (props) => {
@@ -51,11 +51,11 @@ const OfferForm = (props) => {
   };
 
   const { valid, addOfferError, clearOfferError } = props;
-  const validationSchema = props.contestType === CONTANTS.LOGO_CONTEST ? Schems.LogoOfferSchema : Schems.TextOfferSchema;
+  const validationSchema = props.contestType === CONTANTS.LOGO_CONTEST ? Schemas.LogoOfferSchema : Schemas.TextOfferSchema;
   return (
     <div className={styles.offerContainer}>
       {addOfferError
-            && <Error data={addOfferError.data} status={addOfferError.status} clearError={clearOfferError} />}
+        && <Error data={addOfferError.data} status={addOfferError.status} clearError={clearOfferError} />}
       <Formik
         onSubmit={setOffer}
         initialValues={{
