@@ -8,7 +8,6 @@ import CONSTANTS from '../../constants'
 const PrivateHoc = (Component, props, roles = null) => {
   const mapStateToProps = state => state.auth
 
-
   class Hoc extends React.Component {
     render () {
       const refreshToken = window.localStorage.getItem(CONSTANTS.REFRESH_TOKEN)
@@ -20,7 +19,13 @@ const PrivateHoc = (Component, props, roles = null) => {
         return <Spinner />
       } else if (this.props.data) {
         if ((roles && roles.includes(this.props.data.role)) || !roles) {
-          return  <Component history={this.props.history} match={this.props.match} {...props} />
+          return (
+            <Component
+              history={this.props.history}
+              match={this.props.match}
+              {...props}
+            />
+          )
         }
         return <Redirect to='/' />
       }
