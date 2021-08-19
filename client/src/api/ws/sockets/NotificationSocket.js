@@ -4,7 +4,7 @@ import WebSocket from './WebSocket'
 import Notification from '../../../components/Notification/Notification'
 
 class NotificationSocket extends WebSocket {
-  constructor (dispatch, getState, room) {
+  constructor(dispatch, getState, room) {
     super(dispatch, getState, room)
   }
 
@@ -51,7 +51,7 @@ class NotificationSocket extends WebSocket {
     this.socket.emit('subscribe', id)
   }
 
-  unsubsctibe = id => {
+  unsubscribe = id => {
     this.socket.emit('unsubscribe', id)
   }
 }

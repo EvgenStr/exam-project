@@ -26,29 +26,29 @@ class Chat extends React.Component {
   }
 
   componentWillUnmount() {
-    controller.unsubsctibe(this.props.auth.data.id);
+    controller.unsubscribe(this.props.auth.data.id);
     chatController.unsubscribeChat(this.props.auth.data.id);
   }
 
-    renderDialogList = () => {
-      const { setChatPreviewMode } = this.props;
-      const { chatMode, isShowChatsInCatalog } = this.props.chatStore;
-      const { id } = this.props.auth.data;
-      const {
-        NORMAL_PREVIEW_CHAT_MODE,
-        FAVORITE_PREVIEW_CHAT_MODE,
-        BLOCKED_PREVIEW_CHAT_MODE,
-        CATALOG_PREVIEW_CHAT_MODE,
-      } = CONSTANTS;
-      return (
-        <div>
-          {isShowChatsInCatalog && <CatalogListHeader />}
-          {!isShowChatsInCatalog && (
+  renderDialogList = () => {
+    const { setChatPreviewMode } = this.props;
+    const { chatMode, isShowChatsInCatalog } = this.props.chatStore;
+    const { id } = this.props.auth.data;
+    const {
+      NORMAL_PREVIEW_CHAT_MODE,
+      FAVORITE_PREVIEW_CHAT_MODE,
+      BLOCKED_PREVIEW_CHAT_MODE,
+      CATALOG_PREVIEW_CHAT_MODE,
+    } = CONSTANTS;
+    return (
+      <div>
+        {isShowChatsInCatalog && <CatalogListHeader />}
+        {!isShowChatsInCatalog && (
           <div className={styles.chatHeader}>
             <img src={`${CONSTANTS.STATIC_IMAGES_PATH}logo.png`} alt="logo" />
           </div>
-          )}
-          {!isShowChatsInCatalog && (
+        )}
+        {!isShowChatsInCatalog && (
           <div className={styles.buttonsContainer}>
             <span
               onClick={() => setChatPreviewMode(NORMAL_PREVIEW_CHAT_MODE)}
@@ -75,32 +75,32 @@ class Chat extends React.Component {
               Catalog
             </span>
           </div>
-          )}
-          {chatMode === CATALOG_PREVIEW_CHAT_MODE ? <CatalogListContainer /> : <DialogListContainer userId={id} />}
-        </div>
-      );
-    };
+        )}
+        {chatMode === CATALOG_PREVIEW_CHAT_MODE ? <CatalogListContainer /> : <DialogListContainer userId={id} />}
+      </div>
+    );
+  };
 
-    render() {
-      const {
-        isExpanded, isShow, isShowCatalogCreation, error,
-      } = this.props.chatStore;
-      const { id } = this.props.auth.data;
-      const { changeShow, getPreviewChat } = this.props;
-      return (
-        <div className={classNames(styles.chatContainer, { [styles.showChat]: isShow })}>
-          {error && <ChatError getData={getPreviewChat} />}
-          {isShowCatalogCreation && <CatalogCreation />}
-          {isExpanded ? <Dialog userId={id} /> : this.renderDialogList()}
-          <div
-            className={styles.toggleChat}
-            onClick={() => changeShow()}
-          >
-            {isShow ? 'Hide Chat' : 'Show Chat'}
-          </div>
+  render() {
+    const {
+      isExpanded, isShow, isShowCatalogCreation, error,
+    } = this.props.chatStore;
+    const { id } = this.props.auth.data;
+    const { changeShow, getPreviewChat } = this.props;
+    return (
+      <div className={classNames(styles.chatContainer, { [styles.showChat]: isShow })}>
+        {error && <ChatError getData={getPreviewChat} />}
+        {isShowCatalogCreation && <CatalogCreation />}
+        {isExpanded ? <Dialog userId={id} /> : this.renderDialogList()}
+        <div
+          className={styles.toggleChat}
+          onClick={() => changeShow()}
+        >
+          {isShow ? 'Hide Chat' : 'Show Chat'}
         </div>
-      );
-    }
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state) => {
