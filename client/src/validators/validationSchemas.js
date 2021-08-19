@@ -30,7 +30,7 @@ const VALIDATION_SCHEMAS = {
     file: yup.mixed(),
   }),
   filterSchema: yup.object().shape({
-    typeIndex: yup.number().oneOf[1, 2, 3, 4, 5, 6, 7],
+    typeIndex: yup.number().oneOf([1, 2, 3, 4, 5, 6, 7]),
     contestId: yup.string(),
     awardSort: yup.string().matches(/(desc|asc)/),
     industry: yup.string(),
