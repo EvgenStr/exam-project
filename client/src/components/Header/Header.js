@@ -1,74 +1,14 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { Link, withRouter } from 'react-router-dom'
-import styles from './Header.module.sass'
-import CONSTANTS from '../../constants'
-import { clearUserStore } from '../../actions/actionCreator'
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link, withRouter } from 'react-router-dom';
+import styles from './Header.module.sass';
+import CONSTANTS from '../../constants';
+import UserInfo from './UserInfo/UserInfo';
 
 class Header extends React.Component {
-  logOut = () => {
-    localStorage.clear()
-    this.props.clearUserStore()
-    this.props.history.replace('/login')
-  }
-
   renderLoginButtons = () => {
     if (this.props.data) {
-      return (
-        <>
-          <div className={styles.userInfo}>
-            <img
-              src={
-                this.props.data.avatar
-                  ? `${CONSTANTS.publicURL}${this.props.data.avatar}`
-                  : CONSTANTS.ANONYM_IMAGE_PATH
-              }
-              alt='user'
-            />
-            <span>{`Hi, ${this.props.data.displayName}`}</span>
-            <img
-              src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
-              alt='menu'
-            />
-            <ul>
-              <li>
-                <Link to='/dashboard' style={{ textDecoration: 'none' }}>
-                  <span>View Dashboard</span>
-                </Link>
-              </li>
-              <li>
-                <Link to='/account' style={{ textDecoration: 'none' }}>
-                  <span>My Account</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to='http:/www.google.com'
-                  style={{ textDecoration: 'none' }}
-                >
-                  <span>Messages</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to='http:/www.google.com'
-                  style={{ textDecoration: 'none' }}
-                >
-                  <span>Affiliate Dashboard</span>
-                </Link>
-              </li>
-              <li>
-                <span onClick={this.logOut}>Logout</span>
-              </li>
-            </ul>
-          </div>
-          <img
-            src={`${CONSTANTS.STATIC_IMAGES_PATH}email.png`}
-            className={styles.emailIcon}
-            alt='email'
-          />
-        </>
-      )
+      return <UserInfo />;
     }
     return (
       <>
@@ -79,12 +19,12 @@ class Header extends React.Component {
           <span className={styles.btn}>SIGN UP</span>
         </Link>
       </>
-    )
-  }
+    );
+  };
 
   render () {
     if (this.props.isFetching) {
-      return null
+      return null;
     }
     return (
       <header className={styles.headerContainer}>
@@ -98,7 +38,9 @@ class Header extends React.Component {
         <div className={styles.loginSignUpHeaders}>
           <div className={styles.numberContainer}>
             <img src={`${CONSTANTS.STATIC_IMAGES_PATH}phone.png`} alt='phone' />
-            <a className={styles.numberLink} href='tel:(877)355-3585'>(877)&nbsp;355-3585</a>
+            <a className={styles.numberLink} href='tel:(877)355-3585'>
+              (877)&nbsp;355-3585
+            </a>
           </div>
           <div className={styles.userButtonsContainer}>
             {this.renderLoginButtons()}
@@ -259,13 +201,10 @@ class Header extends React.Component {
           </div>
         </nav>
       </header>
-    )
+    );
   }
 }
 
-const mapStateToProps = state => state.auth
-const mapDispatchToProps = dispatch => ({
-  clearUserStore: () => dispatch(clearUserStore())
-})
+const mapStateToProps = state => state.auth;
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header))
+export default withRouter(connect(mapStateToProps)(Header));
