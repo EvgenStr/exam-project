@@ -1,5 +1,4 @@
-import axios from 'axios'
-import CONTANTS from '../../constants'
+import CONSTANTS from '../../constants'
 
 class AuthApi {
   #_client
@@ -29,16 +28,18 @@ class AuthApi {
   }
 
   refresh = async data => {
-    return await this.#_client.post(`${this._url}refresh`, {refreshToken: data})
+    return await this.#_client.post(`${this._url}refresh`, {
+      refreshToken: data
+    })
   }
 
   logout = () => {
-    window.localStorage.removeItem(CONTANTS.REFRESH_TOKEN)
+    window.localStorage.removeItem(CONSTANTS.REFRESH_TOKEN)
     this.#_accessToken = null
   }
 
   _saveTokenPair = ({ refresh, access }) => {
-    window.localStorage.setItem(CONTANTS.REFRESH_TOKEN, refresh)
+    window.localStorage.setItem(CONSTANTS.REFRESH_TOKEN, refresh)
     this.#_accessToken = access
   }
 
@@ -65,7 +66,7 @@ class AuthApi {
   }
 
   responseInterceptorError = async error => {
-    const refreshToken = window.localStorage.getItem(CONTANTS.REFRESH_TOKEN)
+    const refreshToken = window.localStorage.getItem(CONSTANTS.REFRESH_TOKEN)
     if (error.response.status === 419 && refreshToken) {
       const {
         data: {
