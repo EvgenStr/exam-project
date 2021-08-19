@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import styles from './Header.module.sass'
 import CONSTANTS from '../../constants'
-import { clearUserStore, headerRequest } from '../../actions/actionCreator'
+import { clearUserStore } from '../../actions/actionCreator'
 
 class Header extends React.Component {
   logOut = () => {
@@ -95,7 +95,7 @@ class Header extends React.Component {
           </span>
           <a href='http://www.google.com'>Read Announcement</a>
         </div>
-        <div className={styles.loginSignnUpHeaders}>
+        <div className={styles.loginSignUpHeaders}>
           <div className={styles.numberContainer}>
             <img src={`${CONSTANTS.STATIC_IMAGES_PATH}phone.png`} alt='phone' />
             <a className={styles.numberLink} href='tel:(877)355-3585'>(877)&nbsp;355-3585</a>
@@ -114,8 +114,8 @@ class Header extends React.Component {
           </Link>
           <div className={styles.leftNav}>
             <div className={styles.nav}>
-              <ul>
-                <li>
+              <ul className={styles.dropDownMenu}>
+                <li className={styles.dropDownItem}>
                   <span>NAME IDEAS</span>
                   <img
                     src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
@@ -148,7 +148,7 @@ class Header extends React.Component {
                     </li>
                   </ul>
                 </li>
-                <li>
+                <li className={styles.dropDownItem}>
                   <span>CONTESTS</span>
                   <img
                     src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
@@ -178,7 +178,7 @@ class Header extends React.Component {
                     </li>
                   </ul>
                 </li>
-                <li>
+                <li className={styles.dropDownItem}>
                   <span>Our Work</span>
                   <img
                     src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
@@ -199,7 +199,7 @@ class Header extends React.Component {
                     </li>
                   </ul>
                 </li>
-                <li>
+                <li className={styles.dropDownItem}>
                   <span>Names For Sale</span>
                   <img
                     src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
@@ -226,7 +226,7 @@ class Header extends React.Component {
                     </li>
                   </ul>
                 </li>
-                <li>
+                <li className={styles.dropDownItem}>
                   <span>Blog</span>
                   <img
                     src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
