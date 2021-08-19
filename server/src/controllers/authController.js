@@ -13,6 +13,7 @@ module.exports.signIn = async (req, res, next) => {
 
     if (user && (await user.comparePassword(password))) {
       const data = await AuthService.createSession(user);
+      data.user.password = undefined;
       return res.send({ data });
     }
     next(createHttpError(401, 'Invalid credentials'));
@@ -27,6 +28,7 @@ module.exports.signUp = async (req, res, next) => {
     const user = await User.create(body);
     if (user) {
       const data = await AuthService.createSession(user);
+      data.user.password = undefined;
       return res.send({ data });
     }
     next(createHttpError(406, 'User already exists'));
