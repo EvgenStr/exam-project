@@ -4,9 +4,9 @@ import WebSocket from './WebSocket'
 import Notification from '../../../components/Notification/Notification'
 
 class NotificationSocket extends WebSocket {
-  constructor(dispatch, getState, room) {
-    super(dispatch, getState, room)
-  }
+  // constructor(dispatch, getState, room) {
+  //   super(dispatch, getState, room)
+  // }
 
   anotherSubscribes = () => {
     this.onEntryCreated()
@@ -20,7 +20,6 @@ class NotificationSocket extends WebSocket {
       const {
         chatStore: { chatData }
       } = this.getState()
-      console.log(sender)
       if (!chatData || (chatData && chatData._id !== sender.dialogId)) {
         toast(`You have new message from ${sender.firstName} ${sender.lastName}`)
       }
