@@ -81,8 +81,7 @@ class ContestForm extends React.Component {
             onSubmit={this.props.handleSubmit}
             validationSchema={Schemas.ContestSchem}
             innerRef={this.props.formRef}
-            enableReinitialize
-          >
+            enableReinitialize>
             <Form>
               <div className={styles.inputContainer}>
                 <span className={styles.inputHeader}>Title of contest</span>
@@ -150,14 +149,14 @@ class ContestForm extends React.Component {
                   fileInput: styles.fileInput,
                   warning: styles.warning,
                 }}
-                type='file'
-              />
+                />
               {this.props.isEditContest ? (
                 <button type='submit' className={styles.changeData}>
                   Set Data
                 </button>
               ) : null}
             </Form>
+
           </Formik>
         </div>
       </>
