@@ -1,17 +1,18 @@
 import React, { useState, useRef } from 'react';
 import classNames from 'classnames';
 import { useField } from 'formik';
+import CONSTANTS from '../../../constants'
 
 const ImageUpload = props => {
   const fileInput = useRef(null);
-  const [selectedFile, setSelectedFile] = useState(undefined);
-  const [field, meta, helpers] = useField(props.name);
+  const [selectedFile] = useState(undefined);
+  const [field] = useField(props.name);
   const { uploadContainer, inputContainer, imgStyle } = props.classes;
   const onChange = e => {
     const node = window.document.getElementById('imagePreview');
     const file = e.target.files[0];
-    const imageType = /image.*/;
-    if (!file.type.match(imageType)) {
+    // const imageType = /image.*/;
+    if (file.type.size > CONSTANTS.MAX_IMAGE_SIZE) {
       e.target.value = '';
     } else {
       props.onChange(file);

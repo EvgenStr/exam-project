@@ -42,7 +42,6 @@ const OfferForm = props => {
   };
 
   const setOffer = (values, { resetForm }) => {
-    console.log(values, 'send');
     props.clearOfferError();
     const data = new FormData();
     const { contestId, contestType, customerId } = props;
@@ -54,8 +53,7 @@ const OfferForm = props => {
     resetForm();
   };
 
-  const { valid, addOfferError, clearOfferError } = props;
-  console.log(valid);
+  const { addOfferError, clearOfferError } = props;
   const validationSchema =
     props.contestType === CONSTANTS.LOGO_CONTEST
       ? Schemas.LogoOfferSchema
@@ -80,9 +78,11 @@ const OfferForm = props => {
           return (
             <Form className={styles.form}>
               {renderOfferInput(formikProps)}
-              <button type='submit' className={styles.btnOffer} >
-                Send Offer
-              </button>
+              {formikProps.isValid && formikProps.dirty && (
+                <button type='submit' className={styles.btnOffer}>
+                  Send Offer
+                </button>
+              )}
             </Form>
           );
         }}

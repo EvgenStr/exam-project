@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { Field } from 'formik';
+import CONSTANTS from '../../../constants';
 
 const FieldFileInput = ({ classes, ...rest }) => {
-  const fileInput1 = useRef(null);
-  const [selectedFile, setSelectedFile] = useState(undefined);
+  const fileInputField = useRef(null);
+  const [selectedFile] = useState(undefined);
   const { fileUploadContainer, labelClass, fileNameClass, fileInput } = classes;
 
   return (
@@ -17,6 +18,11 @@ const FieldFileInput = ({ classes, ...rest }) => {
           return '';
         };
         const onChange = e => {
+          const file = e.target.files[0];
+          if (file.type.size > CONSTANTS.MAX_FILE_SIZE) {
+            e.target.value = '';
+            return;
+          }
           props.form.setFieldValue('file', e.target.files[0]);
         };
 
@@ -30,7 +36,7 @@ const FieldFileInput = ({ classes, ...rest }) => {
             </span>
             <input
               {...field}
-              ref={fileInput1}
+              ref={fileInputField}
               className={fileInput}
               id='fileInput'
               type='file'
