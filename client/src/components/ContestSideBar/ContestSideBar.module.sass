@@ -3,6 +3,7 @@
   flex-direction: column
   align-items: flex-start
   justify-content: flex-start
+  user-select: none
   @media(max-width: 680px)
     align-self: stretch
     width: auto
@@ -17,10 +18,10 @@
     box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1)
 
     .customerInfo
-      padding: 15px 20px
       display: flex
       align-items: center
       justify-content: flex-start
+      padding: 15px 20px
 
       img
         width: 40px
@@ -47,30 +48,30 @@
       font-weight: 700
 
   .contestInfo
-    width: 100%
     display: flex
     flex-direction: column
     align-items: flex-start
     justify-content: flex-start
+    width: 100%
     @media(max-width: 680px)
       align-self: stretch
 
     .contestStats
-      align-self: stretch
       display: flex
       flex-direction: column
       align-items: flex-start
       justify-content: flex-start
+      align-self: stretch
       box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1)
       margin-bottom: 22px
 
       .totalEntrie
-        align-self: stretch
-        padding: 15px 20px
-        background: white
         display: flex
         align-items: center
         justify-content: space-between
+        align-self: stretch
+        padding: 15px 20px
+        background: white
 
         span
           padding: 0
@@ -96,27 +97,27 @@
         padding: 15px 20px
 
     .awardAndTimeContainer
-      width: 100%
-      box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1)
       display: flex
       flex-direction: column
       align-items: flex-start
       justify-content: flex-start
+      width: 100%
+      box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1)
       margin-bottom: 22px
 
       .guaranteedPrize
-        align-self: stretch
         display: flex
         align-items: center
+        align-self: stretch
         margin-top: 10px
         padding: 0 15px
         margin-bottom: 15px
 
         div
-          border-radius: 8px
           display: flex
           justify-content: center
           align-items: center
+          border-radius: 8px
           width: 16px
           height: 16px
           background-color: #8aca6b
@@ -127,12 +128,12 @@
           color: #333
 
       .timeContainer
-        align-self: stretch
-        margin-top: 10px
         display: flex
         flex-direction: column
         justify-content: flex-start
         align-items: flex-start
+        align-self: stretch
+        margin-top: 10px
         padding: 0 15px
 
         .time
@@ -149,17 +150,16 @@
             color: #333
             margin-left: 10px
 
-    .prizeContainer
-      align-self: stretch
-      display: flex
-      justify-content: flex-start
-      align-items: center
-      background-color: #6b89b0
-      padding: 12px 20px
+.prizeContainer
+  display: flex
+  justify-content: flex-start
+  align-items: center
+  align-self: stretch
+  background-color: #6b89b0
+  padding: 12px 20px
 
-      span
-        color: white
-        font-size: 22px
-        font-weight: 600
-        margin-left: 10px
-
+  span
+    color: white
+    font-size: 22px
+    font-weight: 600
+    margin-left: 10px
