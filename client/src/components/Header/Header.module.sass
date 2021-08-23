@@ -6,11 +6,12 @@
   width: 100%
 
 .navContainer
-  width: 100%
-  margin: 0 auto
   display: flex
   justify-content: space-around
   align-items: center
+  width: 100%
+  margin: 0 auto
+  padding-bottom: 10px
   border-bottom: 1px solid #ebebeb
   @media(max-width: 920px)
     justify-content: center
@@ -31,7 +32,7 @@
   border-radius: 5px
   font-size: 14px
   font-weight: 400
-  margin-bottom: 10px
+  margin: 5px 0
   text-decoration: none
 
   &:hover
@@ -48,11 +49,11 @@
   display: flex
 
 .dropDownMenu
-  margin: 0
-  list-style: none
   display: flex
   justify-content: flex-start
   align-items: center
+  margin: 0
+  list-style: none
   @media(max-width: 920px)
     padding: 0
   @media(max-width: 700px)
@@ -102,11 +103,11 @@
       border-top: 1px solid aquamarine
 
     li
+      display: flex
+      justify-content: flex-start
       box-sizing: border-box
       width: 100%
       padding: 10px 15px
-      display: flex
-      justify-content: flex-start
 
       &:hover
         background: #f9fafb
@@ -126,19 +127,19 @@
     padding: 15px 0
 
 .loginSignUpHeaders
-  margin-top: 30px
   display: flex
   flex-direction: row
   align-items: center
   justify-content: space-around
+  margin-top: 30px
   border: 1px solid #ebebeb
   margin-bottom: 13px
 
 .userButtonsContainer
-  margin-left: 100px
+  display: flex
   align-items: center
   justify-content: center
-  display: flex
+  margin-left: 100px
   border-left: 1px solid #ebebeb
   height: 40px
   @media(max-width: 600px)
@@ -160,11 +161,11 @@
   border-right: 1px solid #ebebeb
 
 .numberContainer
-  text-decoration: none
-  color: inherit
   display: flex
   justify-content: center
   align-items: center
+  text-decoration: none
+  color: inherit
   padding: 0 15px
   border-right: 1px solid #ebebeb
   border-left: 1px solid #ebebeb
@@ -187,12 +188,12 @@
     font-size: 12px
 
 .fixedHeader
-  z-index: 500
   display: flex
   justify-content: center
   align-items: center
-  width: 100%
   position: fixed
+  z-index: 500
+  width: 100%
   background-color: rgb(69, 90, 137)
   border-bottom: 3px solid rgb(255, 255, 255)
   height: 30px
