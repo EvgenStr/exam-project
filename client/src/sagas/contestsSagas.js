@@ -13,6 +13,7 @@ export function* activeContestsSaga(action) {
 }
 
 export function* customerContestsSaga(action) {
+  console.log('DATA', action.data);
   yield put({ type: ACTION.GET_CONTESTS_ACTION_REQUEST });
   try {
     const { data } = yield restController.getCustomersContests(action.data);

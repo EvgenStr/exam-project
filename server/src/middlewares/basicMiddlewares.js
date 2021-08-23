@@ -21,6 +21,7 @@ module.exports.parseBody = (req, res, next) => {
 module.exports.canGetContest = async (req, res, next) => {
   let result = null;
   try {
+        // const {contestId} = req.params;
     if (req.tokenData.role === CONSTANTS.CUSTOMER) {
       result = await db.Contest.findOne({
         where: { id: req.headers.contestid, userId: req.tokenData.userId },
