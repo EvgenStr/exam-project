@@ -48,6 +48,12 @@ export const getCustomersContests = data =>
     },
   );
 
+// export const getCustomersContests = data =>
+//   httpClient.get(
+//     `contest/customer/${data.userId}`/${data.contestStatus}},
+//     { params: { limit: data.limit, offset: data.offset, },
+//   );
+
 export const getActiveContests = ({
   offset,
   limit,
@@ -73,3 +79,5 @@ export const getContestById = data =>
       contestId: data.contestId,
     },
   });
+// export const getContestById = data =>
+// httpClient.get(`getContestById/${data.contestId}`);
