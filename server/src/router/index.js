@@ -47,7 +47,7 @@ router.post(
   basicMiddlewares.onlyForCreative,
   contestController.getContests,
 );
-
+/**++++++++++++++++++++++++++++++++++++++++++++++++ */
 router.post('/getUser', checkToken.checkAuth);
 
 router.get('/downloadFile/:fileName', contestController.downloadFile);
