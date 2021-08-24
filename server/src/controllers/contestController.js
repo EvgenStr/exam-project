@@ -4,6 +4,7 @@ const contestQueries = require('./queries/contestQueries');
 const userQueries = require('./queries/userQueries');
 const controller = require('../socketInit');
 const UtilFunctions = require('../utils/functions');
+const fileDelete = require('../utils/fileDelete');
 const CONSTANTS = require('../constants');
 
 module.exports.dataForContest = async (req, res, next) => {
@@ -92,23 +93,25 @@ module.exports.getContestById = async (req, res, next) => {
   }
 };
 
-module.exports.downloadFile = async (req, res, next) => {
-  const file = CONSTANTS.CONTESTS_DEFAULT_DIR + req.params.fileName;
-  res.download(file);
-};
-
 module.exports.updateContest = async (req, res, next) => {
-  if (req.file) {
-    req.body.fileName = req.file.filename;
-    req.body.originalFileName = req.file.originalname;
-  }
-  const contestId = req.body.contestId;
-  delete req.body.contestId;
   try {
+    const contestId = req.body.contestId;
+    let oldContest = null;
+    // const { params: contestId } = req;
+
+    if (req.file) {
+      oldContest = await db.Contest.findByPk(contestId);
+      req.body.fileName = req.file.filename;
+      req.body.originalFileName = req.file.originalname;
+    }
     const updatedContest = await contestQueries.updateContest(req.body, {
       id: contestId,
       userId: req.tokenData.userId,
     });
+    if (oldContest) {
+      fileDelete(oldContest.fileName);
+    }
+
     res.send(updatedContest);
   } catch (e) {
     next(e);
@@ -116,24 +119,25 @@ module.exports.updateContest = async (req, res, next) => {
 };
 
 module.exports.setNewOffer = async (req, res, next) => {
-  const obj = {};
+  const newOffer = {};
   if (req.body.contestType === CONSTANTS.LOGO_CONTEST) {
-    obj.fileName = req.file.filename;
-    obj.originalFileName = req.file.originalname;
+    newOffer.fileName = req.file.filename;
+    newOffer.originalFileName = req.file.originalname;
   } else {
-    obj.text = req.body.offerData;
+    newOffer.text = req.body.offerData;
   }
-  obj.userId = req.tokenData.userId;
-  obj.contestId = req.body.contestId;
+  newOffer.userId = req.tokenData.userId;
+  newOffer.contestId = req.body.contestId;
+
   try {
-    const result = await contestQueries.createOffer(obj);
-    delete result.contestId;
-    delete result.userId;
+    const createdOffer = await contestQueries.createOffer(newOffer);
+    createdOffer.contestId = undefined;
+    createdOffer.userId = undefined;
     controller
       .getNotificationController()
       .emitEntryCreated(req.body.customerId);
     const User = Object.assign({}, req.tokenData, { id: req.tokenData.userId });
-    res.send(Object.assign({}, result, { User }));
+    res.send(Object.assign({}, createdOffer, { User }));
   } catch (e) {
     return next(new ServerError());
   }
@@ -256,6 +260,7 @@ module.exports.getCustomersContests = (req, res, next) => {
   //  pagination = {},
   //   params: { userId, status },
   // } = req;
+
   db.Contest.findAll({
     where: { status: req.headers.status, userId: req.tokenData.userId },
     // where: { status,  userId },
