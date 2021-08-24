@@ -11,15 +11,6 @@ const authRouter = require('./auth');
 const router = express.Router();
 
 router.use('/auth', authRouter);
-/*
-router.post(
-  '/registration',
-  validators.validateRegistrationData,
-  userController.registration,
-);
-
-router.post('/login', validators.validateLogin, userController.login);
-*/
 
 router.use(TokenMW.checkAccessToken);
 
@@ -47,11 +38,6 @@ router.post(
   basicMiddlewares.onlyForCreative,
   contestController.getContests,
 );
-/**++++++++++++++++++++++++++++++++++++++++++++++++ */
-router.post('/getUser', checkToken.checkAuth);
-
-router.get('/downloadFile/:fileName', contestController.downloadFile);
-
 router.post(
   '/updateContest',
   upload.updateContestFile,
@@ -65,6 +51,8 @@ router.post(
   contestController.setNewOffer,
 );
 
+/**++++++++++++++++++++++++++++++++++++++++++++++++ */
+// router.get('/downloadFile/:fileName', contestController.downloadFile);
 router.post(
   '/setOfferStatus',
   basicMiddlewares.onlyForCustomerWhoCreateContest,
@@ -78,6 +66,7 @@ router.post(
 );
 
 router.post('/updateUser', upload.uploadAvatar, userController.updateUser);
+router.post('/getUser', checkToken.checkAuth);
 
 router.post(
   '/cashout',
