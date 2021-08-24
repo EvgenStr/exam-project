@@ -17,7 +17,7 @@ class CustomerDashboard extends React.Component {
     this.props.getContests({
       limit: 8,
       offset: startFrom,
-      contestStatus: this.props.customerFilter,
+      contestStatus: this.props.contestsList.customerFilter,
     });
   };
 
@@ -26,16 +26,18 @@ class CustomerDashboard extends React.Component {
   }
 
   getContests = () => {
-    
     this.props.getContests({
-      userId:this.props.userId,
+      userId: this.props.userId,
       limit: 8,
-      contestStatus: this.props.customerFilter,
+      contestStatus: this.props.contestsList.customerFilter,
     });
   };
 
   componentDidUpdate (prevProps, prevState, snapshot) {
-    if (this.props.customerFilter !== prevProps.customerFilter) {
+    if (
+      this.props.contestsList.customerFilter !==
+      prevProps.contestsList.customerFilter
+    ) {
       this.getContests();
     }
   }
@@ -46,12 +48,12 @@ class CustomerDashboard extends React.Component {
 
   setContestList = () => {
     const array = [];
-    const { contestsList } = this.props;
-    for (let i = 0; i < contestsList.length; i++) {
+    const { contests } = this.props.contestsList;
+    for (let i = 0; i < contests.length; i++) {
       array.push(
         <ContestBox
-          data={contestsList[i]}
-          key={contestsList[i].id}
+          data={contests[i]}
+          key={contests[i].id}
           goToExtended={this.goToExtended}
         />,
       );
@@ -134,7 +136,7 @@ class CustomerDashboard extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {contestsList:state.contestsList, userId:state.auth.data.id};
+  return { contestsList: state.contestsList, userId: state.auth.data.id };
 };
 
 const mapDispatchToProps = dispatch => ({
