@@ -1,3 +1,5 @@
+const path = require('path');
+
 const {
   env: {
     SQUADHELP_BANK_NUMBER,
@@ -10,6 +12,8 @@ const {
     REFRESH_TOKEN_TIME,
     MAX_DEVICE_AMOUNT,
     SALT_ROUNDS,
+    STATIC_PATH,
+    NODE_ENV,
   },
 } = process;
 
@@ -24,6 +28,8 @@ module.exports = {
   REFRESH_TOKEN_TIME,
   MAX_DEVICE_AMOUNT,
   SALT_ROUNDS: Number(SALT_ROUNDS),
+  STATIC_PATH: STATIC_PATH || path.resolve(__dirname, '../public'),
+  NODE_ENV: NODE_ENV || 'development',
   CUSTOMER: 'customer',
   CREATOR: 'creator',
   CREATOR_ENTRIES: 'creator_entries',
@@ -37,7 +43,6 @@ module.exports = {
   OFFER_STATUS_PENDING: 'pending',
   OFFER_STATUS_REJECTED: 'rejected',
   OFFER_STATUS_WON: 'won',
-  FILES_PATH: 'public/',
   SOCKET_CONNECTION: 'connection',
   SOCKET_SUBSCRIBE: 'subscribe',
   SOCKET_UNSUBSCRIBE: 'unsubscribe',
