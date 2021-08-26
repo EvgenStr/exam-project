@@ -6,7 +6,7 @@ const initialState = {
   data: null,
 };
 
-export default function (state = initialState, action) {
+function authReducer (state = initialState, action) {
   switch (action.type) {
     case ACTION.AUTH_ACTION_REQUEST: {
       return {
@@ -92,3 +92,4 @@ export default function (state = initialState, action) {
       return state;
   }
 }
+export default authReducer;
