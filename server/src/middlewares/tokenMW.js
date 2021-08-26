@@ -11,7 +11,6 @@ module.exports.checkRefreshToken = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.log(error);
     next(createHttpError(401, 'Wrong refresh token'));
   }
 };
@@ -26,7 +25,7 @@ module.exports.checkAccessToken = async (req, res, next) => {
       req.tokenData = await JwtService.verifyAccessToken(accessToken);
       return next();
     }
-    next(createHttpError(419, 'Need token'));
+    next(createHttpError(419, 'Wrong access token'));
   } catch (error) {
     next(error);
   }
