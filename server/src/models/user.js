@@ -1,9 +1,8 @@
-'use strict';
 const { Model } = require('sequelize');
 const bcrypt = require('bcrypt');
 const { SALT_ROUNDS } = require('../constants');
 
-async function hashPassword (user, options) {
+async function hashPassword (user) {
   if (user.changed('password')) {
     const { password } = user;
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
@@ -25,6 +24,44 @@ module.exports = (sequelize, DataTypes) => {
       });
       User.hasMany(models.RefreshToken, {
         foreignKey: 'userId',
+        targetKey: 'id',
+      });
+      User.hasMany(models.Catalog, {
+        foreignKey: 'userId',
+        targetKey: 'id',
+      });
+      User.hasMany(models.Conversation, {
+        as: 'customer',
+        foreignKey: 'customerId',
+        targetKey: 'id',
+      });
+      User.hasMany(models.Conversation, {
+        as: 'creator',
+        foreignKey: 'creatorId',
+        targetKey: 'id',
+      });
+      User.hasMany(models.Message, {
+        foreignKey: 'userId',
+        targetKey: 'id',
+      });
+      User.hasMany(models.BlackList, {
+        as: 'user',
+        foreignKey: 'userId',
+        targetKey: 'id',
+      });
+      User.hasMany(models.BlackList, {
+        as: 'blockedUser',
+        foreignKey: 'blockedUserId',
+        targetKey: 'id',
+      });
+      User.hasMany(models.FavoriteList, {
+        as: 'user',
+        foreignKey: 'userId',
+        targetKey: 'id',
+      });
+      User.hasMany(models.FavoriteList, {
+        as: 'favoriteUser',
+        foreignKey: 'favoriteUserId',
         targetKey: 'id',
       });
     }
