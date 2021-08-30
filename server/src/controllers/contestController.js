@@ -207,23 +207,17 @@ module.exports.getCustomersContests = (req, res, next) => {
 
 module.exports.getContests = (req, res, next) => {
   const {
-    query: {
-      typeIndex,
-      contestId,
-      industry,
-      awardSort,
-      limit,
-      offset,
-      ownEntries,
-    },
+    query: { typeIndex, contestId, industry, awardSort, limit, offset },
   } = req;
+  const ownEntries = req.query.ownEntities === 'true';
+
   const predicates = UtilFunctions.createWhereForAllContests(
     typeIndex,
     contestId,
     industry,
     awardSort,
   );
-  console.log(predicates.where, 'WHERE');
+
   db.Contest.findAll({
     where: predicates.where,
     order: predicates.order,
@@ -280,8 +274,12 @@ const resolveOffer = async (
   const finishedContest = await contestQueries.updateContestStatus(
     {
       status: db.sequelize.literal(`   CASE
-            WHEN "id"=${contestId}  AND "orderId"='${orderId}' THEN '${CONSTANTS.CONTEST_STATUS_FINISHED}'
-            WHEN "orderId"='${orderId}' AND "priority"=${priority + 1}  THEN '${CONSTANTS.CONTEST_STATUS_ACTIVE}'
+            WHEN "id"=${contestId}  AND "orderId"='${orderId}' THEN '${
+        CONSTANTS.CONTEST_STATUS_FINISHED
+      }'
+            WHEN "orderId"='${orderId}' AND "priority"=${priority + 1}  THEN '${
+        CONSTANTS.CONTEST_STATUS_ACTIVE
+      }'
             ELSE '${CONSTANTS.CONTEST_STATUS_PENDING}'
             END
     `),
