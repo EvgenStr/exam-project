@@ -48,13 +48,11 @@ module.exports.addMessage = async (req, res, next) => {
       raw: true,
     });
 
-    controller
-      .getNotificationController()
-      .emitNewMessage({
-        interlocutorId,
-        sender,
-        dialogId: message.conversation,
-      });
+    controller.getNotificationController().emitNewMessage({
+      interlocutorId,
+      sender,
+      dialogId: message.conversation,
+    });
 
     controller.getChatController().emitNewMessage(interlocutorId, {
       message,

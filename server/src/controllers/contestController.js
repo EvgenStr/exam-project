@@ -175,12 +175,13 @@ module.exports.setOfferStatus = async (req, res, next) => {
 
 module.exports.getCustomersContests = (req, res, next) => {
   const {
-    pagination = {},
+    pagination: { limit, offset },
     params: { userId, status },
   } = req;
   db.Contest.findAll({
     where: { status, userId },
-    ...pagination,
+    limit,
+    offset,
     order: [['id', 'DESC']],
     include: [
       {
@@ -222,6 +223,7 @@ module.exports.getContests = (req, res, next) => {
     industry,
     awardSort,
   );
+  console.log(predicates.where, 'WHERE');
   db.Contest.findAll({
     where: predicates.where,
     order: predicates.order,
@@ -248,7 +250,7 @@ module.exports.getContests = (req, res, next) => {
       res.send({ contests, haveMore });
     })
     .catch(err => {
-      next(new ServerError());
+      next(new ServerError(err));
     });
 };
 
@@ -278,12 +280,8 @@ const resolveOffer = async (
   const finishedContest = await contestQueries.updateContestStatus(
     {
       status: db.sequelize.literal(`   CASE
-            WHEN "id"=${contestId}  AND "orderId"='${orderId}' THEN '${
-        CONSTANTS.CONTEST_STATUS_FINISHED
-      }'
-            WHEN "orderId"='${orderId}' AND "priority"=${priority + 1}  THEN '${
-        CONSTANTS.CONTEST_STATUS_ACTIVE
-      }'
+            WHEN "id"=${contestId}  AND "orderId"='${orderId}' THEN '${CONSTANTS.CONTEST_STATUS_FINISHED}'
+            WHEN "orderId"='${orderId}' AND "priority"=${priority + 1}  THEN '${CONSTANTS.CONTEST_STATUS_ACTIVE}'
             ELSE '${CONSTANTS.CONTEST_STATUS_PENDING}'
             END
     `),

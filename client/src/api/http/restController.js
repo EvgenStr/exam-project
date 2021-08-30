@@ -22,7 +22,7 @@ export const updateContest = data =>
 export const getActiveContests = data =>
   httpClient.get('contests', {
     params: {
-      data,
+      ...data,
     },
   });
 export const setNewOffer = data =>
