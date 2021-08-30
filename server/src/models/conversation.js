@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'conversationId',
         sourceKey: 'id',
       });
-      Conversation.belongsToMany(models.Conversation, {
+      Conversation.belongsToMany(models.Catalog, {
         through: models.ConversationsToCatalogs,
         foreignKey: 'conversationId',
       });
@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Conversations',
+      modelName: 'Conversation',
     },
   );
   return Conversation;

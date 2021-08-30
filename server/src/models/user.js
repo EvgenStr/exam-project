@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'id',
       });
       User.hasMany(models.BlackList, {
-        as: 'user',
+        as: 'initiator',
         foreignKey: 'userId',
         targetKey: 'id',
       });
