@@ -7,11 +7,13 @@ const userQueries = require('./queries/userQueries');
 const CONSTANTS = require('../constants');
 
 module.exports.addMessage = async (req, res, next) => {
+  // console.log(req.tokenData, req.body, 'REQES');
   try {
     const {
       tokenData: { userId, role },
       body: { recipient, messageBody },
     } = req;
+    const participants = [userId, recipient];
     let customerId = null;
     let creatorId = null;
 
@@ -22,9 +24,8 @@ module.exports.addMessage = async (req, res, next) => {
       customerId = recipient;
       creatorId = userId;
     }
-    const participants = [userId, recipient];
 
-    const [conversation, created] = await Conversation.findOrCreate({
+    const [conversation] = await Conversation.findOrCreate({
       where: { customerId, creatorId },
     });
 
@@ -55,6 +56,33 @@ module.exports.addMessage = async (req, res, next) => {
       .getChatController()
       .emitNewMessage(recipient, { newMessage, preview });
     res.send({ newMessage, preview });
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports.getChat = async (req, res, next) => {
+  try {
+    const {
+      // tokenData: { userId },
+      body: { interlocutorId, conversationId },
+    } = req;
+
+    const conversation = await Conversation.findByPk(conversationId);
+    const conversationWithMessages = await conversation.getMessages(); /*pagination*/
+    const interlocutor = await User.findByPk(interlocutorId, {
+      attributes: {
+        exclude: ['password', 'email', 'role', 'balance', 'rating'],
+      },
+    });
+    res.send({ conversationWithMessages, interlocutor });
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports.getPreview = async (req, res, next) => {
+  try {
   } catch (e) {
     next(e);
   }
