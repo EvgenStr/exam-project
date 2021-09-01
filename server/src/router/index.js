@@ -42,9 +42,11 @@ router.post(
 // router.post('/newMessage', chatController.addMessage);
 router.post('/newMessage', sqlChat.addMessage);
 
-router.post('/getChat', chatController.getChat);
+// router.post('/getChat', chatController.getChat);
+router.post('/getChat', sqlChat.getChat);
 
-router.post('/getPreview', chatController.getPreview);
+// router.post('/getPreview', chatController.getPreview);
+router.post('/getPreview', sqlChat.getPreview);
 
 router.post('/blackList', chatController.blackList);
 

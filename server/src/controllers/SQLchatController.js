@@ -12,7 +12,6 @@ const userQueries = require('./queries/userQueries');
 const CONSTANTS = require('../constants');
 
 module.exports.addMessage = async (req, res, next) => {
-  // console.log(req.tokenData, req.body, 'REQES');
   try {
     const {
       tokenData: { userId, role },
@@ -60,7 +59,7 @@ module.exports.addMessage = async (req, res, next) => {
     socketController
       .getChatController()
       .emitNewMessage(recipient, { newMessage, preview });
-    res.send({ newMessage, preview });
+    res.send({ message: newMessage, preview });
   } catch (e) {
     next(e);
   }
@@ -69,16 +68,14 @@ module.exports.addMessage = async (req, res, next) => {
 module.exports.getChat = async (req, res, next) => {
   try {
     const {
-      // tokenData: { userId },
       body: { interlocutorId, conversationId },
     } = req;
-
     const conversation = await Conversation.findByPk(conversationId);
     const conversationWithMessages = await conversation.getMessages(); /*pagination*/
     const interlocutor = await User.findByPk(interlocutorId, {
       attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
     });
-    res.send({ conversationWithMessages, interlocutor });
+    res.send({ messages: conversationWithMessages, interlocutor });
   } catch (e) {
     next(e);
   }
@@ -118,6 +115,7 @@ module.exports.getPreview = async (req, res, next) => {
       prepared.text = conversation.Messages[0].body;
       prepared.participants = [conversation.customerId, conversation.creatorId];
       prepared.favoriteList = prepared.interlocutor.favoriteUser;
+      prepared._id = conversation.id;
       return prepared;
     });
 

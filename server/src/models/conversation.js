@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: 'id',
       });
       Conversation.hasMany(models.Message, {
-        foreignKey: 'conversationId',
         sourceKey: 'id',
+        foreignKey: 'conversationId',
       });
       Conversation.belongsToMany(models.Catalog, {
         through: models.ConversationsToCatalogs,
