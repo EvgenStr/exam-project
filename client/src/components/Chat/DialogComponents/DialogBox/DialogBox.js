@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import styles from './DialogBox.module.sass';
 import CONSTANTS from '../../../../constants';
@@ -23,8 +23,16 @@ const DialogBox = props => {
     text,
     createAt,
   } = chatPreview;
-  const isFavorite = favoriteList[participants.indexOf(userId)];
-  const isBlocked = blackList[participants.indexOf(userId)];
+  const [isFavorite, setIsFavorite] = useState(
+    favoriteList[participants.indexOf(userId)],
+  );
+  const [isBlocked, setIsBlocked] = useState(
+    blackList[participants.indexOf(userId)],
+  );
+  useEffect(() => {
+    setIsFavorite(favoriteList[participants.indexOf(userId)]);
+    setIsBlocked(blackList[participants.indexOf(userId)]);
+  }, [blackList, favoriteList]);
   return (
     <div
       className={styles.previewChatBox}
