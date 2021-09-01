@@ -29,6 +29,16 @@ module.exports = {
             onDelete: 'cascade',
           },
         },
+        blackList:{
+          allowNull: false,
+          type: Sequelize.ARRAY(Sequelize.BOOLEAN),
+          defaultValue: [false, false],
+        },
+        favoriteList:{
+          allowNull: false,
+          type: Sequelize.ARRAY(Sequelize.BOOLEAN),
+          defaultValue: [false, false],
+        },
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,

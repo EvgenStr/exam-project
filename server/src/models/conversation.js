@@ -5,12 +5,10 @@ module.exports = (sequelize, DataTypes) => {
       Conversation.belongsTo(models.User, {
         as: 'customer',
         foreignKey: 'customerId',
-        sourceKey: 'id',
       });
       Conversation.belongsTo(models.User, {
         as: 'creator',
         foreignKey: 'creatorId',
-        sourceKey: 'id',
       });
       Conversation.hasMany(models.Message, {
         sourceKey: 'id',
@@ -20,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         through: models.ConversationsToCatalogs,
         foreignKey: 'conversationId',
       });
+      // Conversation.hasOne(models.BlackList,{})
     }
   }
   Conversation.init(
@@ -46,6 +45,16 @@ module.exports = (sequelize, DataTypes) => {
             }
           },
         },
+      },
+      blackList:{
+        allowNull: false,
+        type: DataTypes.ARRAY(DataTypes.BOOLEAN),
+        defaultValue: [false, false],
+      },
+      favoriteList:{
+        allowNull: false,
+        type: DataTypes.ARRAY(DataTypes.BOOLEAN),
+        defaultValue: [false, false],
       },
     },
     {
