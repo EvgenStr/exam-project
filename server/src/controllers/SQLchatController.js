@@ -68,9 +68,23 @@ module.exports.addMessage = async (req, res, next) => {
 module.exports.getChat = async (req, res, next) => {
   try {
     const {
-      body: { interlocutorId, conversationId },
+      body: { interlocutorId },
+      tokenData: { userId, role },
     } = req;
-    const conversation = await Conversation.findByPk(conversationId);
+    let customerId = null;
+    let creatorId = null;
+
+    if (role === CONSTANTS.CUSTOMER) {
+      customerId = userId;
+      creatorId = interlocutorId;
+    } else {
+      customerId = interlocutorId;
+      creatorId = userId;
+    }
+
+    const [conversation] = await Conversation.findOrCreate({
+      where: { customerId, creatorId },
+    });
     const conversationWithMessages = await conversation.getMessages(); /*pagination*/
     const interlocutor = await User.findByPk(interlocutorId, {
       attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
@@ -105,17 +119,24 @@ module.exports.getPreview = async (req, res, next) => {
         },
       ],
     });
+    if (!conversations) {
+      return res.send([]);
+    }
 
     const result = conversations.map(conversation => {
       const prepared = {};
       prepared.interlocutor =
         conversation[role === 'creator' ? 'customer' : 'creator'];
       prepared.blackList = prepared.interlocutor.blockedUser;
-      prepared.sender = conversation.Messages[0].userId;
-      prepared.text = conversation.Messages[0].body;
       prepared.participants = [conversation.customerId, conversation.creatorId];
       prepared.favoriteList = prepared.interlocutor.favoriteUser;
       prepared._id = conversation.id;
+      prepared.sender = null;
+      prepared.text = '';
+      if (conversation.Messages[0]) {
+        prepared.sender = conversation.Messages[0].userId || null;
+        prepared.text = conversation.Messages[0].body || null;
+      }
       return prepared;
     });
 
