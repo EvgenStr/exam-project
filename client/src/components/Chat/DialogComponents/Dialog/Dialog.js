@@ -25,17 +25,14 @@ class Dialog extends React.Component {
     this.messagesEnd.current.scrollIntoView({ behavior: 'smooth' });
   };
 
-  componentWillReceiveProps (nextProps, nextContext) {
-    if (nextProps.interlocutor.id !== this.props.interlocutor.id)
-      this.props.getDialog({ interlocutorId: nextProps.interlocutor.id });
+  componentDidUpdate (prevProps) {
+    if (this.props.interlocutor.id !== prevProps.interlocutor.id)
+      this.props.getDialog({ interlocutorId: prevProps.interlocutor.id });
+    if (this.messagesEnd.current) this.scrollToBottom();
   }
 
   componentWillUnmount () {
     this.props.clearMessageList();
-  }
-
-  componentDidUpdate () {
-    if (this.messagesEnd.current) this.scrollToBottom();
   }
 
   renderMainDialog = () => {
@@ -53,7 +50,7 @@ class Dialog extends React.Component {
       }
       messagesArray.push(
         <div
-          key={i}
+          key={message.id}
           className={className(
             userId === message.sender ? styles.ownMessage : styles.message,
           )}
