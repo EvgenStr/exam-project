@@ -199,7 +199,6 @@ class CreatorDashboard extends React.Component {
   render () {
     const { error, haveMore, creatorFilter } = this.props;
     const { isFetching } = this.props.dataForContest;
-    console.log('render', this.props);
     return (
       <div className={styles.mainContainer}>
         <div className={styles.filterContainer}>

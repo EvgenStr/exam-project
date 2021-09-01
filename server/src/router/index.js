@@ -48,7 +48,8 @@ router.post('/getChat', sqlChat.getChat);
 // router.post('/getPreview', chatController.getPreview);
 router.post('/getPreview', sqlChat.getPreview);
 
-router.post('/blackList', chatController.blackList);
+// router.post('/blackList', chatController.blackList);
+router.post('/blackList', sqlChat.blackList);
 
 router.post('/favorite', chatController.favoriteChat);
 
