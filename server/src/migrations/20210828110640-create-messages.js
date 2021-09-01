@@ -13,7 +13,6 @@ module.exports = {
         references: {
           model: 'Users',
           key: 'id',
-          onUpdate: 'cascade',
           onDelete: 'cascade',
         },
       },
@@ -27,7 +26,6 @@ module.exports = {
         references: {
           model: 'Conversations',
           key: 'id',
-          onUpdate: 'cascade',
           onDelete: 'cascade',
         },
       },
