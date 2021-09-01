@@ -145,3 +145,30 @@ module.exports.getPreview = async (req, res, next) => {
     next(e);
   }
 };
+
+module.exports.blackList = async (req, res, next) => {
+  try {
+    const {
+      body: { blackListFlag, participants },
+      tokenData: { userId, role },
+    } = req;
+
+    const index = participants.indexOf(userId);
+    const conversation = await Conversation.findOne({
+      where:
+        role === CONSTANTS.CREATOR
+          ? { creatorId: userId }
+          : { customerId: userId },
+    });
+
+    conversation.blackList[index] = blackListFlag;
+    const result = await conversation.save();
+    if (!result) {
+      return next(createHttpError(400, 'Black list can\'t be updated'));
+    }
+    result.dataValues.participants = participants;
+    res.send(result);
+  } catch (e) {
+    next(e);
+  }
+};
