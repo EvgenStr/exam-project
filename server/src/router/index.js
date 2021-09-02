@@ -63,7 +63,8 @@ router.post('/getCatalogs', sqlChat.getCatalogs);
 // router.post('/updateNameCatalog', chatController.updateNameCatalog);
 router.post('/updateNameCatalog', sqlChat.updateNameCatalog);
 
-router.post('/addNewChatToCatalog', chatController.addNewChatToCatalog);
+// router.post('/addNewChatToCatalog', chatController.addNewChatToCatalog);
+router.post('/addNewChatToCatalog', sqlChat.addNewChatToCatalog);
 
 router.post('/removeChatFromCatalog', chatController.removeChatFromCatalog);
 

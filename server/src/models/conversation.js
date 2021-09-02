@@ -18,7 +18,6 @@ module.exports = (sequelize, DataTypes) => {
         through: models.ConversationsToCatalogs,
         foreignKey: 'conversationId',
       });
-      // Conversation.hasOne(models.BlackList,{})
     }
   }
   Conversation.init(
