@@ -5,8 +5,9 @@ const {
   User,
   BlackList,
   FavoriteList,
+  Catalog,
+  ConversationsToCatalogs,
 } = require('../models');
-const ConversationsToCatalogs = require('../models/conversationstocatalogs');
 const socketController = require('../socketInit');
 const userQueries = require('./queries/userQueries');
 const CONSTANTS = require('../constants');
@@ -162,12 +163,77 @@ module.exports.blackList = async (req, res, next) => {
     });
 
     conversation.blackList[index] = blackListFlag;
-    const result = await conversation.save();
-    if (!result) {
-      return next(createHttpError(400, 'Black list can\'t be updated'));
+    const updatedConversation = await conversation.save();
+    if (!updatedConversation) {
+      return next(createHttpError(400, "Blacklist can't be updated"));
     }
-    result.dataValues.participants = participants;
-    res.send(result);
+    updatedConversation.dataValues.participants = participants;
+    const interlocutorId = req.body.participants.filter(
+      participant => participant !== req.tokenData.userId,
+    )[0];
+    socketController
+      .getChatController()
+      .emitChangeBlockStatus(interlocutorId, updatedConversation);
+    res.send(updatedConversation);
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports.favoriteChat = async (req, res, next) => {
+  try {
+    const {
+      body: { favoriteFlag, participants },
+      tokenData: { userId, role },
+    } = req;
+
+    const index = participants.indexOf(userId);
+    const conversation = await Conversation.findOne({
+      where:
+        role === CONSTANTS.CREATOR
+          ? { creatorId: userId }
+          : { customerId: userId },
+    });
+
+    conversation.favoriteList[index] = favoriteFlag;
+    const updatedConversation = await conversation.save();
+    if (!updatedConversation) {
+      return next(createHttpError(400, "Favorite list can't be updated"));
+    }
+    updatedConversation.dataValues.participants = participants;
+
+    res.send(updatedConversation);
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports.createCatalog = async (req, res, next) => {
+  try {
+    const {
+      tokenData: { userId },
+      body: { catalogName, chatId },
+    } = req;
+    const conversation = await Conversation.findByPk(chatId);
+    if(!conversation){
+      return next(createHttpError(400, 'Invalid conversation'));
+    }
+    const catalog = await conversation.createCatalog(
+      {
+        name: catalogName,
+        userId,
+      },
+      { raw: true },
+    );
+    const chats = await ConversationsToCatalogs.findAll({
+      raw: true,
+      where: { catalogId: catalog.id },
+      attributes: [['conversationId', 'chats']],
+    });
+    const preparedChats = chats.map(chat => chat.chats);
+    catalog.dataValues.chats = preparedChats;
+
+    res.send(catalog);
   } catch (e) {
     next(e);
   }
