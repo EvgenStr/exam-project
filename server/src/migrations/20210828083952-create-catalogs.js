@@ -7,10 +7,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
+      catalogName: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: 'catalogs',
       },
       userId: {
         type: Sequelize.INTEGER,
@@ -20,11 +19,22 @@ module.exports = {
           key: 'id',
           onDelete: 'cascade',
         },
-        unique: 'catalogs',
+      },
+      chats: {
+        allowNull: false,
+        type: Sequelize.ARRAY(Sequelize.INTEGER),
+        defaultValue: [],
       },
     });
+    await queryInterface.addConstraint('Catalogs', {
+      type: 'UNIQUE',
+      fields: ['catalogName', 'userId'],
+      name: 'uniqueCatalogName',
+    });
   },
+
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Catalogs');
+    await queryInterface.removeConstraint('Catalogs', 'uniqueCatalogName');
   },
 };

@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Catalog.init(
     {
-      name: { type: DataTypes.STRING(32), allowNull: false },
+      catalogName: { type: DataTypes.STRING(32), allowNull: false },
       userId: {
         allowNull: false,
         type: DataTypes.INTEGER,
@@ -19,6 +19,11 @@ module.exports = (sequelize, DataTypes) => {
           model: 'Users',
           key: 'id',
         },
+      },
+      chats: {
+        allowNull: false,
+        type: DataTypes.ARRAY(DataTypes.INTEGER),
+        defaultValue: [false, false],
       },
     },
     {
