@@ -51,18 +51,22 @@ router.post('/getPreview', sqlChat.getPreview);
 // router.post('/blackList', chatController.blackList);
 router.post('/blackList', sqlChat.blackList);
 
-router.post('/favorite', chatController.favoriteChat);
+// router.post('/favorite', chatController.favoriteChat);
+router.post('/favorite', sqlChat.favoriteChat);
 
-router.post('/createCatalog', chatController.createCatalog);
+// router.post('/createCatalog', chatController.createCatalog);
+router.post('/createCatalog', sqlChat.createCatalog);
 
-router.post('/updateNameCatalog', chatController.updateNameCatalog);
+// router.post('/getCatalogs', chatController.getCatalogs);
+router.post('/getCatalogs', sqlChat.getCatalogs);
+
+// router.post('/updateNameCatalog', chatController.updateNameCatalog);
+router.post('/updateNameCatalog', sqlChat.updateNameCatalog);
 
 router.post('/addNewChatToCatalog', chatController.addNewChatToCatalog);
 
 router.post('/removeChatFromCatalog', chatController.removeChatFromCatalog);
 
 router.post('/deleteCatalog', chatController.deleteCatalog);
-
-router.post('/getCatalogs', chatController.getCatalogs);
 
 module.exports = router;

@@ -215,7 +215,7 @@ module.exports.createCatalog = async (req, res, next) => {
       body: { catalogName, chatId },
     } = req;
     const conversation = await Conversation.findByPk(chatId);
-    if(!conversation){
+    if (!conversation) {
       return next(createHttpError(400, 'Invalid conversation'));
     }
     const catalog = await conversation.createCatalog(
@@ -234,6 +234,53 @@ module.exports.createCatalog = async (req, res, next) => {
     catalog.dataValues.chats = preparedChats;
 
     res.send(catalog);
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports.getCatalogs = async (req, res, next) => {
+  try {
+    const {
+      tokenData: { userId },
+    } = req;
+    const catalogs = await Catalog.findAll({
+      raw: true,
+      where: { userId },
+      include: [{ model: Conversation, attributes: ['id'] }],
+    });
+    // console.log(catalogs, 'CATALOGS++++++++');
+    catalogs.forEach(catalog => {
+      catalog.chats = [catalog['Conversations.id']];
+    });
+    res.send(catalogs);
+  } catch (e) {
+    next(e);
+  }
+};
+module.exports.updateNameCatalog = async (req, res, next) => {
+  try {
+    const {
+      body: { catalogId, catalogName },
+      tokenData: { userId },
+    } = req;
+
+    const catalog = await Catalog.findByPk(catalogId);
+    console.log(catalog, req.body, 'updated CATALOG ==================');
+    if (!catalog) {
+      return next(createHttpError(400, 'Invalid catalog'));
+    }
+    catalog.name = catalogName;
+    const updatedCatalog = await catalog.save();
+    const chats = await ConversationsToCatalogs.findAll({
+      raw: true,
+      where: { catalogId: updatedCatalog.id },
+      attributes: [['conversationId', 'chats']],
+    });
+    const preparedChats = chats.map(chat => chat.chats);
+    updatedCatalog.dataValues.chats = preparedChats;
+    // console.log(updatedCatalog, 'updated CATALOG ==================');
+    res.send(updatedCatalog);
   } catch (e) {
     next(e);
   }
