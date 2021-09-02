@@ -7,6 +7,7 @@ const {
   FavoriteList,
   Catalog,
   ConversationsToCatalogs,
+  sequelize,
 } = require('../models');
 const socketController = require('../socketInit');
 const userQueries = require('./queries/userQueries');
@@ -218,20 +219,16 @@ module.exports.createCatalog = async (req, res, next) => {
     if (!conversation) {
       return next(createHttpError(400, 'Invalid conversation'));
     }
-    const catalog = await conversation.createCatalog(
+    const catalog = await Catalog.create(
       {
-        name: catalogName,
+        catalogName,
         userId,
+        chats: [chatId],
       },
       { raw: true },
     );
-    const chats = await ConversationsToCatalogs.findAll({
-      raw: true,
-      where: { catalogId: catalog.id },
-      attributes: [['conversationId', 'chats']],
-    });
-    const preparedChats = chats.map(chat => chat.chats);
-    catalog.dataValues.chats = preparedChats;
+    catalog.dataValues._id = catalog.id;
+    // console.log(catalog, 'CATALOG');
 
     res.send(catalog);
   } catch (e) {
@@ -247,11 +244,10 @@ module.exports.getCatalogs = async (req, res, next) => {
     const catalogs = await Catalog.findAll({
       raw: true,
       where: { userId },
-      include: [{ model: Conversation, attributes: ['id'] }],
     });
-    // console.log(catalogs, 'CATALOGS++++++++');
+
     catalogs.forEach(catalog => {
-      catalog.chats = [catalog['Conversations.id']];
+      catalog._id = catalog.id;
     });
     res.send(catalogs);
   } catch (e) {
@@ -260,26 +256,42 @@ module.exports.getCatalogs = async (req, res, next) => {
 };
 module.exports.updateNameCatalog = async (req, res, next) => {
   try {
-    const {
-      body: { catalogId, catalogName },
-      tokenData: { userId },
-    } = req;
-
+    const { catalogId, catalogName } = req.body;
     const catalog = await Catalog.findByPk(catalogId);
-    console.log(catalog, req.body, 'updated CATALOG ==================');
+
     if (!catalog) {
       return next(createHttpError(400, 'Invalid catalog'));
     }
-    catalog.name = catalogName;
+
+    catalog.catalogName = catalogName;
     const updatedCatalog = await catalog.save();
-    const chats = await ConversationsToCatalogs.findAll({
-      raw: true,
-      where: { catalogId: updatedCatalog.id },
-      attributes: [['conversationId', 'chats']],
+    updatedCatalog.dataValues._id = updatedCatalog.id;
+
+    res.send(updatedCatalog);
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports.addNewChatToCatalog = async (req, res, next) => {
+  try {
+    const { catalogId, chatId } = req.body;
+    const catalog = await Catalog.findByPk(catalogId);
+    const conversation = await Conversation.findByPk(chatId);
+    if (!catalog || !conversation) {
+      return next(createHttpError(400, 'Invalid catalog'));
+    }
+    if (catalog.chats.includes(chatId)) {
+      return next(
+        createHttpError(400, 'the conversation is already in the catalog'),
+      );
+    }
+
+    const updatedCatalog = await catalog.update({
+      chats: sequelize.fn('array_append', sequelize.col('chats'), chatId),
     });
-    const preparedChats = chats.map(chat => chat.chats);
-    updatedCatalog.dataValues.chats = preparedChats;
-    // console.log(updatedCatalog, 'updated CATALOG ==================');
+    updatedCatalog.dataValues._id = updatedCatalog.id;
+    console.log(updatedCatalog, 'UPDATEBDYBDW');
     res.send(updatedCatalog);
   } catch (e) {
     next(e);
