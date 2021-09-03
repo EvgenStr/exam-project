@@ -6,6 +6,7 @@ const {
   Catalog,
   sequelize,
 } = require('../models');
+const { prepareRoles } = require('../utils/functions');
 const socketController = require('../socketInit');
 const CONSTANTS = require('../constants');
 
@@ -69,16 +70,12 @@ module.exports.getChat = async (req, res, next) => {
       params: { interlocutorId },
       tokenData: { userId, role },
     } = req;
-    let customerId = null;
-    let creatorId = null;
 
-    if (role === CONSTANTS.CUSTOMER) {
-      customerId = userId;
-      creatorId = interlocutorId;
-    } else {
-      customerId = interlocutorId;
-      creatorId = userId;
-    }
+    const { customerId, creatorId } = prepareRoles(
+      role,
+      userId,
+      interlocutorId,
+    );
 
     const [conversation] = await Conversation.findOrCreate({
       where: { customerId, creatorId },
@@ -95,9 +92,7 @@ module.exports.getChat = async (req, res, next) => {
 
 module.exports.getPreview = async (req, res, next) => {
   try {
-    const {
-      tokenData: { userId, role },
-    } = req;
+    const { userId, role } = req.tokenData;
 
     const conversations = await Conversation.findAll({
       where:
@@ -118,26 +113,25 @@ module.exports.getPreview = async (req, res, next) => {
       return res.send([]);
     }
 
-    const result = conversations.map(conversation => {
-      const prepared = {};
-      prepared.interlocutor =
+    conversations.forEach(conversation => {
+      conversation.dataValues.interlocutor =
         conversation[
           role === CONSTANTS.CREATOR ? CONSTANTS.CUSTOMER : CONSTANTS.CREATOR
         ];
-      prepared.blackList = prepared.interlocutor.blockedUser;
-      prepared.participants = [conversation.customerId, conversation.creatorId];
-      prepared.favoriteList = prepared.interlocutor.favoriteUser;
-      prepared._id = conversation.id;
-      prepared.sender = null;
-      prepared.text = '';
+      conversation.dataValues.participants = [
+        conversation.customerId,
+        conversation.creatorId,
+      ];
+      conversation.dataValues._id = conversation.id;
+      conversation.sender = null;
+      conversation.text = '';
       if (conversation.Messages[0]) {
-        prepared.sender = conversation.Messages[0].userId || null;
-        prepared.text = conversation.Messages[0].body || null;
+        conversation.sender = conversation.Messages[0].userId || null;
+        conversation.text = conversation.Messages[0].body || null;
       }
-      return prepared;
     });
 
-    res.send(result);
+    res.send(conversations);
   } catch (e) {
     next(e);
   }
@@ -210,6 +204,7 @@ module.exports.createCatalog = async (req, res, next) => {
       tokenData: { userId },
       body: { catalogName, chatId },
     } = req;
+    console.log(req.body, 'REQ BODY');
     const conversation = await Conversation.findByPk(chatId);
     if (!conversation) {
       return next(createHttpError(400, 'Invalid conversation'));

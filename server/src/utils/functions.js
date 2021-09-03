@@ -45,3 +45,10 @@ const types = [
   'logo,tagline',
   'name,logo',
 ];
+
+module.exports.prepareRoles = (role, userId, interlocutorId) => {
+  return {
+    customerId: role === CONSTANTS.CUSTOMER ? userId : interlocutorId,
+    creatorId: role === CONSTANTS.CUSTOMER ? interlocutorId : userId,
+  };
+};
