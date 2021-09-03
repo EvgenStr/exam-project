@@ -3,14 +3,10 @@ const {
   Conversation,
   Message,
   User,
-  BlackList,
-  FavoriteList,
   Catalog,
-  ConversationsToCatalogs,
   sequelize,
 } = require('../models');
 const socketController = require('../socketInit');
-const userQueries = require('./queries/userQueries');
 const CONSTANTS = require('../constants');
 
 module.exports.addMessage = async (req, res, next) => {
@@ -87,7 +83,7 @@ module.exports.getChat = async (req, res, next) => {
     const [conversation] = await Conversation.findOrCreate({
       where: { customerId, creatorId },
     });
-    const conversationWithMessages = await conversation.getMessages(); /*pagination*/
+    const conversationWithMessages = await conversation.getMessages();
     const interlocutor = await User.findByPk(interlocutorId, {
       attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
     });
@@ -112,12 +108,9 @@ module.exports.getPreview = async (req, res, next) => {
         { model: Message, limit: 1 },
         {
           model: User,
-          as: role === 'creator' ? 'customer' : 'creator',
+          as:
+            role === CONSTANTS.CREATOR ? CONSTANTS.CUSTOMER : CONSTANTS.CREATOR,
           attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
-          include: [
-            { model: BlackList, as: 'blockedUser' },
-            { model: FavoriteList, as: 'favoriteUser' },
-          ],
         },
       ],
     });
@@ -128,7 +121,9 @@ module.exports.getPreview = async (req, res, next) => {
     const result = conversations.map(conversation => {
       const prepared = {};
       prepared.interlocutor =
-        conversation[role === 'creator' ? 'customer' : 'creator'];
+        conversation[
+          role === CONSTANTS.CREATOR ? CONSTANTS.CUSTOMER : CONSTANTS.CREATOR
+        ];
       prepared.blackList = prepared.interlocutor.blockedUser;
       prepared.participants = [conversation.customerId, conversation.creatorId];
       prepared.favoriteList = prepared.interlocutor.favoriteUser;
@@ -166,7 +161,7 @@ module.exports.blackList = async (req, res, next) => {
     conversation.blackList[index] = blackListFlag;
     const updatedConversation = await conversation.save();
     if (!updatedConversation) {
-      return next(createHttpError(400, "Blacklist can't be updated"));
+      return next(createHttpError(400, 'Blacklist can"t be updated'));
     }
     updatedConversation.dataValues.participants = participants;
     const interlocutorId = req.body.participants.filter(
@@ -199,7 +194,7 @@ module.exports.favoriteChat = async (req, res, next) => {
     conversation.favoriteList[index] = favoriteFlag;
     const updatedConversation = await conversation.save();
     if (!updatedConversation) {
-      return next(createHttpError(400, "Favorite list can't be updated"));
+      return next(createHttpError(400, 'Favorite list can"t be updated'));
     }
     updatedConversation.dataValues.participants = participants;
 
@@ -228,7 +223,6 @@ module.exports.createCatalog = async (req, res, next) => {
       { raw: true },
     );
     catalog.dataValues._id = catalog.id;
-    // console.log(catalog, 'CATALOG');
 
     res.send(catalog);
   } catch (e) {
@@ -254,6 +248,7 @@ module.exports.getCatalogs = async (req, res, next) => {
     next(e);
   }
 };
+
 module.exports.updateNameCatalog = async (req, res, next) => {
   try {
     const { catalogId, catalogName } = req.body;
@@ -265,6 +260,9 @@ module.exports.updateNameCatalog = async (req, res, next) => {
 
     catalog.catalogName = catalogName;
     const updatedCatalog = await catalog.save();
+    if (!updatedCatalog) {
+      return next(createHttpError(400, 'Name can"t be updated'));
+    }
     updatedCatalog.dataValues._id = updatedCatalog.id;
 
     res.send(updatedCatalog);
@@ -278,20 +276,25 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
     const { catalogId, chatId } = req.body;
     const catalog = await Catalog.findByPk(catalogId);
     const conversation = await Conversation.findByPk(chatId);
+
     if (!catalog || !conversation) {
       return next(createHttpError(400, 'Invalid catalog'));
     }
     if (catalog.chats.includes(chatId)) {
       return next(
-        createHttpError(400, 'the conversation is already in the catalog'),
+        createHttpError(400, 'The conversation is already in the catalog'),
       );
     }
 
     const updatedCatalog = await catalog.update({
       chats: sequelize.fn('array_append', sequelize.col('chats'), chatId),
     });
+
+    if (!updatedCatalog) {
+      return next(createHttpError(400, 'Conversation can"t be added'));
+    }
+
     updatedCatalog.dataValues._id = updatedCatalog.id;
-    console.log(updatedCatalog, 'UPDATEBDYBDW');
     res.send(updatedCatalog);
   } catch (e) {
     next(e);
@@ -309,6 +312,9 @@ module.exports.removeChatFromCatalog = async (req, res, next) => {
     const updatedCatalog = await catalog.update({
       chats: sequelize.fn('array_remove', sequelize.col('chats'), chatId),
     });
+    if (!updatedCatalog) {
+      return next(createHttpError(400, 'Conversation can"t be removed'));
+    }
     res.send(updatedCatalog);
   } catch (e) {
     next(e);
