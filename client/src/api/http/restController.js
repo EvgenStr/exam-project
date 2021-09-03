@@ -1,14 +1,11 @@
 import httpClient from './';
-/*
-export const registerRequest = data => httpClient.post('registration', data)
-export const loginRequest = data => httpClient.post('login', data)
-*/
+
 export const getUser = () => httpClient.post('getUser');
 export const updateUser = data => httpClient.post('updateUser', data);
 export const changeMark = data => httpClient.post('changeMark', data);
 export const cashOut = data => httpClient.post('cashout', data);
 export const payMent = data => httpClient.post('pay', data.formData);
-/**contests */
+/**contests*/
 export const dataForContest = data =>
   httpClient.get('contests/data', { params: data });
 export const getCustomersContests = data =>
@@ -29,21 +26,23 @@ export const setNewOffer = data =>
   httpClient.post(`contests/${data.get('contestId')}/offer`, data);
 export const setOfferStatus = data =>
   httpClient.post('contests/offer/status', data);
-/** */
-export const getPreviewChat = () => httpClient.post('getPreview');
-export const getDialog = data => httpClient.post('getChat', data);
-export const newMessage = data => httpClient.post('newMessage', data);
-export const changeChatFavorite = data => httpClient.post('favorite', data);
-export const changeChatBlock = data => httpClient.post('blackList', data);
-export const getCatalogList = data => httpClient.post('getCatalogs', data);
-export const addChatToCatalog = data =>
-  httpClient.post('addNewChatToCatalog', data);
-export const createCatalog = data => httpClient.post('createCatalog', data);
-export const deleteCatalog = data => httpClient.post('deleteCatalog', data);
-export const removeChatFromCatalog = data =>
-  httpClient.post('removeChatFromCatalog', data);
+/**chat */
+export const newMessage = data => httpClient.post('chat/message', data);
+export const getDialog = data => httpClient.get(`chat/${data.interlocutorId}`);
+export const getPreviewChat = () => httpClient.get('preview');
+export const changeChatBlock = data => httpClient.patch('chat/blacklist', data);
+export const changeChatFavorite = data =>
+  httpClient.patch('chat/favorite', data);
+export const createCatalog = data => httpClient.post('chat/catalog', data);
+export const getCatalogList = () => httpClient.get('chat/catalog');
 export const changeCatalogName = data =>
-  httpClient.post('updateNameCatalog', data);
+  httpClient.patch('chat/catalog/name', data);
+export const addChatToCatalog = data =>
+  httpClient.patch('chat/catalog/add', data);
+export const removeChatFromCatalog = data =>
+  httpClient.patch('chat/catalog/remove', data);
+export const deleteCatalog = data =>
+  httpClient.delete(`chat/${data.catalogId}`);
 
 // export const downloadContestFile = data =>
 //   httpClient.get(`downloadFile/${data.fileName}`);
