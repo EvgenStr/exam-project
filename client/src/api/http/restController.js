@@ -29,7 +29,7 @@ export const setOfferStatus = data =>
 /**chat */
 export const newMessage = data => httpClient.post('chat/message', data);
 export const getDialog = data => httpClient.get(`chat/${data.interlocutorId}`);
-export const getPreviewChat = () => httpClient.get('preview');
+export const getPreviewChat = () => httpClient.get('chat/preview');
 export const changeChatBlock = data => httpClient.patch('chat/blacklist', data);
 export const changeChatFavorite = data =>
   httpClient.patch('chat/favorite', data);
@@ -42,7 +42,7 @@ export const addChatToCatalog = data =>
 export const removeChatFromCatalog = data =>
   httpClient.patch('chat/catalog/remove', data);
 export const deleteCatalog = data =>
-  httpClient.delete(`chat/${data.catalogId}`);
+  httpClient.delete(`chat/catalog/${data.catalogId}`);
 
 // export const downloadContestFile = data =>
 //   httpClient.get(`downloadFile/${data.fileName}`);
