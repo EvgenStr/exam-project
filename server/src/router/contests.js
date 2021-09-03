@@ -37,12 +37,3 @@ contestRouter.post(
 );
 
 module.exports = contestRouter;
-
-// contestRouter.post(
-//   '/pay' ,
-//   basicMiddlewares.onlyForCustomer,
-//   upload.uploadContestFiles,
-//   basicMiddlewares.parseBody,
-//   validators.validateContestCreation,
-//   userController.payment,
-// );
