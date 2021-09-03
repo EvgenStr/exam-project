@@ -314,3 +314,18 @@ module.exports.removeChatFromCatalog = async (req, res, next) => {
     next(e);
   }
 };
+
+module.exports.deleteCatalog = async (req, res, next) => {
+  try {
+    const { catalogId } = req.body;
+    const catalog = await Catalog.destroy({
+      where: { id: catalogId },
+    });
+    if (catalog !== 1) {
+      return next(createHttpError(404, 'Catalog not found'));
+    }
+    res.end();
+  } catch (e) {
+    next(e);
+  }
+};

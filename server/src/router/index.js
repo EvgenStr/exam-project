@@ -69,6 +69,7 @@ router.post('/addNewChatToCatalog', sqlChat.addNewChatToCatalog);
 // router.post('/removeChatFromCatalog', chatController.removeChatFromCatalog);
 router.post('/removeChatFromCatalog', sqlChat.removeChatFromCatalog);
 
-router.post('/deleteCatalog', chatController.deleteCatalog);
+// router.post('/deleteCatalog', chatController.deleteCatalog);
+router.post('/deleteCatalog', sqlChat.deleteCatalog);
 
 module.exports = router;
