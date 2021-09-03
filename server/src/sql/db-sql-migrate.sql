@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS "Catalogs"(
   "id" SERIAL PRIMARY KEY,
-  "catalogName" VARCHAR(32) NOT NULL CHECK(name != ''),
+  "catalogName" VARCHAR(32) NOT NULL CHECK("catalogName" != ''),
   "userId" INTEGER NOT NULL REFERENCES "Users" ("id") ON DELETE CASCADE,
   "chats" BIGINT [],
   UNIQUE ("catalogName", "userId")
