@@ -297,3 +297,20 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
     next(e);
   }
 };
+
+module.exports.removeChatFromCatalog = async (req, res, next) => {
+  try {
+    const { catalogId, chatId } = req.body;
+    const catalog = await Catalog.findByPk(catalogId);
+
+    if (!catalog) {
+      return next(createHttpError(400, 'Invalid catalog'));
+    }
+    const updatedCatalog = await catalog.update({
+      chats: sequelize.fn('array_remove', sequelize.col('chats'), chatId),
+    });
+    res.send(updatedCatalog);
+  } catch (e) {
+    next(e);
+  }
+};
