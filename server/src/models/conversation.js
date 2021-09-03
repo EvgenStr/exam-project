@@ -14,10 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: 'id',
         foreignKey: 'conversationId',
       });
-      Conversation.belongsToMany(models.Catalog, {
-        through: models.ConversationsToCatalogs,
-        foreignKey: 'conversationId',
-      });
     }
   }
   Conversation.init(
@@ -45,12 +41,12 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      blackList:{
+      blackList: {
         allowNull: false,
         type: DataTypes.ARRAY(DataTypes.BOOLEAN),
         defaultValue: [false, false],
       },
-      favoriteList:{
+      favoriteList: {
         allowNull: false,
         type: DataTypes.ARRAY(DataTypes.BOOLEAN),
         defaultValue: [false, false],

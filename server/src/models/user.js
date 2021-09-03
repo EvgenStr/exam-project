@@ -44,26 +44,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         targetKey: 'id',
       });
-      User.hasMany(models.BlackList, {
-        as: 'initiator',
-        foreignKey: 'userId',
-        targetKey: 'id',
-      });
-      User.hasMany(models.BlackList, {
-        as: 'blockedUser',
-        foreignKey: 'blockedUserId',
-        targetKey: 'id',
-      });
-      User.hasMany(models.FavoriteList, {
-        as: 'user',
-        foreignKey: 'userId',
-        targetKey: 'id',
-      });
-      User.hasMany(models.FavoriteList, {
-        as: 'favoriteUser',
-        foreignKey: 'favoriteUserId',
-        targetKey: 'id',
-      });
     }
     async comparePassword (password) {
       return await bcrypt.compare(password, this.getDataValue('password'));
