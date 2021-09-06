@@ -50,7 +50,7 @@ module.exports.refresh = async (req, res, next) => {
     });
 
     const data = await AuthService.refreshSession(refreshTokenInstance);
-
+    data.user.password = undefined;
     res.send({ data });
   } catch (error) {
     next(error);
