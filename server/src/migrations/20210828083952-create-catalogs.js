@@ -34,7 +34,7 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Catalogs');
     await queryInterface.removeConstraint('Catalogs', 'uniqueCatalogName');
+    await queryInterface.dropTable('Catalogs');
   },
 };
