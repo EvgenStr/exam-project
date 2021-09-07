@@ -1,15 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { moderationActionGetOffers } from '../../actions/actionCreator';
+import OffersList from './OffersList';
+import Pagination from '../Pagination';
+import Spinner from '../Spinner/Spinner';
+import styles from './ModeratorDashboard.module.sass';
+import CONSTANTS from '../../constants';
+const limit = CONSTANTS.OFFERS_PER_PAGE;
 
 function ModeratorDashboard () {
-  const test = useSelector(state => state.moderationOffers);
+  const { offers, count, isFetching, errors } = useSelector(
+    state => state.moderationOffers,
+  );
   const dispatch = useDispatch();
-  console.log(test, 'TEST');
+  const [currentPage, setCurrentPage] = useState(0);
+  const pageCount = Math.ceil(count / limit);
+
+  const onPageChange = ({ selected }) => {
+    console.log(selected, 'test page click');
+    setCurrentPage(selected);
+  };
+
   useEffect(() => {
-    console.log('ACTION');
-    dispatch(moderationActionGetOffers());
+    dispatch(moderationActionGetOffers({ limit, offset: currentPage * limit }));
   }, []);
-  return <div></div>;
+  useEffect(() => {
+    dispatch(moderationActionGetOffers({ limit, offset: currentPage * limit }));
+  }, [currentPage, dispatch]);
+  return (
+    <div className={styles.dashboardContainer}>
+      test
+      {!isFetching && <OffersList />}
+      {!isFetching && offers.length === 0 && <span>No offers</span>}
+      {!isFetching && !errors && (
+        <Pagination pageCount={pageCount} onPageChange={onPageChange} initialPage={currentPage} />
+      )}
+    </div>
+  );
 }
 export default ModeratorDashboard;
