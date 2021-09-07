@@ -46,4 +46,7 @@ export const deleteCatalog = data =>
 
 // export const downloadContestFile = data =>
 //   httpClient.get(`downloadFile/${data.fileName}`);
-export const getOffersForModerator = () => httpClient.get('contests/moderation');
+export const getOffersForModerator = data =>
+  httpClient.get('contests/moderation', {
+    params: { limit: data.limit, offset: data.offset },
+  });

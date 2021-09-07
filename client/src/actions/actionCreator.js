@@ -303,6 +303,7 @@ export const changeModalShow = data => ({
   data,
 });
 
-export const moderationActionGetOffers = () => ({
+export const moderationActionGetOffers = data => ({
   type: ACTION.GET_OFFERS_FOR_MODERATOR_REQUEST,
+  data,
 });
