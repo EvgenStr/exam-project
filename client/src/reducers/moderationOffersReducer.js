@@ -6,8 +6,7 @@ const initialState = {
   error: null,
   offers: [],
   count: 0,
-  page: 1,
-};
+ };
 
 function moderationOffersReducer (state = initialState, action) {
   switch (action.type) {
