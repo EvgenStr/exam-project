@@ -46,3 +46,4 @@ export const deleteCatalog = data =>
 
 // export const downloadContestFile = data =>
 //   httpClient.get(`downloadFile/${data.fileName}`);
+export const getOffersForModerator = () => httpClient.get('contests/moderation');
