@@ -1,3 +1,4 @@
+const createHttpError = require('http-errors');
 const db = require('../models');
 const ServerError = require('../errors/ServerError');
 const contestQueries = require('./queries/contestQueries');
@@ -173,7 +174,7 @@ module.exports.setOfferStatus = async (req, res, next) => {
   }
 };
 
-module.exports.getCustomersContests = (req, res, next) => {
+module.exports.getCustomersContests = async (req, res, next) => {
   const {
     pagination: { limit, offset },
     params: { userId, status },
@@ -205,7 +206,7 @@ module.exports.getCustomersContests = (req, res, next) => {
     .catch(err => next(new ServerError(err)));
 };
 
-module.exports.getContests = (req, res, next) => {
+module.exports.getContests = async (req, res, next) => {
   const {
     query: { typeIndex, contestId, industry, awardSort, limit, offset },
   } = req;
@@ -248,6 +249,29 @@ module.exports.getContests = (req, res, next) => {
     });
 };
 
+module.exports.getOffersForModerator = async (req, res, next) => {
+  try {
+    const {
+      pagination: { limit, offset },
+    } = req;
+    const { count, rows: offers } = await db.Offer.findAndCountAll({
+      where: {
+        status: CONSTANTS.OFFER_STATUS_PENDING,
+      },
+      limit,
+      offset,
+    });
+
+    if (!count) {
+      return createHttpError(404, 'No offers');
+    }
+
+    res.send({ count, offers });
+  } catch (e) {
+    next(new ServerError(e));
+  }
+};
+
 const rejectOffer = async (offerId, creatorId, contestId) => {
   const rejectedOffer = await contestQueries.updateOffer(
     { status: CONSTANTS.OFFER_STATUS_REJECTED },
@@ -274,8 +298,12 @@ const resolveOffer = async (
   const finishedContest = await contestQueries.updateContestStatus(
     {
       status: db.sequelize.literal(`   CASE
-            WHEN "id"=${contestId}  AND "orderId"='${orderId}' THEN '${CONSTANTS.CONTEST_STATUS_FINISHED}'
-            WHEN "orderId"='${orderId}' AND "priority"=${priority + 1}  THEN '${CONSTANTS.CONTEST_STATUS_ACTIVE}'
+            WHEN "id"=${contestId}  AND "orderId"='${orderId}' THEN '${
+        CONSTANTS.CONTEST_STATUS_FINISHED
+      }'
+            WHEN "orderId"='${orderId}' AND "priority"=${priority + 1}  THEN '${
+        CONSTANTS.CONTEST_STATUS_ACTIVE
+      }'
             ELSE '${CONSTANTS.CONTEST_STATUS_PENDING}'
             END
     `),
