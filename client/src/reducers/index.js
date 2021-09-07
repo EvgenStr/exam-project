@@ -9,6 +9,7 @@ import getContestByIdReducer from './getContestByIdReducer';
 import updateContestReducer from './updateContestReducer';
 import chatReducer from './chatReducer';
 import userProfileReducer from './userProfileReducer';
+import moderationOffersReducer from './moderationOffersReducer';
 
 const appReducer = combineReducers({
   auth: authReducer,
@@ -21,6 +22,7 @@ const appReducer = combineReducers({
   updateContestStore: updateContestReducer,
   chatStore: chatReducer,
   userProfile: userProfileReducer,
+  moderationOffers: moderationOffersReducer,
 });
 
 export default appReducer;

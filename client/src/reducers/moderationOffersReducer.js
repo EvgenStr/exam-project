@@ -5,6 +5,7 @@ const initialState = {
   isFetching: true,
   error: null,
   offers: [],
+  count: 0,
   page: 1,
 };
 
@@ -16,6 +17,18 @@ function moderationOffersReducer (state = initialState, action) {
         isFetching: true,
         error: null,
       };
+    }
+    case ACTION.GET_OFFERS_FOR_MODERATOR_SUCCESS: {
+      return {
+        ...state,
+        isFetching: false,
+        error: null,
+        offers: [...action.data.offers],
+        count: action.data.count,
+      };
+    }
+    case ACTION.GET_OFFERS_FOR_MODERATOR_ERROR: {
+      return { ...state, isFetching: false, error: action.error, offers: [] };
     }
     default:
       return state;
