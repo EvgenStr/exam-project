@@ -80,5 +80,6 @@ const CONSTANTS = {
   ],
   MAX_IMAGE_SIZE: 1048576,
   MAX_FILE_SIZE: 5242880,
+  OFFERS_PER_PAGE: 10,
 };
 export default CONSTANTS;
