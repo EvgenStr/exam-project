@@ -17,7 +17,6 @@ import ChatContainer from './components/Chat/ChatComponents/ChatContainer/ChatCo
 import OnlyNotAuthorizedUserHoc from './components/OnlyNotAuthorizedUserHoc/OnlyNotAuthorizedUserHoc';
 import CONSTANTS from './constants';
 import { authActionRefresh } from './actions/actionCreator';
-import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App () {
