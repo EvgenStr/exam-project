@@ -10,7 +10,12 @@ import {
   dataForContestSaga,
   getContestByIdSaga,
 } from './contestsSagas';
-import { changeMarkSaga, setOfferStatusSaga, addOfferSaga } from './offerSagas';
+import {
+  changeMarkSaga,
+  setOfferStatusSaga,
+  addOfferSaga,
+  getOffersForModeratorSaga,
+} from './offerSagas';
 import {
   previewSaga,
   getDialog,
@@ -25,11 +30,11 @@ import {
   changeCatalogName,
 } from './chatSagas';
 
-function* rootSaga() {
+function * rootSaga () {
   yield takeLatest(ACTION.AUTH_ACTION_REGISTER, registerSaga);
   yield takeLatest(ACTION.AUTH_ACTION_LOGIN, loginSaga);
-  yield takeLatest(ACTION.AUTH_ACTION_REFRESH, refreshSaga)
-  yield takeLatest(ACTION.AUTH_ACTION_LOGOUT, logoutSaga)
+  yield takeLatest(ACTION.AUTH_ACTION_REFRESH, refreshSaga);
+  yield takeLatest(ACTION.AUTH_ACTION_LOGOUT, logoutSaga);
   yield takeLatest(ACTION.PAYMENT_ACTION, paymentSaga);
   yield takeEvery(ACTION.GET_USER_ACTION, privateSaga);
   yield takeEvery(ACTION.GET_DATA_FOR_CONTEST_ACTION, dataForContestSaga);
@@ -51,8 +56,15 @@ function* rootSaga() {
   yield takeLatest(ACTION.ADD_CHAT_TO_CATALOG_ASYNC, addChatToCatalog);
   yield takeLatest(ACTION.CREATE_CATALOG_REQUEST, createCatalog);
   yield takeLatest(ACTION.DELETE_CATALOG_REQUEST, deleteCatalog);
-  yield takeLatest(ACTION.REMOVE_CHAT_FROM_CATALOG_REQUEST, removeChatFromCatalogSaga);
+  yield takeLatest(
+    ACTION.REMOVE_CHAT_FROM_CATALOG_REQUEST,
+    removeChatFromCatalogSaga,
+  );
   yield takeLatest(ACTION.CHANGE_CATALOG_NAME_REQUEST, changeCatalogName);
+  yield takeLatest(
+    ACTION.GET_OFFERS_FOR_MODERATOR_REQUEST,
+    getOffersForModeratorSaga,
+  );
 }
 
 export default rootSaga;
