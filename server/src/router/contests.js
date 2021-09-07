@@ -12,11 +12,6 @@ contestRouter.get(
   contestController.getCustomersContests,
 );
 
-contestRouter
-  .route('/:contestId')
-  .get(basicMiddlewares.canGetContest, contestController.getContestById)
-  .patch(upload.updateContestFile, contestController.updateContest);
-
 contestRouter.get(
   '/',
   basicMiddlewares.onlyForCreative,
@@ -35,5 +30,16 @@ contestRouter.post(
   basicMiddlewares.onlyForCustomerWhoCreateContest,
   contestController.setOfferStatus,
 );
+
+contestRouter.get(
+  '/moderation',
+  basicMiddlewares.onlyForModerator,
+  paginate,
+  contestController.getOffersForModerator,
+);
+contestRouter
+  .route('/:contestId')
+  .get(basicMiddlewares.canGetContest, contestController.getContestById)
+  .patch(upload.updateContestFile, contestController.updateContest);
 
 module.exports = contestRouter;
