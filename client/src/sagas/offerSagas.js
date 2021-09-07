@@ -54,8 +54,7 @@ export function * setOfferStatusSaga (action) {
 
 export function * getOffersForModeratorSaga (action) {
   try {
-    const { data } = yield restController.getOffersForModerator();
-    
+    const { data } = yield restController.getOffersForModerator(action.data);
     yield put({ type: ACTION.GET_OFFERS_FOR_MODERATOR_SUCCESS, data });
   } catch (e) {
     yield put({

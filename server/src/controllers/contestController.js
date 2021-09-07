@@ -260,6 +260,7 @@ module.exports.getOffersForModerator = async (req, res, next) => {
       },
       limit,
       offset,
+      include: [{ model: db.User, attributes: ['displayName'] }],
     });
 
     if (!count) {
