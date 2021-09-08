@@ -15,6 +15,7 @@ import {
   setOfferStatusSaga,
   addOfferSaga,
   getOffersForModeratorSaga,
+  setOfferStatusForModeratorSaga,
 } from './offerSagas';
 import {
   previewSaga,
@@ -64,6 +65,10 @@ function * rootSaga () {
   yield takeLatest(
     ACTION.GET_OFFERS_FOR_MODERATOR_REQUEST,
     getOffersForModeratorSaga,
+  );
+  yield takeLatest(
+    ACTION.SET_OFFER_STATUS_FOR_MODERATOR_REQUEST,
+    setOfferStatusForModeratorSaga,
   );
 }
 
