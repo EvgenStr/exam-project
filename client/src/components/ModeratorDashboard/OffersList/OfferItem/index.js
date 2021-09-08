@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 import Buttons from './Buttons';
 import CONSTANTS from '../../../../constants';
 import styles from './OfferItem.module.sass';
@@ -8,7 +9,12 @@ function OfferItem ({ offer }) {
     <article className={styles.offerContainer}>
       <div className={styles.offerInfo}>
         <div className={styles.userInfo}>
-          <h3>Status: {offer.status}</h3>
+          <p>
+            Status:{' '}
+            <span className={cx(styles[offer.status], styles.status)}>
+              {offer.status}
+            </span>
+          </p>
           <p>{offer.User.displayName}</p>
           <p>{offer.User.email}</p>
         </div>
@@ -20,7 +26,7 @@ function OfferItem ({ offer }) {
               target='_blank'
               rel='noreferrer'
             >
-              <img
+              <img className={styles.offerImage}
                 src={`${CONSTANTS.publicURL}${offer.fileName}`}
                 alt='offer'
               ></img>
