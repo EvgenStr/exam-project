@@ -256,11 +256,20 @@ module.exports.getOffersForModerator = async (req, res, next) => {
     } = req;
     const { count, rows: offers } = await db.Offer.findAndCountAll({
       where: {
-        status: CONSTANTS.OFFER_STATUS_PENDING,
+        status: {
+          [db.Sequelize.Op.notIn]: [
+            CONSTANTS.OFFER_STATUS_REJECTED,
+            CONSTANTS.OFFER_STATUS_WON,
+          ],
+        },
       },
+      order: [['id', 'DESC']],
       limit,
       offset,
-      include: [{ model: db.User, attributes: ['displayName'] }],
+      include: [
+        { model: db.User, attributes: ['displayName', 'email'] },
+        { model: db.Contest, attributes: ['status', 'title', 'focusOfWork'] },
+      ],
     });
 
     if (!count) {
@@ -268,6 +277,21 @@ module.exports.getOffersForModerator = async (req, res, next) => {
     }
 
     res.send({ count, offers });
+  } catch (e) {
+    next(new ServerError(e));
+  }
+};
+
+module.exports.setOfferStatusForModerator = async (req, res, next) => {
+  try {
+    const { id, status } = req.body;
+    const offer = await db.Offer.findOne({ where: { id } });
+    if (!offer) return next(new ServerError('offer not found'));
+    offer.status = status;
+    const updatedOffer = await offer.update({ status });
+    if (!updatedOffer) return next(new ServerError('offer can"t be updated'));
+    // console.log(updatedOffer, '+++++++++++++++++++');
+    res.send(updatedOffer);
   } catch (e) {
     next(new ServerError(e));
   }
