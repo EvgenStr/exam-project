@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import OfferItem from './OfferItem';
+import styles from './OffersList.module.sass';
 
 function OffersList () {
-  const { offers, count, isFetching, errors } = useSelector(
-    state => state.moderationOffers,
+  const { offers } = useSelector(state => state.moderationOffers);
+  const offersList = offers.map(offer => (
+    <OfferItem key={offer.id} offer={offer} />
+  ));
+  return (
+    <div className={styles.offersListContainer}>offers list{offersList}</div>
   );
-  return <div>offers list {JSON.stringify(offers)}</div>;
 }
 export default OffersList;
