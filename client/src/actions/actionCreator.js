@@ -307,3 +307,8 @@ export const moderationActionGetOffers = data => ({
   type: ACTION.GET_OFFERS_FOR_MODERATOR_REQUEST,
   data,
 });
+
+export const moderationActionSetStatus = data => ({
+  type: ACTION.SET_OFFER_STATUS_FOR_MODERATOR_REQUEST,
+  data,
+});
