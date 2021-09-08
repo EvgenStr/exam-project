@@ -15,9 +15,7 @@ function ModeratorDashboard () {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(0);
   const pageCount = Math.ceil(count / limit);
-
   const onPageChange = ({ selected }) => {
-    console.log(selected, 'test page click');
     setCurrentPage(selected);
   };
 
@@ -27,13 +25,18 @@ function ModeratorDashboard () {
   useEffect(() => {
     dispatch(moderationActionGetOffers({ limit, offset: currentPage * limit }));
   }, [currentPage, dispatch]);
+
   return (
     <div className={styles.dashboardContainer}>
       test
       {!isFetching && <OffersList />}
       {!isFetching && offers.length === 0 && <span>No offers</span>}
       {!isFetching && !errors && (
-        <Pagination pageCount={pageCount} onPageChange={onPageChange} initialPage={currentPage} />
+        <Pagination
+          pageCount={pageCount}
+          onPageChange={onPageChange}
+          initialPage={currentPage}
+        />
       )}
     </div>
   );
