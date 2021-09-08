@@ -1,4 +1,5 @@
 const createHttpError = require('http-errors');
+const { transporter } = require('../utils/nodemailer');
 const db = require('../models');
 const ServerError = require('../errors/ServerError');
 const contestQueries = require('./queries/contestQueries');
@@ -290,7 +291,13 @@ module.exports.setOfferStatusForModerator = async (req, res, next) => {
     offer.status = status;
     const updatedOffer = await offer.update({ status });
     if (!updatedOffer) return next(new ServerError('offer can"t be updated'));
-    // console.log(updatedOffer, '+++++++++++++++++++');
+    const test = await transporter.sendMail({
+      from: 'dev.str.88@gmail.com', // sender address
+      to: 'juve2910@gmail.com', // list of receivers
+      subject: 'Hello ✔', // Subject line
+      text: 'Hello world?', // plain text body
+      html: '<b>Hello world?</b>', // html body
+    });
     res.send(updatedOffer);
   } catch (e) {
     next(new ServerError(e));
