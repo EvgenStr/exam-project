@@ -31,12 +31,14 @@ contestRouter.post(
   contestController.setOfferStatus,
 );
 
-contestRouter.get(
-  '/moderation',
-  basicMiddlewares.onlyForModerator,
-  paginate,
-  contestController.getOffersForModerator,
-);
+contestRouter
+  .route('/moderation')
+  .get(
+    basicMiddlewares.onlyForModerator,
+    paginate,
+    contestController.getOffersForModerator,
+  )
+  .patch(contestController.setOfferStatusForModerator);
 contestRouter
   .route('/:contestId')
   .get(basicMiddlewares.canGetContest, contestController.getContestById)
