@@ -63,3 +63,21 @@ export function * getOffersForModeratorSaga (action) {
     });
   }
 }
+
+export function * setOfferStatusForModeratorSaga (action) {
+  try {
+    const { data } = yield restController.setOfferStatusForModerator(
+      action.data,
+    );
+    const offers = yield select(state => state.moderationOffers.offers);
+    offers.forEach(offer => {
+      if (offer.id === data.id) offer.status = data.status;
+    });
+    yield put({ type: ACTION.SET_OFFER_STATUS_FOR_MODERATOR_SUCCESS });
+  } catch (e) {
+    yield put({
+      type: ACTION.SET_OFFER_STATUS_FOR_MODERATOR_ERROR,
+      error: e.response,
+    });
+  }
+}
