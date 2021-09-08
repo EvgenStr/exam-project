@@ -43,10 +43,9 @@ export const removeChatFromCatalog = data =>
   httpClient.patch('chat/catalog/remove', data);
 export const deleteCatalog = data =>
   httpClient.delete(`chat/catalog/${data.catalogId}`);
-
-// export const downloadContestFile = data =>
-//   httpClient.get(`downloadFile/${data.fileName}`);
 export const getOffersForModerator = data =>
   httpClient.get('contests/moderation', {
     params: { limit: data.limit, offset: data.offset },
   });
+export const setOfferStatusForModerator = data =>
+  httpClient.patch('contests/moderation', data);
