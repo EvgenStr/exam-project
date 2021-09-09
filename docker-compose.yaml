@@ -46,6 +46,6 @@ services:
       - "27017:27017"
     command: mongod --smallfiles --logpath=/dev/null
 
-volumes:
-  server-prod:
-  nginx-server-prod:
+# volumes:
+#   server-prod:
+#   nginx-server-prod:

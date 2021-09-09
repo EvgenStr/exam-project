@@ -50,5 +50,5 @@ services:
     ports:
       - "5432:5432"
 
-volumes:
-  server-dev:
+# volumes:
+#   server-dev:
