@@ -28,10 +28,13 @@ function ModeratorDashboard () {
 
   return (
     <div className={styles.dashboardContainer}>
-      test
+      {isFetching && <Spinner />}
+      {!isFetching && errors && (
+        <span className={styles.errorContainer}>{errors}</span>
+      )}
       {!isFetching && <OffersList />}
       {!isFetching && offers.length === 0 && <span>No offers</span>}
-      {!isFetching && !errors && (
+      {!isFetching && !errors && pageCount > 1 && (
         <Pagination
           pageCount={pageCount}
           onPageChange={onPageChange}

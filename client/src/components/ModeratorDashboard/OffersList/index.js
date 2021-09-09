@@ -8,8 +8,6 @@ function OffersList () {
   const offersList = offers.map(offer => (
     <OfferItem key={offer.id} offer={offer} />
   ));
-  return (
-    <div className={styles.offersListContainer}>offers list{offersList}</div>
-  );
+  return <div className={styles.offersListContainer}>{offersList}</div>;
 }
 export default OffersList;
