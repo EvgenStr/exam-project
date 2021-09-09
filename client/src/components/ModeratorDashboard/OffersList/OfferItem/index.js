@@ -18,15 +18,23 @@ function OfferItem ({ offer }) {
           <p>{offer.User.displayName}</p>
           <p>{offer.User.email}</p>
         </div>
-        <div className={styles.offerInfo}>
-          {offer.text && <span className={styles.offerText}>{offer.text}</span>}
+        <div className={styles.contestInfo}>
+          <p>Contest:</p>
+          <p>{offer.Contest.status}</p>
+          <p>{offer.Contest.title}</p>
+          <p>{offer.Contest.focusOfWork}</p>
+        </div>
+        <div className={styles.offer}>
+          <p>Offer:</p>
+          {offer.text && <p className={styles.offerText}>{offer.text}</p>}
           {offer.fileName && (
             <a
               href={`${CONSTANTS.publicURL}${offer.fileName}`}
               target='_blank'
               rel='noreferrer'
             >
-              <img className={styles.offerImage}
+              <img
+                className={styles.offerImage}
                 src={`${CONSTANTS.publicURL}${offer.fileName}`}
                 alt='offer'
               ></img>
@@ -34,7 +42,7 @@ function OfferItem ({ offer }) {
           )}
         </div>
       </div>
-      <Buttons id={offer.id} />
+      <Buttons id={offer.id} status={offer.status} />
     </article>
   );
 }
