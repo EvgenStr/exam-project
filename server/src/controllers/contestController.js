@@ -1,5 +1,5 @@
 const createHttpError = require('http-errors');
-const { transporter } = require('../utils/nodemailer');
+const { changeOfferStatusMail } = require('../services/nodemailer');
 const db = require('../models');
 const ServerError = require('../errors/ServerError');
 const contestQueries = require('./queries/contestQueries');
@@ -188,6 +188,15 @@ module.exports.getCustomersContests = async (req, res, next) => {
     include: [
       {
         model: db.Offer,
+        where: {
+          status: {
+            [db.Sequelize.Op.in]: [
+              CONSTANTS.OFFER_STATUS_ACCEPTED,
+              CONSTANTS.OFFER_STATUS_REJECTED,
+              CONSTANTS.OFFER_STATUS_WON,
+            ],
+          },
+        },
         required: false,
         attributes: ['id'],
       },
@@ -286,18 +295,21 @@ module.exports.getOffersForModerator = async (req, res, next) => {
 module.exports.setOfferStatusForModerator = async (req, res, next) => {
   try {
     const { id, status } = req.body;
-    const offer = await db.Offer.findOne({ where: { id } });
+    const offer = await db.Offer.findOne({
+      where: { id },
+      include: [{ model: db.User, attributes: ['displayName', 'email'] }],
+    });
     if (!offer) return next(new ServerError('offer not found'));
     offer.status = status;
     const updatedOffer = await offer.update({ status });
+
     if (!updatedOffer) return next(new ServerError('offer can"t be updated'));
-    const test = await transporter.sendMail({
-      from: 'dev.str.88@gmail.com', // sender address
-      to: 'juve2910@gmail.com', // list of receivers
-      subject: 'Hello ✔', // Subject line
-      text: 'Hello world?', // plain text body
-      html: '<b>Hello world?</b>', // html body
-    });
+    const {
+      User: {
+        dataValues: { displayName, email },
+      },
+    } = updatedOffer;
+    await changeOfferStatusMail(email, displayName, status);
     res.send(updatedOffer);
   } catch (e) {
     next(new ServerError(e));
