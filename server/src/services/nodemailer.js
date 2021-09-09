@@ -13,10 +13,13 @@ const transporter = nodemailer.createTransport({
 
 module.exports.changeOfferStatusMail = async (mail, name, status) => {
   return await transporter.sendMail({
-    from: CONSTANTS.SMTP_USER,
+    from: `no-reply ${CONSTANTS.SMTP_USER}`,
     to: mail,
-    subject: `Hello ${name}, your offer status has been changed`,
-    text: 'Hello world?',
-    html: `<p>Hello <b>${name}</b>, your offer status has been changed to <b>${status}</b></p>`,
+    subject: 'Your offer status has been changed',
+    html: `<h3>Hello <b>${name}</b></h3>
+    <p>Your offer status has been changed to <b>${status}</b>!<p>
+    <br/>
+    <br/>
+    <p>${CONSTANTS.APP_NAME} ${new Date().getFullYear()}</p>`,
   });
 };
