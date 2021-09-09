@@ -18,10 +18,12 @@ const {
     SMTP_PORT,
     SMTP_USER,
     SMTP_PASS,
+    APP_NAME,
   },
 } = process;
 
 module.exports = {
+  APP_NAME: APP_NAME || 'exam-project',
   SQUADHELP_BANK_NUMBER,
   SQUADHELP_BANK_NAME,
   SQUADHELP_BANK_CVC,
