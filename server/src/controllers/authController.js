@@ -56,3 +56,14 @@ module.exports.refresh = async (req, res, next) => {
     next(error);
   }
 };
+
+module.exports.reset = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    console.log(email, password, 'LOG PAS++++++++++++++');
+
+    res.send('ok');
+  } catch (error) {
+    next(error);
+  }
+};
