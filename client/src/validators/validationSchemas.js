@@ -220,5 +220,19 @@ const VALIDATION_SCHEMAS = {
       )
       .required('required'),
   }),
+  ForgotPasswordSchema: yup.object().shape({
+    email: yup
+      .string()
+      .email('check email')
+      .required('required'),
+    password: yup
+      .string()
+      .test('min 6 symbols', value => value && value.trim().length >= 6)
+      .required('required'),
+    passwordConfirmation: yup
+      .string()
+      .required('required')
+      .oneOf([yup.ref('password')], 'Passwords must match'),
+  }),
 };
 export default VALIDATION_SCHEMAS;
