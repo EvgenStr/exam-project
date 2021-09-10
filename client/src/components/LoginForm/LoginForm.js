@@ -44,7 +44,7 @@ class LoginForm extends React.Component {
             password: '',
           }}
           onSubmit={this.clicked}
-          validationSchema={Schemas.LoginSchem}
+          validationSchema={Schemas.LoginSchema}
         >
           <Form>
             <FormInput
