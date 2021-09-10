@@ -1,0 +1,65 @@
+
+%flex-column-just-center
+  display: flex
+  flex-direction: column
+  justify-content: center
+
+%flex-column
+  display: flex
+  flex-direction: column
+  align-items: center
+
+$background-color: #3ea9f5
+$submit-btn-color: #28d2d0
+$main-color: #9ca8b7
+$error-msg-color: #b72522
+$valid-color: #16c007
+$padding-value: 14px
+
+%submit-button
+  background-color: $submit-btn-color
+  border-radius: 4px
+  height: 64px
+  width: 100%
+  border: 0
+  font-size: 16px
+  font-weight: bolder
+  color: inherit
+
+%inputContainer
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-self: stretch
+
+%formInput
+  flex: 1
+  background-color: white
+  border: none
+  border-radius: 4px
+  color: $main-color
+  font-size: 18px
+  padding: 23px 20px 23px 20px
+  outline: none
+  margin-bottom: 15px
+  @media(max-width: 1400px)
+    align-self: normal
+
+%fieldWarning
+  font-size: 15px
+  display: flex
+  flex-direction: row
+  justify-content: center
+  align-items: center
+  color: white
+  border: 1px solid $error-msg-color
+  margin-bottom: 15px
+  padding-bottom: 5px
+  padding-top: 5px
+  text-align: center
+
+%notValid
+  border: 2px solid $error-msg-color !important
+
+%valid
+  border: 2px solid $valid-color
