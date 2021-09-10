@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import Home from './pages/Home/Home';
 import LoginPage from './pages/LoginPage/LoginPage';
 import RegistrationPage from './pages/RegistrationPage/RegistrationPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import Payment from './pages/Payment/Payment';
 import StartContestPage from './pages/StartContestPage/StartContestPage';
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -52,6 +53,11 @@ function App () {
           exact
           path='/registration'
           component={OnlyNotAuthorizedUserHoc(RegistrationPage)}
+        />
+        <Route
+          exact
+          path='/password-reset'
+          component={OnlyNotAuthorizedUserHoc(ForgotPasswordPage)}
         />
         <Route exact path='/payment' component={PrivateHoc(Payment)} />
         <Route
