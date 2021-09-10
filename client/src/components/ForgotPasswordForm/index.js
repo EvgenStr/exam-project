@@ -1,45 +1,65 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { resetPasswordAction } from '../../actions/actionCreator';
 import { Formik, Form, Field } from 'formik';
-import FormInput from './FormInput';
+import FormInput from '../FormInput/FormInput';
 import Schemas from '../../validators/validationSchemas.js';
-import style from './ForgotPasswordForm.module.sass';
+import styles from './ForgotPasswordForm.module.sass';
 
 const initialValues = {
   email: '',
   password: '',
-  confirmPassword: '',
+  passwordConfirmation: '',
 };
 
 function ForgotPasswordForm () {
+  const { data, isFetching, error } = useSelector(state => state.resetPassword);
+  const dispatch = useDispatch();
   const submitHandler = (values, actions) => {
-    alert(JSON.stringify(values, null, 2));
-    actions.resetForm();
+    const { email, password } = values;
+    dispatch(resetPasswordAction({ email, password }));
+  };
+  const formInputClasses = {
+    container: styles.inputContainer,
+    input: styles.formInput,
+    warning: styles.fieldWarning,
+    notValid: styles.notValid,
+    valid: styles.valid,
   };
   return (
-    <section className={style.container}>
-      <h2 className={style.loginHeader}>LOGIN TO YOUR ACCOUNT</h2>
+    <section className={styles.container}>
+      <h2 className={styles.loginHeader}>RESET YOUR PASSWORD</h2>
       <Formik
         initialValues={initialValues}
         validationSchema={Schemas.ForgotPasswordSchema}
         validateOnBlur={true}
         onSubmit={submitHandler}
       >
-        {formikProps => {
-          return (
-            <Form className={style.loginForm}>
-              <FormInput name={'email'} formikProps={formikProps}>
-                Email Address
-              </FormInput>
-              <FormInput name={'password'} formikProps={formikProps}>
-                Password
-              </FormInput>
-              <FormInput name={'passwordConfirmation'} formikProps={formikProps}>
-                Password confirmation
-              </FormInput>
-              <Field className={style.submitBtn} type='submit' value='LOGIN' />
-            </Form>
-          );
-        }}
+        <Form className={styles.passwordForm}>
+          <FormInput
+            classes={formInputClasses}
+            name='email'
+            type='text'
+            label='Email Address'
+          />
+          <FormInput
+            classes={formInputClasses}
+            name='password'
+            type='password'
+            label='New Password'
+          />
+          <FormInput
+            classes={formInputClasses}
+            name='passwordConfirmation'
+            type='password'
+            label='New Password Confirmation'
+          />
+          <Field
+            className={styles.submitBtn}
+            type='submit'
+            value='RESET PASSWORD'
+          />
+        </Form>
       </Formik>
     </section>
   );
