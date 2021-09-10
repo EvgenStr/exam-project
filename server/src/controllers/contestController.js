@@ -61,7 +61,7 @@ module.exports.getContestById = async (req, res, next) => {
           where:
             req.tokenData.role === CONSTANTS.CREATOR
               ? { userId: req.tokenData.userId }
-              : {},
+              : { status: { [db.Sequelize.Op.in]: [CONSTANTS.OFFER_STATUS_ACCEPTED, CONSTANTS.OFFER_STATUS_REJECTED, CONSTANTS.OFFER_STATUS_WON ] } },
           attributes: { exclude: ['userId', 'contestId'] },
           include: [
             {
