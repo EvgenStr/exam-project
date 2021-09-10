@@ -30,6 +30,7 @@ import {
   removeChatFromCatalogSaga,
   changeCatalogName,
 } from './chatSagas';
+import { resetPasswordSaga } from './resetPasswordSagas';
 
 function * rootSaga () {
   yield takeLatest(ACTION.AUTH_ACTION_REGISTER, registerSaga);
@@ -70,6 +71,7 @@ function * rootSaga () {
     ACTION.SET_OFFER_STATUS_FOR_MODERATOR_REQUEST,
     setOfferStatusForModeratorSaga,
   );
+  yield takeLatest(ACTION.RESET_PASSWORD_REQUEST, resetPasswordSaga);
 }
 
 export default rootSaga;
