@@ -33,6 +33,10 @@ class AuthApi {
     });
   };
 
+  reset = async data => {
+    return await this.#_client.post(`${this._url}reset`, data);
+  };
+
   logout = () => {
     window.localStorage.removeItem(CONSTANTS.REFRESH_TOKEN);
     this.#_accessToken = null;
