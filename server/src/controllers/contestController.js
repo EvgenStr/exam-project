@@ -1,5 +1,5 @@
 const createHttpError = require('http-errors');
-const { changeOfferStatusMail } = require('../services/nodemailer');
+const { changeOfferStatusMail } = require('../services/mailService');
 const db = require('../models');
 const ServerError = require('../errors/ServerError');
 const contestQueries = require('./queries/contestQueries');
