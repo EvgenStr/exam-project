@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { resetPasswordAction } from '../../actions/actionCreator';
 import { Formik, Form, Field } from 'formik';
 import FormInput from '../FormInput/FormInput';
+import Spinner from '../Spinner/Spinner';
 import Schemas from '../../validators/validationSchemas.js';
 import styles from './ForgotPasswordForm.module.sass';
 
@@ -28,39 +29,44 @@ function ForgotPasswordForm () {
   };
   return (
     <section className={styles.container}>
-      <h2 className={styles.loginHeader}>RESET YOUR PASSWORD</h2>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={Schemas.ForgotPasswordSchema}
-        validateOnBlur={true}
-        onSubmit={submitHandler}
-      >
-        <Form className={styles.passwordForm}>
-          <FormInput
-            classes={formInputClasses}
-            name='email'
-            type='text'
-            label='Email Address'
-          />
-          <FormInput
-            classes={formInputClasses}
-            name='password'
-            type='password'
-            label='New Password'
-          />
-          <FormInput
-            classes={formInputClasses}
-            name='passwordConfirmation'
-            type='password'
-            label='New Password Confirmation'
-          />
-          <Field
-            className={styles.submitBtn}
-            type='submit'
-            value='RESET PASSWORD'
-          />
-        </Form>
-      </Formik>
+      {isFetching && <Spinner />}
+      {!isFetching && !data && (
+        <>
+          <h2 className={styles.loginHeader}>RESET YOUR PASSWORD</h2>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={Schemas.ForgotPasswordSchema}
+            validateOnBlur={true}
+            onSubmit={submitHandler}
+          >
+            <Form className={styles.passwordForm}>
+              <FormInput
+                classes={formInputClasses}
+                name='email'
+                type='text'
+                label='Email Address'
+              />
+              <FormInput
+                classes={formInputClasses}
+                name='password'
+                type='password'
+                label='New Password'
+              />
+              <FormInput
+                classes={formInputClasses}
+                name='passwordConfirmation'
+                type='password'
+                label='New Password Confirmation'
+              />
+              <Field
+                className={styles.submitBtn}
+                type='submit'
+                value='SEND PASSWORD RESET EMAIL'
+              />
+            </Form>
+          </Formik>
+        </>
+      )}
     </section>
   );
 }
