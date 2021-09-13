@@ -5,6 +5,8 @@ const {
   ACCESS_TOKEN_TIME,
   REFRESH_TOKEN_SECRET,
   REFRESH_TOKEN_TIME,
+  RESET_TOKEN_SECRET,
+  RESET_TOKEN_TIME,
 } = require('../constants');
 const signJWT = promisify(jwt.sign);
 const verifyJWT = promisify(jwt.verify);
@@ -17,6 +19,10 @@ const tokenConfig = {
   refresh: {
     secret: REFRESH_TOKEN_SECRET,
     time: REFRESH_TOKEN_TIME,
+  },
+  reset: {
+    secret: RESET_TOKEN_SECRET,
+    time: RESET_TOKEN_TIME,
   },
 };
 
@@ -48,3 +54,18 @@ module.exports.verifyAccessToken = token =>
 
 module.exports.verifyRefreshToken = token =>
   verifyToken(token, tokenConfig.refresh);
+
+module.exports.createResetToken = async password => {
+  const {
+    reset: { secret, time },
+  } = tokenConfig;
+  return await signJWT(
+    {
+      password,
+    },
+    secret,
+    { expiresIn: time },
+  );
+};
+module.exports.verifyResetToken = token =>
+  verifyToken(token, tokenConfig.reset);
