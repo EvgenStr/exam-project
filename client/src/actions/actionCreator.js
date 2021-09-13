@@ -312,7 +312,13 @@ export const moderationActionSetStatus = data => ({
   type: ACTION.SET_OFFER_STATUS_FOR_MODERATOR_REQUEST,
   data,
 });
+
 export const resetPasswordAction = data => ({
   type: ACTION.RESET_PASSWORD_REQUEST,
+  data,
+});
+
+export const resetPasswordConfirmAction = data => ({
+  type: ACTION.RESET_PASSWORD_CONFIRM_REQUEST,
   data,
 });
