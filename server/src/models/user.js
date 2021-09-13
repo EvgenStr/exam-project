@@ -44,6 +44,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         targetKey: 'id',
       });
+      User.hasMany(models.ResetToken, {
+        foreignKey: 'userId',
+        targetKey: 'id',
+      });
     }
     async comparePassword (password) {
       return await bcrypt.compare(password, this.getDataValue('password'));
@@ -107,6 +111,6 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   User.beforeCreate(hashPassword);
-  User.beforeUpdate(hashPassword);
+  // User.beforeUpdate(hashPassword);
   return User;
 };
