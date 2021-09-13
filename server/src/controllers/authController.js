@@ -1,6 +1,10 @@
 const createHttpError = require('http-errors');
-const { User, RefreshToken } = require('../models');
+const bcrypt = require('bcrypt');
+const { User, RefreshToken, ResetToken } = require('../models');
 const AuthService = require('../services/authService');
+const JwtService = require('../services/jwtService');
+const { resetPasswordMail } = require('../services/mailService');
+const CONSTANTS = require('../constants');
 
 module.exports.signIn = async (req, res, next) => {
   try {
@@ -60,9 +64,40 @@ module.exports.refresh = async (req, res, next) => {
 module.exports.reset = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    console.log(email, password, 'LOG PAS++++++++++++++');
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return next(createHttpError(406, 'User not found'));
+    }
+    const hasPassword = await bcrypt.hash(password, CONSTANTS.SALT_ROUNDS);
+    const token = await AuthService.getResetToken(hasPassword);
+    const [resetToken, created] = await ResetToken.findOrCreate({
+      where: { userId: user.id },
+      defaults: {
+        value: token,
+      },
+    });
 
-    res.send('ok');
+    if (!created) {
+      await resetToken.update({ value: token });
+    }
+    await resetPasswordMail(email, token);
+
+    res.send(token);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.confirmResetPassword = async (req, res, next) => {
+  try {
+    const { token } = req.body;
+    const { User: userInstance } = await ResetToken.findOne({
+      where: { value: token },
+      include: [{ model: User }],
+    });
+    const { password } = await JwtService.verifyResetToken(token);
+    await userInstance.update({ password });
+    res.status(200).send('password has been changed');
   } catch (error) {
     next(error);
   }
