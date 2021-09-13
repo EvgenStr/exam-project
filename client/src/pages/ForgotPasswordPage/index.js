@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 import ForgotPasswordForm from '../../components/ForgotPasswordForm';
 import Logo from '../../components/Logo';
 import styles from './ForgotPasswordPage.module.sass';
-
 import CONSTANTS from '../../constants';
 
-const ForgotPasswordPage = props => (
+const ForgotPasswordPage = () => (
   <div className={styles.mainContainer}>
     <div className={styles.passwordContainer}>
       <div className={styles.header}>

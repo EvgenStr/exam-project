@@ -26,7 +26,24 @@ function resetPasswordReducer (state = initialState, action) {
     case ACTION.RESET_PASSWORD_ERROR: {
       return { ...state, isFetching: false, error: action.error };
     }
-
+    case ACTION.RESET_PASSWORD_CONFIRM_REQUEST: {
+      return {
+        ...state,
+        isFetching: true,
+        error: null,
+      };
+    }
+    case ACTION.RESET_PASSWORD_CONFIRM_SUCCESS: {
+      return {
+        ...state,
+        data: action.data,
+        isFetching: false,
+        error: null,
+      };
+    }
+    case ACTION.RESET_PASSWORD_CONFIRM_ERROR: {
+      return { ...state, isFetching: false, error: action.error };
+    }
     default:
       return state;
   }
