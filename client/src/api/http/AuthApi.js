@@ -34,7 +34,11 @@ class AuthApi {
   };
 
   reset = async data => {
-    return await this.#_client.post(`${this._url}reset`, data);
+    return await this.#_client.post(`${this._url}password-reset`, data);
+  };
+  
+  resetConfirm = async data => {
+    return await this.#_client.post(`${this._url}password-confirm`, data);
   };
 
   logout = () => {
