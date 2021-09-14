@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import ConfirmResetPassword from '../../components/ConfirmResetPassword';
+import ConfirmationResetPassword from '../../components/ConfirmationResetPassword';
 import Logo from '../../components/Logo';
 import CONSTANTS from '../../constants';
 import styles from './ConfirmationResetPasswordPage.module.sass';
@@ -21,7 +21,7 @@ function ConfirmationResetPasswordPage () {
           </div>
         </div>
         <div className={styles.passwordFormContainer}>
-          <ConfirmResetPassword />
+          <ConfirmationResetPassword />
         </div>
       </div>
     </div>
