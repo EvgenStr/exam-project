@@ -91,13 +91,15 @@ module.exports.reset = async (req, res, next) => {
 module.exports.confirmResetPassword = async (req, res, next) => {
   try {
     const { token } = req.body;
-    const { User: userInstance } = await ResetToken.findOne({
+    const tokenWithUser = await ResetToken.findOne({
       where: { value: token },
       include: [{ model: User }],
     });
+    if (!tokenWithUser) return next(createHttpError(406, 'Token not found'));
     const { password } = await JwtService.verifyResetToken(token);
-    await userInstance.update({ password });
-    res.status(200).send('password has been changed');
+    const updatedUser = await tokenWithUser.User.update({ password });
+    if (updatedUser) tokenWithUser.destroy();
+    res.status(200).send('Password has been changed');
   } catch (error) {
     next(error);
   }
