@@ -1,8 +1,7 @@
 const http = require('http');
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config()
-
+require('dotenv').config();
 require('./dbMongo/mongoose');
 const router = require('./router');
 const controller = require('./socketInit');
@@ -18,8 +17,7 @@ app.use(router);
 app.use(handlerError);
 
 const server = http.createServer(app);
-server.listen(PORT,
-  () => console.log(`Example app listening on port ${ PORT }!`));
+server.listen(PORT, () =>
+  console.log(`Example app listening on port ${PORT}!`),
+);
 controller.createConnection(server);
-
-

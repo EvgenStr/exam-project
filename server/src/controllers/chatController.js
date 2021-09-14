@@ -33,7 +33,7 @@ module.exports.addMessage = async (req, res, next) => {
     });
 
     if (!conversation) {
-      return next(createHttpError(401, 'Invalid conversation'));
+      return next(createHttpError(500, 'Invalid conversation'));
     }
     const newMessage = await Message.create({
       userId,
@@ -70,7 +70,6 @@ module.exports.getChat = async (req, res, next) => {
       params: { interlocutorId },
       tokenData: { userId, role },
     } = req;
-
     const { customerId, creatorId } = prepareRoles(
       role,
       userId,
@@ -155,7 +154,7 @@ module.exports.addToBlackList = async (req, res, next) => {
     conversation.blackList[index] = blackListFlag;
     const updatedConversation = await conversation.save();
     if (!updatedConversation) {
-      return next(createHttpError(400, 'Blacklist can"t be updated'));
+      return next(createHttpError(500, 'Blacklist can"t be updated'));
     }
     updatedConversation.dataValues.participants = participants;
     const interlocutorId = req.body.participants.filter(
@@ -188,7 +187,7 @@ module.exports.addToFavoriteList = async (req, res, next) => {
     conversation.favoriteList[index] = favoriteFlag;
     const updatedConversation = await conversation.save();
     if (!updatedConversation) {
-      return next(createHttpError(400, 'Favorite list can"t be updated'));
+      return next(createHttpError(500, 'Favorite list can"t be updated'));
     }
     updatedConversation.dataValues.participants = participants;
 
@@ -204,10 +203,9 @@ module.exports.createCatalog = async (req, res, next) => {
       tokenData: { userId },
       body: { catalogName, chatId },
     } = req;
-    console.log(req.body, 'REQ BODY');
     const conversation = await Conversation.findByPk(chatId);
     if (!conversation) {
-      return next(createHttpError(400, 'Invalid conversation'));
+      return next(createHttpError(404, 'Invalid conversation'));
     }
     const catalog = await Catalog.create(
       {
@@ -250,13 +248,13 @@ module.exports.updateNameCatalog = async (req, res, next) => {
     const catalog = await Catalog.findByPk(catalogId);
 
     if (!catalog) {
-      return next(createHttpError(400, 'Invalid catalog'));
+      return next(createHttpError(404, 'Invalid catalog'));
     }
 
     catalog.catalogName = catalogName;
     const updatedCatalog = await catalog.save();
     if (!updatedCatalog) {
-      return next(createHttpError(400, 'Name can"t be updated'));
+      return next(createHttpError(500, 'Name can"t be updated'));
     }
     updatedCatalog.dataValues._id = updatedCatalog.id;
 
@@ -273,11 +271,11 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
     const conversation = await Conversation.findByPk(chatId);
 
     if (!catalog || !conversation) {
-      return next(createHttpError(400, 'Invalid catalog'));
+      return next(createHttpError(404, 'Invalid catalog'));
     }
     if (catalog.chats.includes(chatId)) {
       return next(
-        createHttpError(400, 'The conversation is already in the catalog'),
+        createHttpError(500, 'The conversation is already in the catalog'),
       );
     }
 
@@ -286,7 +284,7 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
     });
 
     if (!updatedCatalog) {
-      return next(createHttpError(400, 'Conversation can"t be added'));
+      return next(createHttpError(500, 'Conversation can"t be added'));
     }
 
     updatedCatalog.dataValues._id = updatedCatalog.id;
@@ -308,7 +306,7 @@ module.exports.removeChatFromCatalog = async (req, res, next) => {
       chats: sequelize.fn('array_remove', sequelize.col('chats'), chatId),
     });
     if (!updatedCatalog) {
-      return next(createHttpError(400, 'Conversation can"t be removed'));
+      return next(createHttpError(500, 'Conversation can"t be removed'));
     }
     res.send(updatedCatalog);
   } catch (e) {

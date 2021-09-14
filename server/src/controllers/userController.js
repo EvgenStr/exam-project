@@ -36,8 +36,8 @@ module.exports.login = async (req, res, next) => {
       { expiresIn: CONSTANTS.ACCESS_TOKEN_TIME },
     );
     res.send({ token: accessToken });
-  } catch (err) {
-    next(err);
+  } catch (e) {
+    next(e);
   }
 };
 module.exports.registration = async (req, res, next) => {
@@ -59,11 +59,11 @@ module.exports.registration = async (req, res, next) => {
       { expiresIn: CONSTANTS.ACCESS_TOKEN_TIME },
     );
     res.send({ token: accessToken });
-  } catch (err) {
-    if (err.name === 'SequelizeUniqueConstraintError') {
-      next(new NotUniqueEmail());
+  } catch (e) {
+    if (e.name === 'SequelizeUniqueConstraintError') {
+      next(createError(400, 'Email is not unique'));
     } else {
-      next(err);
+      next(e);
     }
   }
 };
@@ -115,9 +115,9 @@ module.exports.changeMark = async (req, res, next) => {
     transaction.commit();
     controller.getNotificationController().emitChangeMark(creatorId);
     res.send({ userId: creatorId, rating: avg });
-  } catch (err) {
+  } catch (e) {
     transaction.rollback();
-    next(err);
+    next(e);
   }
 };
 
@@ -168,9 +168,9 @@ module.exports.payment = async (req, res, next) => {
     await db.Contest.bulkCreate(req.body.contests, transaction);
     transaction.commit();
     res.send();
-  } catch (err) {
+  } catch (e) {
     transaction.rollback();
-    next(err);
+    next(e);
   }
 };
 
@@ -193,8 +193,8 @@ module.exports.updateUser = async (req, res, next) => {
       role: updatedUser.role,
       id: updatedUser.id,
     });
-  } catch (err) {
-    next(err);
+  } catch (e) {
+    next(e);
   }
 };
 
@@ -238,9 +238,9 @@ module.exports.cashout = async (req, res, next) => {
     );
     transaction.commit();
     res.send({ balance: updatedUser.balance });
-  } catch (err) {
+  } catch (e) {
     transaction.rollback();
-    next(err);
+    next(e);
   }
 };
 
@@ -268,8 +268,8 @@ module.exports.resetPassword = async (req, res, next) => {
     res
       .status(200)
       .send('Password reset instructions have been sent to your email');
-  } catch (error) {
-    next(error);
+  } catch (e) {
+    next(e);
   }
 };
 
@@ -280,12 +280,12 @@ module.exports.confirmationResetPassword = async (req, res, next) => {
       where: { value: token },
       include: [{ model: db.User }],
     });
-    if (!tokenWithUser) return next(createError(406, 'Token not found'));
+    if (!tokenWithUser) return next(createError(406, 'Link is not valid'));
     const { password } = await JwtService.verifyResetToken(token);
     const updatedUser = await tokenWithUser.User.update({ password });
     if (updatedUser) tokenWithUser.destroy();
     res.status(200).send('Password has been changed');
-  } catch (error) {
-    next(error);
+  } catch (e) {
+    next(e);
   }
 };

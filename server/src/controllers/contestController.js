@@ -27,7 +27,7 @@ module.exports.dataForContest = async (req, res, next) => {
       },
     });
     if (!characteristics) {
-      return next(new ServerError());
+      return next(createHttpError(400, 'Wrong characteristic type'));
     }
     characteristics.forEach(characteristic => {
       if (!response[characteristic.type]) {
@@ -36,8 +36,8 @@ module.exports.dataForContest = async (req, res, next) => {
       response[characteristic.type].push(characteristic.describe);
     });
     res.send(response);
-  } catch (err) {
-    next(new ServerError('Cannot get contest preferences'));
+  } catch (e) {
+    next(e);
   }
 };
 
@@ -61,7 +61,15 @@ module.exports.getContestById = async (req, res, next) => {
           where:
             req.tokenData.role === CONSTANTS.CREATOR
               ? { userId: req.tokenData.userId }
-              : { status: { [db.Sequelize.Op.in]: [CONSTANTS.OFFER_STATUS_ACCEPTED, CONSTANTS.OFFER_STATUS_REJECTED, CONSTANTS.OFFER_STATUS_WON ] } },
+              : {
+                  status: {
+                    [db.Sequelize.Op.in]: [
+                      CONSTANTS.OFFER_STATUS_ACCEPTED,
+                      CONSTANTS.OFFER_STATUS_REJECTED,
+                      CONSTANTS.OFFER_STATUS_WON,
+                    ],
+                  },
+                },
           attributes: { exclude: ['userId', 'contestId'] },
           include: [
             {
@@ -90,7 +98,7 @@ module.exports.getContestById = async (req, res, next) => {
     });
     res.send(contestInfo);
   } catch (e) {
-    next(new ServerError());
+    next(e);
   }
 };
 
@@ -119,17 +127,17 @@ module.exports.updateContest = async (req, res, next) => {
 };
 
 module.exports.setNewOffer = async (req, res, next) => {
-  const newOffer = {};
-  if (req.body.contestType === CONSTANTS.LOGO_CONTEST) {
-    newOffer.fileName = req.file.filename;
-    newOffer.originalFileName = req.file.originalname;
-  } else {
-    newOffer.text = req.body.offerData;
-  }
-  newOffer.userId = req.tokenData.userId;
-  newOffer.contestId = req.params.contestId;
-
   try {
+    const newOffer = {};
+    if (req.body.contestType === CONSTANTS.LOGO_CONTEST) {
+      newOffer.fileName = req.file.filename;
+      newOffer.originalFileName = req.file.originalname;
+    } else {
+      newOffer.text = req.body.offerData;
+    }
+    newOffer.userId = req.tokenData.userId;
+    newOffer.contestId = req.params.contestId;
+
     const createdOffer = await contestQueries.createOffer(newOffer);
     createdOffer.contestId = undefined;
     createdOffer.userId = undefined;
@@ -139,7 +147,7 @@ module.exports.setNewOffer = async (req, res, next) => {
     const User = Object.assign({}, req.tokenData, { id: req.tokenData.userId });
     res.send(Object.assign({}, createdOffer, { User }));
   } catch (e) {
-    return next(new ServerError());
+    return next(e);
   }
 };
 
@@ -153,8 +161,8 @@ module.exports.setOfferStatus = async (req, res, next) => {
         req.body.contestId,
       );
       res.send(offer);
-    } catch (err) {
-      next(err);
+    } catch (e) {
+      next(e);
     }
   } else if (req.body.command === 'resolve') {
     try {
@@ -168,9 +176,9 @@ module.exports.setOfferStatus = async (req, res, next) => {
         transaction,
       );
       res.send(winningOffer);
-    } catch (err) {
+    } catch (e) {
       transaction.rollback();
-      next(err);
+      next(e);
     }
   }
 };
@@ -213,7 +221,7 @@ module.exports.getCustomersContests = async (req, res, next) => {
       }
       res.send({ contests, haveMore });
     })
-    .catch(err => next(new ServerError(err)));
+    .catch(e => next(e));
 };
 
 module.exports.getContests = async (req, res, next) => {
@@ -254,8 +262,8 @@ module.exports.getContests = async (req, res, next) => {
       }
       res.send({ contests, haveMore });
     })
-    .catch(err => {
-      next(new ServerError(err));
+    .catch(e => {
+      next(e);
     });
 };
 
@@ -288,7 +296,7 @@ module.exports.getOffersForModerator = async (req, res, next) => {
 
     res.send({ count, offers });
   } catch (e) {
-    next(new ServerError(e));
+    next(e);
   }
 };
 
@@ -299,11 +307,12 @@ module.exports.setOfferStatusForModerator = async (req, res, next) => {
       where: { id },
       include: [{ model: db.User, attributes: ['displayName', 'email'] }],
     });
-    if (!offer) return next(new ServerError('offer not found'));
+    if (!offer) return next(createHttpError(404, 'Offer not found'));
     offer.status = status;
     const updatedOffer = await offer.update({ status });
 
-    if (!updatedOffer) return next(new ServerError('offer can"t be updated'));
+    if (!updatedOffer)
+      return next(createHttpError(500, 'Offer can"t be updated'));
     const {
       User: {
         dataValues: { displayName, email },
@@ -312,7 +321,7 @@ module.exports.setOfferStatusForModerator = async (req, res, next) => {
     await changeOfferStatusMail(email, displayName, status);
     res.send(updatedOffer);
   } catch (e) {
-    next(new ServerError(e));
+    next(e);
   }
 };
 
