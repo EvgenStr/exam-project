@@ -1,9 +1,13 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { resetPasswordAction } from '../../actions/actionCreator';
+import {
+  resetPasswordAction,
+  clearResetPasswordErrorAction,
+} from '../../actions/actionCreator';
 import { Formik, Form, Field } from 'formik';
 import FormInput from '../FormInput/FormInput';
 import Spinner from '../Spinner/Spinner';
+import Error from '../Error/Error';
 import Schemas from '../../validators/validationSchemas.js';
 import styles from './ForgotPasswordForm.module.sass';
 
@@ -20,6 +24,7 @@ function ForgotPasswordForm () {
     const { email, password } = values;
     dispatch(resetPasswordAction({ email, password }));
   };
+
   const formInputClasses = {
     container: styles.inputContainer,
     input: styles.formInput,
@@ -30,6 +35,13 @@ function ForgotPasswordForm () {
   return (
     <section className={styles.container}>
       {isFetching && <Spinner />}
+      {error && (
+        <Error
+          data={error.data}
+          status={error.status}
+          clearError={() => dispatch(clearResetPasswordErrorAction())}
+        />
+      )}
       {!isFetching && !data && (
         <>
           <h2 className={styles.loginHeader}>RESET YOUR PASSWORD</h2>
@@ -67,6 +79,7 @@ function ForgotPasswordForm () {
           </Formik>
         </>
       )}
+      {!isFetching && data && <span>{data}</span>}
     </section>
   );
 }
