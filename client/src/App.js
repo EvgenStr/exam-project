@@ -14,7 +14,7 @@ import UserProfile from './pages/UserProfile/UserProfile';
 import PrivateHoc from './components/PrivateHoc/PrivateHoc';
 import NotFound from './components/NotFound/NotFound';
 import ContestCreationPage from './pages/ContestCreation/ContestCreationPage';
-import ConfirmResetPasswordPage from './pages/ConfirmResetPasswordPage';
+import ConfirmationResetPasswordPage from './pages/ConfirmationResetPasswordPage';
 import ChatContainer from './components/Chat/ChatComponents/ChatContainer/ChatContainer';
 import OnlyNotAuthorizedUserHoc from './components/OnlyNotAuthorizedUserHoc/OnlyNotAuthorizedUserHoc';
 import CONSTANTS from './constants';
@@ -63,7 +63,7 @@ function App () {
         <Route
           // exact
           path='/password-confirm/:token'
-          component={OnlyNotAuthorizedUserHoc(ConfirmResetPasswordPage)}
+          component={OnlyNotAuthorizedUserHoc(ConfirmationResetPasswordPage)}
         />
         <Route exact path='/payment' component={PrivateHoc(Payment)} />
         <Route
