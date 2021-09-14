@@ -43,9 +43,13 @@ export const removeChatFromCatalog = data =>
   httpClient.patch('chat/catalog/remove', data);
 export const deleteCatalog = data =>
   httpClient.delete(`chat/catalog/${data.catalogId}`);
+  
 export const getOffersForModerator = data =>
   httpClient.get('contests/moderation', {
     params: { limit: data.limit, offset: data.offset },
   });
 export const setOfferStatusForModerator = data =>
   httpClient.patch('contests/moderation', data);
+
+export const resetPassword = data => httpClient.post('password-reset', data);
+export const resetPasswordConfirmation = data => httpClient.post('password-confirm', data);
