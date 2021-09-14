@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import ConfirmResetPassword from '../../components/ConfirmResetPassword';
 import Logo from '../../components/Logo';
 import CONSTANTS from '../../constants';
-import styles from './ConfirmResetPasswordPage.module.sass';
+import styles from './ConfirmationResetPasswordPage.module.sass';
 
-function ConfirmResetPasswordPage () {
+function ConfirmationResetPasswordPage () {
   return (
     <div className={styles.container}>
       <div className={styles.passwordContainer}>
@@ -27,4 +27,4 @@ function ConfirmResetPasswordPage () {
     </div>
   );
 }
-export default ConfirmResetPasswordPage;
+export default ConfirmationResetPasswordPage;
