@@ -10,6 +10,8 @@ const chatRouter = require('./chat');
 const router = express.Router();
 
 router.use('/auth', authRouter);
+router.post('/password-reset', userController.resetPassword);
+router.post('/password-confirm', userController.confirmationResetPassword);
 
 router.use(TokenMW.checkAccessToken);
 

@@ -1,10 +1,6 @@
 const createHttpError = require('http-errors');
-const bcrypt = require('bcrypt');
-const { User, RefreshToken, ResetToken } = require('../models');
+const { User, RefreshToken } = require('../models');
 const AuthService = require('../services/authService');
-const JwtService = require('../services/jwtService');
-const { resetPasswordMail } = require('../services/mailService');
-const CONSTANTS = require('../constants');
 
 module.exports.signIn = async (req, res, next) => {
   try {
@@ -56,50 +52,6 @@ module.exports.refresh = async (req, res, next) => {
     const data = await AuthService.refreshSession(refreshTokenInstance);
     data.user.password = undefined;
     res.send({ data });
-  } catch (error) {
-    next(error);
-  }
-};
-
-module.exports.reset = async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ where: { email } });
-    if (!user) {
-      return next(createHttpError(406, 'User not found'));
-    }
-    const hasPassword = await bcrypt.hash(password, CONSTANTS.SALT_ROUNDS);
-    const token = await AuthService.getResetToken(hasPassword);
-    const [resetToken, created] = await ResetToken.findOrCreate({
-      where: { userId: user.id },
-      defaults: {
-        value: token,
-      },
-    });
-
-    if (!created) {
-      await resetToken.update({ value: token });
-    }
-    await resetPasswordMail(email, token);
-
-    res.send(token);
-  } catch (error) {
-    next(error);
-  }
-};
-
-module.exports.confirmResetPassword = async (req, res, next) => {
-  try {
-    const { token } = req.body;
-    const tokenWithUser = await ResetToken.findOne({
-      where: { value: token },
-      include: [{ model: User }],
-    });
-    if (!tokenWithUser) return next(createHttpError(406, 'Token not found'));
-    const { password } = await JwtService.verifyResetToken(token);
-    const updatedUser = await tokenWithUser.User.update({ password });
-    if (updatedUser) tokenWithUser.destroy();
-    res.status(200).send('Password has been changed');
   } catch (error) {
     next(error);
   }

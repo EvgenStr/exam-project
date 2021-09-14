@@ -10,7 +10,5 @@ authRouter.post(
   AuthController.signUp,
 );
 authRouter.post('/refresh', TokenMW.checkRefreshToken, AuthController.refresh);
-authRouter.post('/password-reset', AuthController.reset);
-authRouter.post('/password-confirm', AuthController.confirmResetPassword);
 
 module.exports = authRouter;

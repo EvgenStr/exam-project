@@ -1,9 +1,13 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const moment = require('moment');
 const createError = require('http-errors');
 const { v4: uuid } = require('uuid');
 const CONSTANTS = require('../constants');
 const db = require('../models');
+const AuthService = require('../services/authService');
+const JwtService = require('../services/jwtService');
+const { resetPasswordMail } = require('../services/mailService');
 const NotUniqueEmail = require('../errors/NotUniqueEmail');
 const controller = require('../socketInit');
 const userQueries = require('./queries/userQueries');
@@ -237,5 +241,51 @@ module.exports.cashout = async (req, res, next) => {
   } catch (err) {
     transaction.rollback();
     next(err);
+  }
+};
+
+module.exports.resetPassword = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const user = await db.User.findOne({ where: { email } });
+    if (!user) {
+      return next(createError(406, 'User not found'));
+    }
+    const hasPassword = await bcrypt.hash(password, CONSTANTS.SALT_ROUNDS);
+    const token = await AuthService.getResetToken(hasPassword);
+    const [resetToken, created] = await db.ResetToken.findOrCreate({
+      where: { userId: user.id },
+      defaults: {
+        value: token,
+      },
+    });
+
+    if (!created) {
+      await resetToken.update({ value: token });
+    }
+    await resetPasswordMail(email, token);
+
+    res
+      .status(200)
+      .send('Password reset instructions have been sent to your email');
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.confirmationResetPassword = async (req, res, next) => {
+  try {
+    const { token } = req.body;
+    const tokenWithUser = await db.ResetToken.findOne({
+      where: { value: token },
+      include: [{ model: db.User }],
+    });
+    if (!tokenWithUser) return next(createError(406, 'Token not found'));
+    const { password } = await JwtService.verifyResetToken(token);
+    const updatedUser = await tokenWithUser.User.update({ password });
+    if (updatedUser) tokenWithUser.destroy();
+    res.status(200).send('Password has been changed');
+  } catch (error) {
+    next(error);
   }
 };
