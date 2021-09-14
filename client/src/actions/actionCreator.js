@@ -322,3 +322,7 @@ export const resetPasswordConfirmAction = data => ({
   type: ACTION.RESET_PASSWORD_CONFIRM_REQUEST,
   data,
 });
+
+export const clearResetPasswordErrorAction = () => ({
+  type: ACTION.CLEAR_PASSWORD_RESET_ERROR,
+});
