@@ -45,6 +45,7 @@ module.exports = {
   SMTP_PASS: SMTP_PASS || null,
   SALT_ROUNDS: Number(SALT_ROUNDS),
   STATIC_PATH: STATIC_PATH || path.resolve(__dirname, '../public'),
+  LOGS_PATH: path.resolve(__dirname, './logs'),
   NODE_ENV: NODE_ENV || 'development',
   CUSTOMER: 'customer',
   CREATOR: 'creator',
