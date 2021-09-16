@@ -1,6 +1,6 @@
 const fs = require('fs');
-const { access, constants, writeFile } = fs;
 const path = require('path');
+const { access, constants, writeFile, readFile } = fs;
 const { LOGS_PATH } = require('../constants');
 
 module.exports = async (err, req, res, next) => {
@@ -20,12 +20,12 @@ module.exports = async (err, req, res, next) => {
           },
         );
       }
-      fs.readFile(logsPath, async (e, data) => {
+      readFile(logsPath, async (e, data) => {
         if (!e) {
           const oldErrors = await JSON.parse(data);
           oldErrors.push(error);
           const json = JSON.stringify(oldErrors, null, 2);
-          fs.writeFile(logsPath, json, e => {
+          writeFile(logsPath, json, e => {
             if (e) throw e;
           });
         }
