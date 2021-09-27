@@ -8,7 +8,6 @@ const db = require('../models');
 const AuthService = require('../services/authService');
 const JwtService = require('../services/jwtService');
 const { resetPasswordMail } = require('../services/mailService');
-const NotUniqueEmail = require('../errors/NotUniqueEmail');
 const controller = require('../socketInit');
 const userQueries = require('./queries/userQueries');
 const bankQueries = require('./queries/bankQueries');
