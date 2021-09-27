@@ -72,6 +72,27 @@ module.exports.createPreview = (conversationId, newMessage, participants) => {
   };
 };
 
+module.exports.prepareConversations = (conversations, role) => {
+  conversations.forEach(conversation => {
+    conversation.dataValues.interlocutor =
+      conversation[
+        role === CONSTANTS.CREATOR ? CONSTANTS.CUSTOMER : CONSTANTS.CREATOR
+      ];
+    conversation.dataValues.participants = [
+      conversation.customerId,
+      conversation.creatorId,
+    ];
+    conversation.dataValues._id = conversation.id;
+    conversation.sender = null;
+    conversation.text = '';
+    if (conversation.Messages[0]) {
+      conversation.sender = conversation.Messages[0].userId || null;
+      conversation.text = conversation.Messages[0].body || null;
+    }
+  });
+  return conversations;
+};
+
 module.exports.exists = async path => {
   try {
     await access(path, constants.R_OK | constants.W_OK);
