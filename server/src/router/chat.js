@@ -3,8 +3,8 @@ const chatController = require('../controllers/chatController');
 
 chatRouter.post('/message', chatController.addMessage);
 chatRouter.get('/preview', chatController.getPreview);
-chatRouter.patch('/blacklist', chatController.addToBlackList);
-chatRouter.patch('/favorite', chatController.addToFavoriteList);
+chatRouter.patch('/blacklist', chatController.updateBlackList);
+chatRouter.patch('/favorite', chatController.updateFavoriteList);
 chatRouter
   .route('/catalog')
   .post(chatController.createCatalog)
