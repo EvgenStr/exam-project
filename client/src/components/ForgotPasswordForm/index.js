@@ -44,7 +44,7 @@ function ForgotPasswordForm () {
       )}
       {!isFetching && !data && (
         <>
-          <h2 className={styles.loginHeader}>RESET YOUR PASSWORD</h2>
+          <h2 className={styles.forgotPassHeader}>RESET YOUR PASSWORD</h2>
           <Formik
             initialValues={initialValues}
             validationSchema={Schemas.ForgotPasswordSchema}

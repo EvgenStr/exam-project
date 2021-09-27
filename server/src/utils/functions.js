@@ -1,8 +1,14 @@
+const fs = require('fs/promises');
 const db = require('../models');
 const CONSTANTS = require('../constants');
-
+const { access, writeFile, readFile, mkdir } = fs;
+const { constants } = require('fs');
 module.exports.createWhereForAllContests = (
-  typeIndex, contestId, industry, awardSort) => {
+  typeIndex,
+  contestId,
+  industry,
+  awardSort,
+) => {
   const object = {
     where: {},
     order: [],
@@ -21,7 +27,7 @@ module.exports.createWhereForAllContests = (
   }
   Object.assign(object.where, {
     status: {
-      [ db.Sequelize.Op.or ]: [
+      [db.Sequelize.Op.or]: [
         CONSTANTS.CONTEST_STATUS_FINISHED,
         CONSTANTS.CONTEST_STATUS_ACTIVE,
       ],
@@ -32,7 +38,7 @@ module.exports.createWhereForAllContests = (
 };
 
 function getPredicateTypes (index) {
-  return { [ db.Sequelize.Op.or ]: [types[ index ].split(',')] };
+  return { [db.Sequelize.Op.or]: [types[index].split(',')] };
 }
 
 const types = [
@@ -51,4 +57,35 @@ module.exports.prepareRoles = (role, userId, interlocutorId) => {
     customerId: role === CONSTANTS.CUSTOMER ? userId : interlocutorId,
     creatorId: role === CONSTANTS.CUSTOMER ? interlocutorId : userId,
   };
+};
+
+module.exports.exists = async path => {
+  try {
+    await access(path, constants.R_OK | constants.W_OK);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+module.exports.write = async (path, data = []) => {
+  try {
+    await writeFile(path, JSON.stringify(data, null, 2));
+  } catch (e) {
+    return false;
+  }
+};
+module.exports.mkdir = async path => {
+  try {
+    await mkdir(path);
+  } catch (e) {
+    return false;
+  }
+};
+module.exports.read = async path => {
+  try {
+    const data = await readFile(path, { encoding: 'utf8' });
+    return await JSON.parse(data);
+  } catch (e) {
+    return false;
+  }
 };

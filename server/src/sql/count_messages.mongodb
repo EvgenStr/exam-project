@@ -1,0 +1,17 @@
+use('shm-chat');
+db.messages.aggregate(
+  [
+    { $addFields: { results: { $regexFind: { input: "$body", regex: /паровоз/i } } } },
+    { $match: { results:{ $ne: null } } },
+    { $count: "count_massages" }
+  ]
+)
+
+use('shm-chat');
+db.messages.createIndex( { body: "text" } );
+db.messages.aggregate(
+   [
+    { $match: { $text: { $search: "паровоз" } } },
+    { $count: "count_massages" }
+   ]
+)
