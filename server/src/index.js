@@ -20,8 +20,7 @@ app.use(router);
 app.use(logErrors);
 app.use(handlerError);
 
-cron.schedule('* * * * *', () => {
-  console.log('running a task every minute');
+cron.schedule('0 3 * * *', () => {
   logSchedule();
 });
 
