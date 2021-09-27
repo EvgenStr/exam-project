@@ -6,7 +6,7 @@ const {
   Catalog,
   sequelize,
 } = require('../models');
-const { prepareRoles } = require('../utils/functions');
+const { prepareRoles, createPreview } = require('../utils/functions');
 const socketController = require('../socketInit');
 const CONSTANTS = require('../constants');
 
@@ -17,16 +17,7 @@ module.exports.addMessage = async (req, res, next) => {
       body: { recipient, messageBody },
     } = req;
     const participants = [userId, recipient];
-    let customerId = null;
-    let creatorId = null;
-
-    if (role === CONSTANTS.CUSTOMER) {
-      customerId = userId;
-      creatorId = recipient;
-    } else {
-      customerId = recipient;
-      creatorId = userId;
-    }
+    const { customerId, creatorId } = prepareRoles(role, userId, recipient);
 
     const [conversation] = await Conversation.findOrCreate({
       where: { customerId, creatorId },
@@ -41,15 +32,9 @@ module.exports.addMessage = async (req, res, next) => {
       conversationId: conversation.id,
     });
     newMessage.participants = participants;
-    const preview = {
-      _id: conversation.id,
-      sender: newMessage.userId,
-      text: newMessage.body,
-      createAt: newMessage.createdAt,
-      participants,
-      blackList: [false, false],
-      favoriteList: [false, false],
-    };
+
+    const preview = createPreview(conversation.id, newMessage, participants);
+
     socketController.getNotificationController().emitNewMessage({
       recipient,
       userId,
@@ -58,6 +43,7 @@ module.exports.addMessage = async (req, res, next) => {
     socketController
       .getChatController()
       .emitNewMessage(recipient, { newMessage, preview });
+
     res.send({ message: newMessage, preview });
   } catch (e) {
     next(e);
