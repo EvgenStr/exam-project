@@ -3,6 +3,7 @@ const db = require('../models');
 const CONSTANTS = require('../constants');
 const { access, writeFile, readFile, mkdir } = fs;
 const { constants } = require('fs');
+
 module.exports.createWhereForAllContests = (
   typeIndex,
   contestId,
@@ -59,6 +60,18 @@ module.exports.prepareRoles = (role, userId, interlocutorId) => {
   };
 };
 
+module.exports.createPreview = (conversationId, newMessage, participants) => {
+  return {
+    _id: conversationId,
+    sender: newMessage.userId,
+    text: newMessage.body,
+    createAt: newMessage.createdAt,
+    participants,
+    blackList: [false, false],
+    favoriteList: [false, false],
+  };
+};
+
 module.exports.exists = async path => {
   try {
     await access(path, constants.R_OK | constants.W_OK);
@@ -67,6 +80,7 @@ module.exports.exists = async path => {
     return false;
   }
 };
+
 module.exports.write = async (path, data = []) => {
   try {
     await writeFile(path, JSON.stringify(data, null, 2));
@@ -74,6 +88,7 @@ module.exports.write = async (path, data = []) => {
     return false;
   }
 };
+
 module.exports.mkdir = async path => {
   try {
     await mkdir(path);
@@ -81,6 +96,7 @@ module.exports.mkdir = async path => {
     return false;
   }
 };
+
 module.exports.read = async path => {
   try {
     const data = await readFile(path, { encoding: 'utf8' });
