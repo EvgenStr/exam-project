@@ -6,7 +6,12 @@ const {
   Catalog,
   sequelize,
 } = require('../models');
-const { prepareRoles, createPreview } = require('../utils/functions');
+const chatQueries = require('./queries/chatQueries');
+const {
+  prepareRoles,
+  createPreview,
+  prepareConversations,
+} = require('../utils/functions');
 const socketController = require('../socketInit');
 const CONSTANTS = require('../constants');
 
@@ -19,18 +24,20 @@ module.exports.addMessage = async (req, res, next) => {
     const participants = [userId, recipient];
     const { customerId, creatorId } = prepareRoles(role, userId, recipient);
 
-    const [conversation] = await Conversation.findOrCreate({
-      where: { customerId, creatorId },
-    });
+    const [conversation] = await chatQueries.findOrCreateConversation(
+      customerId,
+      creatorId,
+    );
 
     if (!conversation) {
       return next(createHttpError(500, 'Invalid conversation'));
     }
-    const newMessage = await Message.create({
+
+    const newMessage = await chatQueries.createMessage(
       userId,
-      body: messageBody,
-      conversationId: conversation.id,
-    });
+      messageBody,
+      conversation.id,
+    );
     newMessage.participants = participants;
 
     const preview = createPreview(conversation.id, newMessage, participants);
@@ -62,10 +69,14 @@ module.exports.getChat = async (req, res, next) => {
       interlocutorId,
     );
 
-    const [conversation] = await Conversation.findOrCreate({
-      where: { customerId, creatorId },
-    });
-    const conversationWithMessages = await conversation.getMessages();
+    const [conversation] = await chatQueries.findOrCreateConversation(
+      customerId,
+      creatorId,
+    );
+
+    const conversationWithMessages = await chatQueries.getConversationMessages(
+      conversation,
+    );
     const interlocutor = await User.findByPk(interlocutorId, {
       attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
     });
@@ -78,67 +89,36 @@ module.exports.getChat = async (req, res, next) => {
 module.exports.getPreview = async (req, res, next) => {
   try {
     const { userId, role } = req.tokenData;
-
-    const conversations = await Conversation.findAll({
-      where:
-        role === CONSTANTS.CREATOR
-          ? { creatorId: userId }
-          : { customerId: userId },
-      include: [
-        { model: Message, limit: 1 },
-        {
-          model: User,
-          as:
-            role === CONSTANTS.CREATOR ? CONSTANTS.CUSTOMER : CONSTANTS.CREATOR,
-          attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
-        },
-      ],
-    });
+    const conversations = await chatQueries.getConversationsPreviews(
+      userId,
+      role,
+    );
     if (!conversations) {
       return res.send([]);
     }
+    const previews = prepareConversations(conversations, role);
 
-    conversations.forEach(conversation => {
-      conversation.dataValues.interlocutor =
-        conversation[
-          role === CONSTANTS.CREATOR ? CONSTANTS.CUSTOMER : CONSTANTS.CREATOR
-        ];
-      conversation.dataValues.participants = [
-        conversation.customerId,
-        conversation.creatorId,
-      ];
-      conversation.dataValues._id = conversation.id;
-      conversation.sender = null;
-      conversation.text = '';
-      if (conversation.Messages[0]) {
-        conversation.sender = conversation.Messages[0].userId || null;
-        conversation.text = conversation.Messages[0].body || null;
-      }
-    });
-
-    res.send(conversations);
+    res.send(previews);
   } catch (e) {
     next(e);
   }
 };
 
-module.exports.addToBlackList = async (req, res, next) => {
+module.exports.updateBlackList = async (req, res, next) => {
   try {
     const {
       body: { blackListFlag, participants },
       tokenData: { userId, role },
     } = req;
-
     const index = participants.indexOf(userId);
-    const conversation = await Conversation.findOne({
-      where:
-        role === CONSTANTS.CREATOR
-          ? { creatorId: userId }
-          : { customerId: userId },
-    });
 
-    conversation.blackList[index] = blackListFlag;
-    const updatedConversation = await conversation.save();
+    const updatedConversation = await chatQueries.updateConversationBlackList(
+      userId,
+      role,
+      blackListFlag,
+      index,
+    );
+
     if (!updatedConversation) {
       return next(createHttpError(500, 'Blacklist can"t be updated'));
     }
@@ -155,7 +135,7 @@ module.exports.addToBlackList = async (req, res, next) => {
   }
 };
 
-module.exports.addToFavoriteList = async (req, res, next) => {
+module.exports.updateFavoriteList = async (req, res, next) => {
   try {
     const {
       body: { favoriteFlag, participants },
@@ -163,15 +143,13 @@ module.exports.addToFavoriteList = async (req, res, next) => {
     } = req;
 
     const index = participants.indexOf(userId);
-    const conversation = await Conversation.findOne({
-      where:
-        role === CONSTANTS.CREATOR
-          ? { creatorId: userId }
-          : { customerId: userId },
-    });
 
-    conversation.favoriteList[index] = favoriteFlag;
-    const updatedConversation = await conversation.save();
+    const updatedConversation = await chatQueries.updateConversationFavoriteList(
+      userId,
+      role,
+      favoriteFlag,
+      index,
+    );
     if (!updatedConversation) {
       return next(createHttpError(500, 'Favorite list can"t be updated'));
     }

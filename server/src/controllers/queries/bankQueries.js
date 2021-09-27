@@ -2,7 +2,7 @@ const db = require('../../models');
 const BankDeclineError = require('../../errors/BankDeclineError');
 
 module.exports.updateBankBalance = async (data, predicate, transaction) => {
-  const [updatedCount, [updatedBank]] = await db.Bank.update(data, {
+  const [updatedCount] = await db.Bank.update(data, {
     where: predicate,
     returning: true,
     transaction,
