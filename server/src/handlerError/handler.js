@@ -9,6 +9,7 @@ module.exports = async (err, req, res, next) => {
   ) {
     return res.status(406).send('Not Enough money');
   }
+  if (err.sql) return res.status(500).send('Server Error');
 
   res.status(status).send(err.message || 'Server Error');
 };

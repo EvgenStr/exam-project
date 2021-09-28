@@ -6,7 +6,7 @@ require('dotenv').config();
 require('./dbMongo/mongoose');
 const router = require('./router');
 const controller = require('./socketInit');
-const handlerError = require('./handlerError/handler');
+const errorHandler = require('./handlerError/handler');
 const logErrors = require('./utils/logErrors');
 const logSchedule = require('./utils/logSchedule');
 
@@ -18,7 +18,7 @@ app.use(express.json());
 app.use('/public', express.static('public'));
 app.use(router);
 app.use(logErrors);
-app.use(handlerError);
+app.use(errorHandler);
 
 cron.schedule('0 3 * * *', () => {
   logSchedule();
