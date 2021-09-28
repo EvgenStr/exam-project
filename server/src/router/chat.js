@@ -9,7 +9,7 @@ chatRouter
   .route('/catalog')
   .post(chatController.createCatalog)
   .get(chatController.getCatalogs);
-chatRouter.patch('/catalog/name', chatController.updateNameCatalog);
+chatRouter.patch('/catalog/name', chatController.updateCatalogName);
 chatRouter.patch('/catalog/add', chatController.addNewChatToCatalog);
 chatRouter.patch('/catalog/remove', chatController.removeChatFromCatalog);
 chatRouter.delete('/catalog/:catalogId', chatController.deleteCatalog);

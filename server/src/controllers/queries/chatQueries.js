@@ -1,4 +1,4 @@
-const { Conversation, Message, User } = require('../../models');
+const { Conversation, Message, User, Catalog } = require('../../models');
 const CONSTANTS = require('../../constants');
 
 module.exports.findOrCreateConversation = async (customerId, creatorId) =>
@@ -12,12 +12,11 @@ module.exports.createMessage = async (userId, body, conversationId) =>
 module.exports.getConversationMessages = async conversationInstance =>
   await conversationInstance.getMessages();
 
-module.exports.getConversationsPreviews = async (userId, role) =>
-  await Conversation.findAll({
-    where:
-      role === CONSTANTS.CREATOR
-        ? { creatorId: userId }
-        : { customerId: userId },
+module.exports.getConversationsPreviews = async (userId, role) => {
+  const where =
+    role === CONSTANTS.CREATOR ? { creatorId: userId } : { customerId: userId };
+  return await Conversation.findAll({
+    where,
     include: [
       { model: Message, limit: 1 },
       {
@@ -27,6 +26,7 @@ module.exports.getConversationsPreviews = async (userId, role) =>
       },
     ],
   });
+};
 
 module.exports.updateConversationBlackList = async (
   userId,
@@ -69,3 +69,47 @@ module.exports.updateConversationFavoriteList = async (
   );
   return updatedConversation;
 };
+
+module.exports.getConversation = async chatId =>
+  await Conversation.findByPk(chatId);
+
+module.exports.newCatalog = async (chatId, catalogName, userId) => {
+  const catalog = await Catalog.create(
+    {
+      catalogName,
+      userId,
+      chats: [chatId],
+    },
+    { raw: true },
+  );
+  catalog.dataValues._id = catalog.id;
+  return catalog;
+};
+
+module.exports.getAllUserCatalogs = async userId => {
+  const catalogs = await Catalog.findAll({
+    raw: true,
+    where: { userId },
+  });
+
+  catalogs.forEach(catalog => {
+    catalog._id = catalog.id;
+  });
+  return catalogs;
+};
+
+module.exports.getCatalog = async catalogId =>
+  await Catalog.findByPk(catalogId);
+
+module.exports.getConversation = async conversationId =>
+  await Conversation.findByPk(conversationId);
+
+module.exports.destroyCatalog = async id =>
+  await Catalog.destroy({
+    where: { id },
+  });
+
+module.exports.getInterlocutor = async interlocutorId =>
+  await User.findByPk(interlocutorId, {
+    attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
+  });
