@@ -160,7 +160,7 @@ module.exports.createCatalog = async (req, res, next) => {
     } = req;
     const conversation = await chatQueries.getConversation(chatId);
     if (!conversation) {
-      return createHttpError(404, 'Invalid conversation');
+      return next(createHttpError(404, 'Invalid conversation'));
     }
     const catalog = await chatQueries.newCatalog(chatId, catalogName, userId);
 
@@ -205,12 +205,11 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
     const conversation = await chatQueries.getConversation(chatId);
 
     if (!catalog || !conversation) {
-      return createHttpError(404, 'Invalid catalog');
+      return next(createHttpError(404, 'Invalid catalog'));
     }
     if (catalog.chats.includes(chatId)) {
-      return new createHttpError(
-        500,
-        'The conversation is already in the catalog',
+      return next(
+        createHttpError(500, 'The conversation is already in the catalog'),
       );
     }
 
@@ -219,7 +218,7 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
     });
 
     if (!updatedCatalog) {
-      return createHttpError(500, 'Conversation can"t be added');
+      return next(createHttpError(500, 'Conversation can"t be added'));
     }
 
     updatedCatalog.dataValues._id = updatedCatalog.id;
