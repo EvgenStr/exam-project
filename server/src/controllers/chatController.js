@@ -1,11 +1,5 @@
 const createHttpError = require('http-errors');
-const {
-  Conversation,
-  Message,
-  User,
-  Catalog,
-  sequelize,
-} = require('../models');
+const { sequelize } = require('../models');
 const chatQueries = require('./queries/chatQueries');
 const {
   prepareRoles,
@@ -13,7 +7,6 @@ const {
   prepareConversations,
 } = require('../utils/functions');
 const socketController = require('../socketInit');
-const CONSTANTS = require('../constants');
 
 module.exports.addMessage = async (req, res, next) => {
   try {
@@ -77,9 +70,7 @@ module.exports.getChat = async (req, res, next) => {
     const conversationWithMessages = await chatQueries.getConversationMessages(
       conversation,
     );
-    const interlocutor = await User.findByPk(interlocutorId, {
-      attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
-    });
+    const interlocutor = await chatQueries.getInterlocutor(interlocutorId);
     res.send({ messages: conversationWithMessages, interlocutor });
   } catch (e) {
     next(e);
@@ -167,19 +158,11 @@ module.exports.createCatalog = async (req, res, next) => {
       tokenData: { userId },
       body: { catalogName, chatId },
     } = req;
-    const conversation = await Conversation.findByPk(chatId);
+    const conversation = await chatQueries.getConversation(chatId);
     if (!conversation) {
-      return next(createHttpError(404, 'Invalid conversation'));
+      return createHttpError(404, 'Invalid conversation');
     }
-    const catalog = await Catalog.create(
-      {
-        catalogName,
-        userId,
-        chats: [chatId],
-      },
-      { raw: true },
-    );
-    catalog.dataValues._id = catalog.id;
+    const catalog = await chatQueries.newCatalog(chatId, catalogName, userId);
 
     res.send(catalog);
   } catch (e) {
@@ -192,36 +175,23 @@ module.exports.getCatalogs = async (req, res, next) => {
     const {
       tokenData: { userId },
     } = req;
-    const catalogs = await Catalog.findAll({
-      raw: true,
-      where: { userId },
-    });
-
-    catalogs.forEach(catalog => {
-      catalog._id = catalog.id;
-    });
+    const catalogs = await chatQueries.getAllUserCatalogs(userId);
     res.send(catalogs);
   } catch (e) {
     next(e);
   }
 };
 
-module.exports.updateNameCatalog = async (req, res, next) => {
+module.exports.updateCatalogName = async (req, res, next) => {
   try {
     const { catalogId, catalogName } = req.body;
-    const catalog = await Catalog.findByPk(catalogId);
-
-    if (!catalog) {
-      return next(createHttpError(404, 'Invalid catalog'));
-    }
-
+    const catalog = await chatQueries.getCatalog(catalogId);
     catalog.catalogName = catalogName;
     const updatedCatalog = await catalog.save();
-    if (!updatedCatalog) {
-      return next(createHttpError(500, 'Name can"t be updated'));
-    }
     updatedCatalog.dataValues._id = updatedCatalog.id;
-
+    if (!updatedCatalog) {
+      return next(createHttpError(500, 'Catalog name can"t be updated'));
+    }
     res.send(updatedCatalog);
   } catch (e) {
     next(e);
@@ -231,15 +201,16 @@ module.exports.updateNameCatalog = async (req, res, next) => {
 module.exports.addNewChatToCatalog = async (req, res, next) => {
   try {
     const { catalogId, chatId } = req.body;
-    const catalog = await Catalog.findByPk(catalogId);
-    const conversation = await Conversation.findByPk(chatId);
+    const catalog = await chatQueries.getCatalog(catalogId);
+    const conversation = await chatQueries.getConversation(chatId);
 
     if (!catalog || !conversation) {
-      return next(createHttpError(404, 'Invalid catalog'));
+      return createHttpError(404, 'Invalid catalog');
     }
     if (catalog.chats.includes(chatId)) {
-      return next(
-        createHttpError(500, 'The conversation is already in the catalog'),
+      return new createHttpError(
+        500,
+        'The conversation is already in the catalog',
       );
     }
 
@@ -248,10 +219,11 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
     });
 
     if (!updatedCatalog) {
-      return next(createHttpError(500, 'Conversation can"t be added'));
+      return createHttpError(500, 'Conversation can"t be added');
     }
 
     updatedCatalog.dataValues._id = updatedCatalog.id;
+
     res.send(updatedCatalog);
   } catch (e) {
     next(e);
@@ -261,7 +233,7 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
 module.exports.removeChatFromCatalog = async (req, res, next) => {
   try {
     const { catalogId, chatId } = req.body;
-    const catalog = await Catalog.findByPk(catalogId);
+    const catalog = await chatQueries.getCatalog(catalogId);
 
     if (!catalog) {
       return next(createHttpError(400, 'Invalid catalog'));
@@ -281,9 +253,7 @@ module.exports.removeChatFromCatalog = async (req, res, next) => {
 module.exports.deleteCatalog = async (req, res, next) => {
   try {
     const { catalogId } = req.params;
-    const catalog = await Catalog.destroy({
-      where: { id: catalogId },
-    });
+    const catalog = await chatQueries.destroyCatalog(catalogId);
     if (catalog !== 1) {
       return next(createHttpError(404, 'Catalog not found'));
     }
