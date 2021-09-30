@@ -1,5 +1,4 @@
 const createHttpError = require('http-errors');
-const { sequelize } = require('../models');
 const chatQueries = require('./queries/chatQueries');
 const {
   prepareRoles,
@@ -7,6 +6,7 @@ const {
   prepareConversations,
 } = require('../utils/functions');
 const socketController = require('../socketInit');
+const CONSTANTS = require('../constants');
 
 module.exports.addMessage = async (req, res, next) => {
   try {
@@ -102,14 +102,17 @@ module.exports.updateBlackList = async (req, res, next) => {
       tokenData: { userId, role },
     } = req;
     const index = participants.indexOf(userId);
-
-    const updatedConversation = await chatQueries.updateConversationBlackList(
-      userId,
-      role,
-      blackListFlag,
-      index,
+    const where =
+      role === CONSTANTS.CREATOR
+        ? { creatorId: userId }
+        : { customerId: userId };
+    const conversation = await chatQueries.getConversation(where);
+    conversation.blackList[index] = blackListFlag;
+    const updatedConversation = await chatQueries.updateBlackOrFavoriteList(
+      where,
+      conversation.blackList,
+      'black',
     );
-
     if (!updatedConversation) {
       return next(createHttpError(500, 'Blacklist can"t be updated'));
     }
@@ -132,14 +135,17 @@ module.exports.updateFavoriteList = async (req, res, next) => {
       body: { favoriteFlag, participants },
       tokenData: { userId, role },
     } = req;
-
     const index = participants.indexOf(userId);
-
-    const updatedConversation = await chatQueries.updateConversationFavoriteList(
-      userId,
-      role,
-      favoriteFlag,
-      index,
+    const where =
+      role === CONSTANTS.CREATOR
+        ? { creatorId: userId }
+        : { customerId: userId };
+    const conversation = await chatQueries.getConversation(where);
+    conversation.favoriteList[index] = favoriteFlag;
+    const updatedConversation = await chatQueries.updateBlackOrFavoriteList(
+      where,
+      conversation.favoriteList,
+      'favorite',
     );
     if (!updatedConversation) {
       return next(createHttpError(500, 'Favorite list can"t be updated'));
@@ -158,7 +164,7 @@ module.exports.createCatalog = async (req, res, next) => {
       tokenData: { userId },
       body: { catalogName, chatId },
     } = req;
-    const conversation = await chatQueries.getConversation(chatId);
+    const conversation = await chatQueries.getConversationByPk(chatId);
     if (!conversation) {
       return next(createHttpError(404, 'Invalid conversation'));
     }
@@ -202,7 +208,7 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
   try {
     const { catalogId, chatId } = req.body;
     const catalog = await chatQueries.getCatalog(catalogId);
-    const conversation = await chatQueries.getConversation(chatId);
+    const conversation = await chatQueries.getConversationByPk(chatId);
 
     if (!catalog || !conversation) {
       return next(createHttpError(404, 'Invalid catalog'));
@@ -213,9 +219,7 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
       );
     }
 
-    const updatedCatalog = await catalog.update({
-      chats: sequelize.fn('array_append', sequelize.col('chats'), chatId),
-    });
+    const updatedCatalog = await chatQueries.addChatToCatalog(catalog, chatId);
 
     if (!updatedCatalog) {
       return next(createHttpError(500, 'Conversation can"t be added'));
@@ -237,9 +241,10 @@ module.exports.removeChatFromCatalog = async (req, res, next) => {
     if (!catalog) {
       return next(createHttpError(400, 'Invalid catalog'));
     }
-    const updatedCatalog = await catalog.update({
-      chats: sequelize.fn('array_remove', sequelize.col('chats'), chatId),
-    });
+    const updatedCatalog = await chatQueries.removeChatFromCatalog(
+      catalog,
+      chatId,
+    );
     if (!updatedCatalog) {
       return next(createHttpError(500, 'Conversation can"t be removed'));
     }

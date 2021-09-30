@@ -1,4 +1,10 @@
-const { Conversation, Message, User, Catalog } = require('../../models');
+const {
+  Conversation,
+  Message,
+  User,
+  Catalog,
+  sequelize,
+} = require('../../models');
 const CONSTANTS = require('../../constants');
 
 module.exports.findOrCreateConversation = async (customerId, creatorId) =>
@@ -28,19 +34,12 @@ module.exports.getConversationsPreviews = async (userId, role) => {
   });
 };
 
-module.exports.updateConversationBlackList = async (
-  userId,
-  role,
-  flag,
-  index,
-) => {
-  const where =
-    role === CONSTANTS.CREATOR ? { creatorId: userId } : { customerId: userId };
-  const conversation = await Conversation.findOne({ where });
-  conversation.blackList[index] = flag;
+module.exports.getConversation = async where =>
+  await Conversation.findOne({ where });
 
+module.exports.updateBlackOrFavoriteList = async (where, list, type) => {
   const [_, [updatedConversation]] = await Conversation.update(
-    { blackList: conversation.blackList },
+    type === 'black' ? { blackList: list } : { favoriteList: list },
     {
       where,
       returning: true,
@@ -48,30 +47,6 @@ module.exports.updateConversationBlackList = async (
   );
   return updatedConversation;
 };
-
-module.exports.updateConversationFavoriteList = async (
-  userId,
-  role,
-  flag,
-  index,
-) => {
-  const where =
-    role === CONSTANTS.CREATOR ? { creatorId: userId } : { customerId: userId };
-  const conversation = await Conversation.findOne({ where });
-
-  conversation.favoriteList[index] = flag;
-  const [_, [updatedConversation]] = await Conversation.update(
-    { favoriteList: conversation.favoriteList },
-    {
-      where,
-      returning: true,
-    },
-  );
-  return updatedConversation;
-};
-
-module.exports.getConversation = async chatId =>
-  await Conversation.findByPk(chatId);
 
 module.exports.newCatalog = async (chatId, catalogName, userId) => {
   const catalog = await Catalog.create(
@@ -101,7 +76,7 @@ module.exports.getAllUserCatalogs = async userId => {
 module.exports.getCatalog = async catalogId =>
   await Catalog.findByPk(catalogId);
 
-module.exports.getConversation = async conversationId =>
+module.exports.getConversationByPk = async conversationId =>
   await Conversation.findByPk(conversationId);
 
 module.exports.destroyCatalog = async id =>
@@ -112,4 +87,14 @@ module.exports.destroyCatalog = async id =>
 module.exports.getInterlocutor = async interlocutorId =>
   await User.findByPk(interlocutorId, {
     attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
+  });
+
+module.exports.addChatToCatalog = async (instance, chatId) =>
+  await instance.update({
+    chats: sequelize.fn('array_append', sequelize.col('chats'), chatId),
+  });
+
+module.exports.removeChatFromCatalog = async (instance, chatId) =>
+  await instance.update({
+    chats: sequelize.fn('array_remove', sequelize.col('chats'), chatId),
   });
