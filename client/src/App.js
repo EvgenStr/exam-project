@@ -17,6 +17,7 @@ import ContestCreationPage from './pages/ContestCreation/ContestCreationPage';
 import ConfirmationResetPasswordPage from './pages/ConfirmationResetPasswordPage';
 import ChatContainer from './components/Chat/ChatComponents/ChatContainer/ChatContainer';
 import OnlyNotAuthorizedUserHoc from './components/OnlyNotAuthorizedUserHoc/OnlyNotAuthorizedUserHoc';
+import EventsPage from './pages/EventsPage';
 import CONSTANTS from './constants';
 import { authActionRefresh } from './actions/actionCreator';
 import 'react-toastify/dist/ReactToastify.css';
@@ -97,6 +98,7 @@ function App () {
         <Route exact path='/dashboard' component={PrivateHoc(Dashboard)} />
         <Route exact path='/contest/:id' component={PrivateHoc(ContestPage)} />
         <Route exact path='/account' component={PrivateHoc(UserProfile)} />
+        <Route exact path='/events' component={PrivateHoc(EventsPage)} />
         <Route component={NotFound} />
       </Switch>
       <ChatContainer />
