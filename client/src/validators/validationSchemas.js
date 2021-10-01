@@ -234,5 +234,12 @@ const VALIDATION_SCHEMAS = {
       .required('required')
       .oneOf([yup.ref('password')], 'Passwords must match'),
   }),
+  CreateEventSchema: yup.object().shape({
+    name: yup.string().required('please enter event name'),
+    date: yup
+      .date()
+      .min(new Date())
+      .required('please enter event date'),
+  }),
 };
 export default VALIDATION_SCHEMAS;
