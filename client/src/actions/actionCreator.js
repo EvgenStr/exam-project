@@ -326,3 +326,17 @@ export const resetPasswordConfirmAction = data => ({
 export const clearResetPasswordErrorAction = () => ({
   type: ACTION.CLEAR_PASSWORD_RESET_ERROR,
 });
+
+export const createEventAction = data => ({
+  type: ACTION.CREATE_EVENT,
+  data,
+});
+
+export const getEventsAction = () => ({
+  type: ACTION.GET_EVENTS,
+});
+
+export const deleteEventAction = data => ({
+  type: ACTION.DELETE_EVENT,
+  data,
+});
