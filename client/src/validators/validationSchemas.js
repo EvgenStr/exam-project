@@ -235,11 +235,16 @@ const VALIDATION_SCHEMAS = {
       .oneOf([yup.ref('password')], 'Passwords must match'),
   }),
   CreateEventSchema: yup.object().shape({
-    name: yup.string().required('please enter event name'),
-    date: yup
+    name: yup.string().max(64).required('please enter event name'),
+    endDate: yup
       .date()
       .min(new Date())
       .required('please enter event date'),
+    reminderDate: yup
+      .date()
+      .min(new Date())
+      .required('please enter reminder date')
+      .when('endDate', (endDate, yup) => endDate && yup.max(endDate)),
   }),
 };
 export default VALIDATION_SCHEMAS;
