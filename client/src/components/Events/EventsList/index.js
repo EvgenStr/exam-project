@@ -1,15 +1,23 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getEventsAction } from '../../../actions/actionCreator';
+import EventsListItem from './EventsListItem';
 
-function EventList () {
-  const { events } = useSelector(state => state.events);
+function EventsList () {
+  const {
+    events: { events },
+    auth: {
+      data: { id },
+    },
+  } = useSelector(state => state);
   const dispatch = useDispatch();
-
+  const eventsList = events.map(event => (
+    <EventsListItem key={event.startDate} event={event} />
+  ));
   useEffect(() => {
-    dispatch(getEventsAction());
+    dispatch(getEventsAction(id));
   }, []);
 
-  return <div>{JSON.stringify(events)}</div>;
+  return <div>{eventsList}</div>;
 }
-export default EventList;
+export default EventsList;
