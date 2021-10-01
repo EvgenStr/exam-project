@@ -332,8 +332,9 @@ export const createEventAction = data => ({
   data,
 });
 
-export const getEventsAction = () => ({
+export const getEventsAction = data => ({
   type: ACTION.GET_EVENTS,
+  data
 });
 
 export const deleteEventAction = data => ({
