@@ -1,7 +1,10 @@
 import React from 'react';
 import { Formik, Field } from 'formik';
 import { isAfter, formatDistance } from 'date-fns';
+import { useDispatch } from 'react-redux';
+import { createEventAction } from '../../../actions/actionCreator';
 import DateField from './DateField';
+import Schemas from '../../../validators/validationSchemas';
 
 const initialValues = {
   name: '',
@@ -9,18 +12,21 @@ const initialValues = {
 };
 
 function CreateEventForm () {
+  const dispatch = useDispatch();
+
+  const createEvent = values => {
+    dispatch(createEventAction(values));
+  };
   return (
     <div>
       <Formik
         initialValues={initialValues}
+        validationSchema={Schemas.CreateEventSchema}
         onSubmit={(values, actions) => {
-          console.log(values);
           if (isAfter(values.date, new Date())) {
-            // console.log('TRUE', formatDistance(values.date, new Date()));
-            console.log('TRUE', localStorage.getItem('events'));
+            createEvent(values);
+            // actions.resetForm()
           }
-
-          // actions.resetForm()
         }}
       >
         {props => (
@@ -28,6 +34,7 @@ function CreateEventForm () {
             <Field type='text' name='name' placeholder='Event Name' />
             {props.errors.name && <div id='feedback'>{props.errors.name}</div>}
             <DateField name='date' />
+            {props.errors.date && <div id='feedback'>{props.errors.date}</div>}
             <button type='submit'>Create Event</button>
           </form>
         )}
