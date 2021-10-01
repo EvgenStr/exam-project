@@ -9,10 +9,10 @@ function DateField ({ ...props }) {
   const [field] = useField(props);
 
   const changeHandler = date => {
-    const timestamp = new Date(date).getTime()
+    // const timestamp = new Date(date).getTime()
     // console.log(timestamp, 'timestamp', Date.now())
-    setStartDate(timestamp);
-    setFieldValue(field.name, timestamp);
+    setStartDate(date);
+    setFieldValue(field.name, date);
   };
   return (
     <div>
