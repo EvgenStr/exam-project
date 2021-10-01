@@ -13,7 +13,8 @@ function eventsReducer (state = initialState, action) {
       return { events };
     }
     case ACTION.GET_EVENTS: {
-      const events = JSON.parse(localStorage.getItem('events') || '[]');
+      const AllEvents = JSON.parse(localStorage.getItem('events') || '[]');
+      const events = AllEvents.filter(event => event.id === action.data);
       return { events };
     }
     case ACTION.DELETE_EVENT: {
