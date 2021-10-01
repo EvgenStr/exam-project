@@ -11,6 +11,7 @@ import chatReducer from './chatReducer';
 import userProfileReducer from './userProfileReducer';
 import moderationOffersReducer from './moderationOffersReducer';
 import resetPasswordReducer from './resetPasswordReducer';
+import eventsReducer from './eventsReducer';
 
 const appReducer = combineReducers({
   auth: authReducer,
@@ -25,6 +26,7 @@ const appReducer = combineReducers({
   userProfile: userProfileReducer,
   moderationOffers: moderationOffersReducer,
   resetPassword: resetPasswordReducer,
+  events: eventsReducer,
 });
 
 export default appReducer;
