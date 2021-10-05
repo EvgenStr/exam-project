@@ -1,0 +1,22 @@
+@import '../../../common/templates.sass'
+.container
+  max-width: 768px
+  padding: 0 15px
+
+.form
+  @extend %flex-column-just-center
+  align-items: center
+  padding: 15px 10px
+  label
+    padding: 10px 0
+  >*
+    z-index: 20
+
+.error
+  color: $error-msg-color
+  max-width: 215px
+  text-align: center
+
+.button
+  margin-top: 20px
+  z-index: 15

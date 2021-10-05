@@ -1,10 +1,11 @@
 import React from 'react';
 import { Formik, Field } from 'formik';
-import { isAfter, formatDistance } from 'date-fns';
+import { isAfter } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 import { createEventAction } from '../../../actions/actionCreator';
 import DateField from './DateField';
 import Schemas from '../../../validators/validationSchemas';
+import styles from './CreateEventForm.module.sass';
 
 const initialValues = {
   name: '',
@@ -29,7 +30,7 @@ function CreateEventForm () {
     );
   };
   return (
-    <div>
+    <div className={styles.container}>
       <Formik
         initialValues={initialValues}
         validationSchema={Schemas.CreateEventSchema}
@@ -41,18 +42,23 @@ function CreateEventForm () {
         }}
       >
         {props => (
-          <form onSubmit={props.handleSubmit}>
+          <form className={styles.form} onSubmit={props.handleSubmit}>
+            <label htmlFor='name'>Name:</label>
             <Field type='text' name='name' placeholder='Event name' />
-            {props.errors.name && <div id='feedback'>{props.errors.name}</div>}
+            {props.errors.name && props.touched.name && (
+              <span className={styles.error}>{props.errors.name}</span>
+            )}
+            <label htmlFor='endDate'>Event date:</label>
             <DateField name='endDate' placeholderText='Event date' />
-            {props.errors.endDate && (
-              <div id='feedback'>{props.errors.endDate}</div>
+            {props.errors.endDate && props.touched.endDate && (
+              <span className={styles.error}>{props.errors.endDate}</span>
             )}
+            <label htmlFor='endDate'>Reminder date:</label>
             <DateField name='reminderDate' placeholderText='Reminder date' />
-            {props.errors.reminderDate && (
-              <div id='feedback'>{props.errors.reminderDate}</div>
+            {props.errors.reminderDate && props.touched.reminderDate && (
+              <span className={styles.error}>{props.errors.reminderDate}</span>
             )}
-            <button type='submit'>Create Event</button>
+            <button className={styles.button} type='submit'>Create Event</button>
           </form>
         )}
       </Formik>
