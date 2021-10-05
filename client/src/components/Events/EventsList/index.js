@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getEventsAction } from '../../../actions/actionCreator';
 import EventsListItem from './EventsListItem';
+import styles from './EventsList.module.sass'
 
 function EventsList () {
   const {
@@ -18,6 +19,6 @@ function EventsList () {
     dispatch(getEventsAction(id));
   }, []);
 
-  return <div>{eventsList}</div>;
+  return <div className={styles.container}>{eventsList}</div>;
 }
 export default EventsList;
