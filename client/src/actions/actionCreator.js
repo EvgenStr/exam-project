@@ -334,7 +334,7 @@ export const createEventAction = data => ({
 
 export const getEventsAction = data => ({
   type: ACTION.GET_EVENTS,
-  data
+  data,
 });
 
 export const deleteEventAction = data => ({
