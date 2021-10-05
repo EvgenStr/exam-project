@@ -235,16 +235,27 @@ const VALIDATION_SCHEMAS = {
       .oneOf([yup.ref('password')], 'Passwords must match'),
   }),
   CreateEventSchema: yup.object().shape({
-    name: yup.string().max(64).required('please enter event name'),
+    name: yup
+      .string()
+      .max(64)
+      .required('Please enter event name'),
     endDate: yup
       .date()
-      .min(new Date())
-      .required('please enter event date'),
+      .min(
+        new Date(),
+        'The event date field must be later than the current date',
+      )
+      .required('Please enter event date'),
     reminderDate: yup
       .date()
-      .min(new Date())
-      .required('please enter reminder date')
-      .when('endDate', (endDate, yup) => endDate && yup.max(endDate)),
+      .min(new Date(), 'The reminder field must be later than the current date')
+      .required('Please enter reminder date')
+      .when(
+        'endDate',
+        (endDate, yup) =>
+          endDate &&
+          yup.max(endDate, 'Reminder field must be before the end date'),
+      ),
   }),
 };
 export default VALIDATION_SCHEMAS;
