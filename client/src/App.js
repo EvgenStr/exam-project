@@ -31,6 +31,7 @@ function App () {
       dispatch(authActionRefresh(refreshToken));
     }
   }, [dispatch]);
+
   return (
     <Router>
       <ToastContainer

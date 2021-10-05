@@ -241,20 +241,17 @@ const VALIDATION_SCHEMAS = {
       .required('Please enter event name'),
     endDate: yup
       .date()
-      .min(
-        new Date(),
-        'The event date field must be later than the current date',
-      )
+      .min(new Date(), 'The event date must be later than the current date')
       .required('Please enter event date'),
     reminderDate: yup
       .date()
-      .min(new Date(), 'The reminder field must be later than the current date')
+      .min(new Date(), 'The reminder date must be later than the current date')
       .required('Please enter reminder date')
       .when(
         'endDate',
         (endDate, yup) =>
           endDate &&
-          yup.max(endDate, 'Reminder field must be before the end date'),
+          yup.max(endDate, 'Reminder date must be before the end date'),
       ),
   }),
 };
