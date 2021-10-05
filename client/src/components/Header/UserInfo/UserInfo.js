@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import CONSTANTS from '../../../constants';
-import { clearUserStore } from '../../../actions/actionCreator';
+import {
+  clearUserStore,
+  getEventsAction,
+} from '../../../actions/actionCreator';
 import styles from './UserInfo.module.sass';
 
 function UserInfo (props) {
+  const dispatch = useDispatch();
+  const {
+    auth: { data },
+    events: { events },
+  } = useSelector(state => state);
+
+  useEffect(() => {
+    if (data) {
+      dispatch(getEventsAction(data.id));
+    }
+  }, []);
+  console.log(events, 'events2');
   const logOut = () => {
-    localStorage.clear();
+    localStorage.removeItem('refreshToken');
     props.clearUserStore();
     props.history.replace('/login');
   };
@@ -41,8 +56,8 @@ function UserInfo (props) {
             </Link>
           </li>
           <li>
-            <Link to='http:/www.google.com' style={{ textDecoration: 'none' }}>
-              <span>Affiliate Dashboard</span>
+            <Link to='/events' style={{ textDecoration: 'none' }}>
+              <span>Events</span>
             </Link>
           </li>
           <li>
