@@ -12,12 +12,13 @@ function EventsList () {
     },
   } = useSelector(state => state);
   const dispatch = useDispatch();
+  events.sort((a, b) =>a.endDate - b.endDate);
   const eventsList = events.map(event => (
     <EventsListItem key={event.startDate} event={event} />
   ));
   useEffect(() => {
     dispatch(getEventsAction(id));
-  }, []);
+  }, [dispatch, id]);
 
   return <div className={styles.container}>{eventsList}</div>;
 }
