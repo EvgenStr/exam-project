@@ -4,24 +4,23 @@ import styles from './EventsListItem.module.sass';
 
 function EventsListItem ({ event }) {
   const duration = event.endDate - event.startDate;
-  const [progress, setProgress] = useState(
-    Math.ceil(100 - ((event.endDate - Date.now()) / duration) * 100),
-  );
-  const getTimeLeft = () => {
-    if (isAfter(event.endDate, Date.now())) {
-      return formatDistanceToNowStrict(event.endDate);
-    }
-    return 'time is over';
-  };
+  const calcProgress = () =>
+    Math.ceil(100 - ((event.endDate - Date.now()) / duration) * 100);
+  const [progress, setProgress] = useState(calcProgress());
+  const getTimeLeft = () =>
+    isAfter(event.endDate, Date.now())
+      ? formatDistanceToNowStrict(event.endDate)
+      : 'time is over';
   const timeLeft = getTimeLeft();
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      console.log('test', progress);
-      setProgress(
-        Math.ceil(100 - ((event.endDate - Date.now()) / duration) * 100),
-      );
-    }, 1000);
+    let interval;
+    if (progress <= 100) {
+      interval = setInterval(() => {
+        console.log('test', progress);
+        setProgress(calcProgress());
+      }, 1000);
+    }
     return () => clearInterval(interval);
   }, [progress]);
 
