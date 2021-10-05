@@ -19,7 +19,8 @@ function eventsReducer (state = initialState, action) {
     }
     case ACTION.DELETE_EVENT: {
       const oldEvents = JSON.parse(localStorage.getItem('events') || '[]');
-      const events = oldEvents.filter(event => event.date !== action.data.date);
+      const events = oldEvents.filter(event => event.startDate !== action.data);
+      localStorage.setItem('events', JSON.stringify(events));
       return { events };
     }
 
