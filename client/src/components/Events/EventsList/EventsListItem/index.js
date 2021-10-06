@@ -6,7 +6,6 @@ import styles from './EventsListItem.module.sass';
 
 function EventsListItem ({ event }) {
   const duration = event.endDate - event.startDate;
-  // const duration = 86400000;
   const calcProgress = () =>
     Math.ceil(100 - ((event.endDate - Date.now()) / duration) * 100);
   const [progress, setProgress] = useState(calcProgress());

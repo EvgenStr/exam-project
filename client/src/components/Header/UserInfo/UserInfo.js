@@ -1,26 +1,36 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import CONSTANTS from '../../../constants';
+import { toast } from 'react-toastify';
 import {
   clearUserStore,
-  getEventsAction,
+  addEventBadgeAction,
 } from '../../../actions/actionCreator';
+import CONSTANTS from '../../../constants';
 import styles from './UserInfo.module.sass';
 
 function UserInfo (props) {
   const dispatch = useDispatch();
-  const {
-    auth: { data },
-    events: { events },
-  } = useSelector(state => state);
+  const { events, badges } = useSelector(state => state.events);
+
+  const checkEventReminderTime = events => {
+    events.forEach(event => {
+      const currentTime = Date.now();
+      const reminder = event.reminderDate - currentTime;
+      if (reminder > 0 && reminder < 60000) {
+        dispatch(addEventBadgeAction());
+        toast(`Your event ${event.name} is starting soon`);
+      }
+    });
+  };
 
   useEffect(() => {
-    if (data) {
-      dispatch(getEventsAction(data.id));
-    }
-  }, []);
-  console.log(events, 'events2');
+    const interval = setInterval(() => {
+      checkEventReminderTime(events);
+    }, 60000);
+    return () => clearInterval(interval);
+  }, [events]);
+
   const logOut = () => {
     localStorage.removeItem('refreshToken');
     props.clearUserStore();
@@ -57,7 +67,10 @@ function UserInfo (props) {
           </li>
           <li>
             <Link to='/events' style={{ textDecoration: 'none' }}>
-              <span>Events</span>
+              <span className={styles.events}>
+                {badges > 0 && <div className={styles.badges}>{badges}</div>}
+                Events
+              </span>
             </Link>
           </li>
           <li>
