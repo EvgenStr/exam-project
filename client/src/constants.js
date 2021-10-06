@@ -21,6 +21,7 @@ const CONSTANTS = {
   BASE_URL: `http://${serverIP}:${serverPort}/`,
   ACCESS_TOKEN: 'accessToken',
   REFRESH_TOKEN: 'refreshToken',
+  EVENT_STORAGE: 'events',
   publicURL:
     env === 'production'
       ? `http://${serverIP}:80/images/`
