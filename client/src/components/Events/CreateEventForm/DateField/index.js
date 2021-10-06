@@ -3,6 +3,7 @@ import DatePicker from 'react-datepicker';
 import { useField, useFormikContext } from 'formik';
 import { addYears } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
+import './index.css'
 
 function DateField ({ ...props }) {
   const [startDate, setStartDate] = useState(Date.now());
