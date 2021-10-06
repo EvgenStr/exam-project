@@ -32,7 +32,7 @@ function UserInfo (props) {
   }, [events]);
 
   const logOut = () => {
-    localStorage.removeItem('refreshToken');
+    localStorage.removeItem(CONSTANTS.REFRESH_TOKEN);
     props.clearUserStore();
     props.history.replace('/login');
   };

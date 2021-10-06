@@ -61,14 +61,14 @@ module.exports.getContestById = async (req, res, next) => {
             req.tokenData.role === CONSTANTS.CREATOR
               ? { userId: req.tokenData.userId }
               : {
-                status: {
-                  [db.Sequelize.Op.in]: [
-                    CONSTANTS.OFFER_STATUS_ACCEPTED,
-                    CONSTANTS.OFFER_STATUS_REJECTED,
-                    CONSTANTS.OFFER_STATUS_WON,
-                  ],
+                  status: {
+                    [db.Sequelize.Op.in]: [
+                      CONSTANTS.OFFER_STATUS_ACCEPTED,
+                      CONSTANTS.OFFER_STATUS_REJECTED,
+                      CONSTANTS.OFFER_STATUS_WON,
+                    ],
+                  },
                 },
-              },
           attributes: { exclude: ['userId', 'contestId'] },
           include: [
             {
@@ -290,7 +290,7 @@ module.exports.getOffersForModerator = async (req, res, next) => {
     });
 
     if (!count) {
-      return createHttpError(404, 'No offers');
+      return next(createHttpError(404, 'No offers'));
     }
 
     res.send({ count, offers });
@@ -350,8 +350,12 @@ const resolveOffer = async (
   const finishedContest = await contestQueries.updateContestStatus(
     {
       status: db.sequelize.literal(`CASE
-            WHEN "id"=${contestId}  AND "orderId"='${orderId}' THEN '${CONSTANTS.CONTEST_STATUS_FINISHED}'
-            WHEN "orderId"='${orderId}' AND "priority"=${priority + 1}  THEN '${CONSTANTS.CONTEST_STATUS_ACTIVE}'
+            WHEN "id"=${contestId}  AND "orderId"='${orderId}' THEN '${
+        CONSTANTS.CONTEST_STATUS_FINISHED
+      }'
+            WHEN "orderId"='${orderId}' AND "priority"=${priority + 1}  THEN '${
+        CONSTANTS.CONTEST_STATUS_ACTIVE
+      }'
             ELSE '${CONSTANTS.CONTEST_STATUS_PENDING}'
             END`),
     },

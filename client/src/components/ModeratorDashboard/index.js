@@ -33,7 +33,7 @@ function ModeratorDashboard () {
         <span className={styles.errorContainer}>{errors}</span>
       )}
       {!isFetching && <OffersList />}
-      {!isFetching && offers.length === 0 && <span>No offers</span>}
+      {!isFetching && offers.length === 0 && <span className={styles.noOffers}>No offers</span>}
       {!isFetching && !errors && pageCount > 1 && (
         <Pagination
           pageCount={pageCount}
