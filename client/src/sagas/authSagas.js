@@ -41,6 +41,7 @@ export function * refreshSaga (action) {
       }
     } = yield Api.auth.refresh(action.data)
     yield put({ type: ACTION.GET_USER_SUCCESS, data: user })
+    yield put({ type: ACTION.GET_EVENTS, data: user.id})
   } catch (e) {
     console.log(e)
     yield put({ type: ACTION.AUTH_ACTION_ERROR, error: e.response })
