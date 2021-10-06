@@ -341,3 +341,11 @@ export const deleteEventAction = data => ({
   type: ACTION.DELETE_EVENT,
   data,
 });
+
+export const addEventBadgeAction = () => ({
+  type: ACTION.ADD_EVENT_BADGE,
+})
+
+export const clearEventsBadgesAction = () => ({
+  type: ACTION.CLEAR_EVENTS_BADGES,
+})
