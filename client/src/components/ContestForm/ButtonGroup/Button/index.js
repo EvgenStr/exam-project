@@ -3,7 +3,7 @@ import cx from 'classnames';
 import styles from './Button.module.sass';
 
 function Button ({ data: { badge, description, value }, active, handler }) {
-  console.log(active, 'button');
+
   return (
     <div
       className={cx(styles.container, value === active ? styles.active : '')}
