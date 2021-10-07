@@ -154,7 +154,9 @@ class ContestForm extends React.Component {
                     warning: styles.warning,
                   }}
                 />
-                <ButtonGroup {...props} />
+                {this.props.contestType === CONSTANTS.NAME_CONTEST && (
+                  <ButtonGroup {...props} />
+                )}
                 {this.props.isEditContest ? (
                   <button type='submit' className={styles.changeData}>
                     Set Data

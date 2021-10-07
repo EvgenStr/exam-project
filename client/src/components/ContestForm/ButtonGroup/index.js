@@ -19,7 +19,9 @@ function ButtonGroup (props) {
     <div className={styles.container}>
       <input type='hidden' value='yes' name='company_url_needed' />
       <div className={styles.headContainer}>
-        <h4 className={styles.mainText}>Do you want a matching domain (.com URL) with your name?</h4>
+        <h4 className={styles.mainText}>
+          Do you want a matching domain (.com URL) with your name?
+        </h4>
         <span className={styles.secondaryText}>
           If you want a matching domain, our platform will only accept those
           name suggestions where the domain is available. (Recommended)
