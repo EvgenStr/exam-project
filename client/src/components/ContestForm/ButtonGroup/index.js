@@ -1,21 +1,31 @@
 import React from 'react';
-import { Field, Form, Formik, FormikProps, Set } from 'formik';
+import Button from './Button';
 import data from './data.json';
 import styles from './ButtonGroup.module.sass';
 
 function ButtonGroup (props) {
-  console.log(props, 'props', data);
+  const handler = value => {
+    props.setFieldValue('company_url_needed', value);
+  };
+  const buttons = data.map((e, i) => (
+    <Button
+      key={i}
+      data={e}
+      active={props.values.company_url_needed}
+      handler={handler}
+    />
+  ));
   return (
-    <div>
-      test
+    <div className={styles.container}>
       <input type='hidden' value='yes' name='company_url_needed' />
-      <div
-        onClick={() => {
-          props.setFieldValue('company_url_needed', 'no');
-        }}
-      >
-        no
+      <div className={styles.headContainer}>
+        <h4 className={styles.mainText}>Do you want a matching domain (.com URL) with your name?</h4>
+        <span className={styles.secondaryText}>
+          If you want a matching domain, our platform will only accept those
+          name suggestions where the domain is available. (Recommended)
+        </span>
       </div>
+      <div className={styles.buttons}>{buttons}</div>
     </div>
   );
 }

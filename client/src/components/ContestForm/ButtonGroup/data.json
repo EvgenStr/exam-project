@@ -1,16 +1,16 @@
 [
   {
-    "header": "Yes",
+    "badge": "Yes",
     "description": "The Domain should exactly match the name",
     "value": "asname"
   },
   {
-    "header": "Yes",
+    "badge": "Yes",
     "description": "But minor variations are allowed (Recommended)",
     "value": "yes"
   },
   {
-    "header": "No",
+    "badge": "No",
     "description": "I am only looking for a name, not a Domain",
     "value": "no"
   }
