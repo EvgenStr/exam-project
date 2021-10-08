@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { selectBundle } from '../../actions/actionCreator';
-import BundleBox from '../../components/BundleBox/BundleBox';
+import BundleBox from '../../components/Contest/BundleBox/BundleBox';
 import CONSTANTS from '../../constants';
 import styles from './StartContestPage.module.sass';
 import Footer from '../../components/Footer/Footer';

@@ -7,7 +7,7 @@ import {
 } from '../../actions/actionCreator';
 import NextButton from '../../components/NextButton/NextButton';
 import ContestForm from '../../components/Contest/ContestForm/ContestForm';
-import BackButton from '../../components/BackButton/BackButton';
+import BackButton from '../../components/Contest/BackButton/BackButton';
 import ProgressBar from '../../components/ProgressBar/ProgressBar';
 import Footer from '../../components/Footer/Footer';
 import Header from '../../components/Header/Header';
