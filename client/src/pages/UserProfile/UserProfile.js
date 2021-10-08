@@ -5,7 +5,7 @@ import Header from '../../components/Header/Header';
 import styles from './UserProfile.module.sass';
 import CONSTANTS from '../../constants';
 import UserInfo from '../../components/UserInfo/UserInfo';
-import PayForm from '../../components/PayForm/PayForm';
+import PayForm from '../../components/Forms/PayForm/PayForm';
 import {
   cashOut,
   changeProfileModeView,

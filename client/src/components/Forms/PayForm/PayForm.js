@@ -4,9 +4,9 @@ import { Form, Formik } from 'formik';
 import 'react-credit-cards/es/styles-compiled.css';
 import { connect } from 'react-redux';
 import styles from './PayForm.module.sass';
-import { changeFocusOnCard } from '../../actions/actionCreator';
-import PayInput from '../InputComponents/PayInput/PayInput';
-import Schemas from '../../validators/validationSchemas';
+import { changeFocusOnCard } from '../../../actions/actionCreator';
+import PayInput from '../../InputComponents/PayInput/PayInput';
+import Schemas from '../../../validators/validationSchemas';
 
 const PayForm = (props) => {
   const changeFocusOnCard = (name) => {

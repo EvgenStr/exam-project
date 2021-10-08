@@ -3,12 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   resetPasswordAction,
   clearResetPasswordErrorAction,
-} from '../../actions/actionCreator';
+} from '../../../actions/actionCreator';
 import { Formik, Form, Field } from 'formik';
-import FormInput from '../FormInput/FormInput';
-import Spinner from '../Spinner/Spinner';
-import Error from '../Error/Error';
-import Schemas from '../../validators/validationSchemas.js';
+import FormInput from '../../FormInput/FormInput';
+import Spinner from '../../Spinner/Spinner';
+import Error from '../../Error/Error';
+import Schemas from '../../../validators/validationSchemas.js';
 import styles from './ForgotPasswordForm.module.sass';
 
 const initialValues = {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import ForgotPasswordForm from '../../components/ForgotPasswordForm';
+import ForgotPasswordForm from '../../components/Forms/ForgotPasswordForm';
 import Logo from '../../components/Logo';
 import styles from './ForgotPasswordPage.module.sass';
 import CONSTANTS from '../../constants';
