@@ -32,7 +32,7 @@ const DialogBox = props => {
   useEffect(() => {
     setIsFavorite(favoriteList[participants.indexOf(userId)]);
     setIsBlocked(blackList[participants.indexOf(userId)]);
-  }, [blackList, favoriteList]);
+  }, [blackList, favoriteList, participants, userId]);
   return (
     <div
       className={styles.previewChatBox}

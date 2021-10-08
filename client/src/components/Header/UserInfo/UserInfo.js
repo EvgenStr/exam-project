@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
-
 import { clearUserStore } from '../../../actions/actionCreator';
 import CONSTANTS from '../../../constants';
 import styles from './UserInfo.module.sass';

@@ -15,7 +15,7 @@ function ConfirmationResetPassword () {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(resetPasswordConfirmAction({ token }));
-  }, []);
+  }, [token, dispatch]);
 
   return (
     <div className={styles.container}>

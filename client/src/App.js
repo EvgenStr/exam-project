@@ -48,11 +48,10 @@ function App () {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log('Interval');
       checkEventReminderTime();
     }, 60000);
     return () => clearInterval(interval);
-  }, []);
+  });
 
   return (
     <Router>
@@ -85,6 +84,7 @@ function App () {
           component={OnlyNotAuthorizedUserHoc(ForgotPasswordPage)}
         />
         <Route
+          exact
           path='/password-confirm/:token'
           component={OnlyNotAuthorizedUserHoc(ConfirmationResetPasswordPage)}
         />
