@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import styles from './ContestSideBar.module.sass';
-import CONSTANTS from '../../constants';
+import CONSTANTS from '../../../constants';
 
 const ContestSideBar = (props) => {
   const getTimeStr = () => {

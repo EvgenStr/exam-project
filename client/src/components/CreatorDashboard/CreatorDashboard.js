@@ -10,7 +10,7 @@ import {
   setNewCreatorFilter,
   getDataForContest,
 } from '../../actions/actionCreator';
-import ContestsContainer from '../ContestsContainer/ContestsContainer';
+import ContestsContainer from '../Contest/ContestsContainer/ContestsContainer';
 import ContestBox from '../Contest/ContestBox/ContestBox';
 import styles from './CreatorDashboard.module.sass';
 import TryAgain from '../TryAgain/TryAgain';
