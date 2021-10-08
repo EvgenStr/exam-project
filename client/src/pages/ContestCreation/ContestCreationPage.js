@@ -5,7 +5,7 @@ import {
   saveContestToStore,
   clearDataForContest,
 } from '../../actions/actionCreator';
-import NextButton from '../../components/NextButton/NextButton';
+import NextButton from '../../components/Contest/NextButton/NextButton';
 import ContestForm from '../../components/Contest/ContestForm/ContestForm';
 import BackButton from '../../components/Contest/BackButton/BackButton';
 import ProgressBar from '../../components/ProgressBar/ProgressBar';
