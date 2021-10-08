@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { clearUserError } from '../../../actions/actionCreator';
 import styles from './UpdateUserInfoForm.module.sass';
 import ImageUpload from '../Inputs/ImageUpload/ImageUpload';
-import FormInput from '../../FormInput/FormInput';
+import FormInput from '../Inputs/FormInput/FormInput';
 import Schemas from '../../../validators/validationSchemas';
 import Error from '../../Error/Error';
 

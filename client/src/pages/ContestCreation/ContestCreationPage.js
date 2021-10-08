@@ -6,7 +6,7 @@ import {
   clearDataForContest,
 } from '../../actions/actionCreator';
 import NextButton from '../../components/Contest/NextButton/NextButton';
-import ContestForm from '../../components/Contest/ContestForm/ContestForm';
+import ContestForm from '../../components/Forms/ContestForm/ContestForm';
 import BackButton from '../../components/Contest/BackButton/BackButton';
 import ProgressBar from '../../components/ProgressBar/ProgressBar';
 import Footer from '../../components/Footer/Footer';

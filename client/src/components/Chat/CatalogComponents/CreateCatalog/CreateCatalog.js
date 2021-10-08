@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form } from 'formik';
-import FormInput from '../../../FormInput/FormInput';
+import FormInput from '../../../Forms/Inputs/FormInput/FormInput';
 import styles from './CreateCatalog.module.sass';
 import { createCatalog } from '../../../../actions/actionCreator';
 import Schemas from '../../../../validators/validationSchemas';

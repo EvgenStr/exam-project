@@ -6,13 +6,13 @@ import CONSTANTS from '../../../constants';
 import { getDataForContest } from '../../../actions/actionCreator';
 import styles from './ContestForm.module.sass';
 import Spinner from '../../Spinner/Spinner';
-import FormInput from '../../FormInput/FormInput';
-import SelectInput from '../../Forms/Inputs/SelectInput/SelectInput';
-import FieldFileInput from '../../Forms/Inputs/FieldFileInput/FieldFileInput';
-import FormTextArea from '../../Forms/Inputs/FormTextArea/FormTextArea';
+import FormInput from '../Inputs/FormInput/FormInput';
+import SelectInput from '../Inputs/SelectInput/SelectInput';
+import FieldFileInput from '../Inputs/FieldFileInput/FieldFileInput';
+import FormTextArea from '../Inputs/FormTextArea/FormTextArea';
 import TryAgain from '../../TryAgain/TryAgain';
 import Schemas from '../../../validators/validationSchemas';
-import OptionalSelects from '../../OptionalSelects/OptionalSelects';
+import OptionalSelects from './OptionalSelects/OptionalSelects';
 import ButtonGroup from './ButtonGroup';
 
 const variableOptions = {

@@ -5,7 +5,7 @@ import {
   clearResetPasswordErrorAction,
 } from '../../../actions/actionCreator';
 import { Formik, Form, Field } from 'formik';
-import FormInput from '../../FormInput/FormInput';
+import FormInput from '../Inputs/FormInput/FormInput';
 import Spinner from '../../Spinner/Spinner';
 import Error from '../../Error/Error';
 import Schemas from '../../../validators/validationSchemas.js';

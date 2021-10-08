@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import { authActionLogin, clearAuth } from '../../../actions/actionCreator';
 import styles from './LoginForm.module.sass';
-import FormInput from '../../FormInput/FormInput';
+import FormInput from '../Inputs/FormInput/FormInput';
 import Schemas from '../../../validators/validationSchemas';
 import Error from '../../Error/Error';
 
