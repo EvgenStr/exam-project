@@ -1,41 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
-import {
-  clearUserStore,
-  addEventBadgeAction,
-} from '../../../actions/actionCreator';
+import { connect, useSelector } from 'react-redux';
+
+import { clearUserStore } from '../../../actions/actionCreator';
 import CONSTANTS from '../../../constants';
 import styles from './UserInfo.module.sass';
 
 function UserInfo (props) {
-  const dispatch = useDispatch();
-  const { events, badges } = useSelector(state => state.events);
-
-  const checkEventReminderTime = events => {
-    events.forEach(event => {
-      const currentTime = Date.now();
-      const reminder = event.reminderDate - currentTime;
-      if (reminder > 0 && reminder < 60000) {
-        dispatch(addEventBadgeAction());
-        toast(`Your event ${event.name} is starting soon`);
-      }
-    });
-  };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      checkEventReminderTime(events);
-    }, 60000);
-    return () => clearInterval(interval);
-  }, [events]);
+  const badges = useSelector(state => state.events.badges);
 
   const logOut = () => {
     localStorage.removeItem(CONSTANTS.REFRESH_TOKEN);
     props.clearUserStore();
     props.history.replace('/login');
   };
+
   return (
     <>
       <div className={styles.userInfo}>

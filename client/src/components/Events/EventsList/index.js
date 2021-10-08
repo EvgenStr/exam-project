@@ -11,10 +11,10 @@ function EventsList () {
   const eventsList = events.map(event => (
     <EventsListItem key={event.startDate} event={event} />
   ));
-  
+
   useEffect(() => {
     dispatch(clearEventsBadgesAction());
-  }, []);
+  }, [dispatch]);
 
   return <div className={styles.container}>{eventsList}</div>;
 }

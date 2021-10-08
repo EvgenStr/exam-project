@@ -1,7 +1,7 @@
-import React, { useLayoutEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useLayoutEffect, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import Home from './pages/Home/Home';
 import LoginPage from './pages/LoginPage/LoginPage';
 import RegistrationPage from './pages/RegistrationPage/RegistrationPage';
@@ -19,18 +19,40 @@ import ChatContainer from './components/Chat/ChatComponents/ChatContainer/ChatCo
 import OnlyNotAuthorizedUserHoc from './components/OnlyNotAuthorizedUserHoc/OnlyNotAuthorizedUserHoc';
 import EventsPage from './pages/EventsPage';
 import CONSTANTS from './constants';
-import { authActionRefresh } from './actions/actionCreator';
+import {
+  authActionRefresh,
+  addEventBadgeAction,
+} from './actions/actionCreator';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App () {
   const dispatch = useDispatch();
-
+  const events = useSelector(state => state.events.events);
   useLayoutEffect(() => {
     const refreshToken = window.localStorage.getItem(CONSTANTS.REFRESH_TOKEN);
     if (refreshToken) {
       dispatch(authActionRefresh(refreshToken));
     }
   }, [dispatch]);
+
+  const checkEventReminderTime = () => {
+    events.forEach(event => {
+      const currentTime = Date.now();
+      const reminder = event.reminderDate - currentTime;
+      if (reminder > 0 && reminder < 60000) {
+        dispatch(addEventBadgeAction());
+        toast(`Your event ${event.name} is starting soon`);
+      }
+    });
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log('Interval');
+      checkEventReminderTime();
+    }, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <Router>
