@@ -1,6 +1,6 @@
 import React from 'react';
 import CONSTANTS from '../../constants';
-import SelectInput from '../SelectInput/SelectInput';
+import SelectInput from '../Forms/Inputs/SelectInput/SelectInput';
 import FormInput from '../FormInput/FormInput';
 import styles from '../Contest/ContestForm/ContestForm.module.sass';
 import Spinner from '../Spinner/Spinner';

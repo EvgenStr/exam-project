@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form } from 'formik';
-import SelectInput from '../../../SelectInput/SelectInput';
+import SelectInput from '../../../Forms/Inputs/SelectInput/SelectInput';
 import { addChatToCatalog } from '../../../../actions/actionCreator';
 import styles from './AddToCatalog.module.sass';
 

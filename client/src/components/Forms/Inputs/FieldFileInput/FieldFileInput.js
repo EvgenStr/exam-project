@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Field } from 'formik';
-import CONSTANTS from '../../../constants';
+import CONSTANTS from '../../../../constants';
 
 const FieldFileInput = ({ classes, ...rest }) => {
   const fileInputField = useRef(null);

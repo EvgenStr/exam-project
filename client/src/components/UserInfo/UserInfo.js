@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import UpdateUserInfoForm from '../UpdateUserInfoForm/UpdateUserInfoForm';
+import UpdateUserInfoForm from '../Forms/UpdateUserInfoForm/UpdateUserInfoForm';
 import {
   updateUserData,
   changeEditModeOnUserProfile,

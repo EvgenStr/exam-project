@@ -4,7 +4,7 @@ import { Formik, Form } from 'formik';
 import CONSTANTS from '../../../constants';
 import { setOffer, clearAddOfferError } from '../../../actions/actionCreator';
 import styles from './OfferForm.module.sass';
-import ImageUpload from '../../InputComponents/ImageUpload/ImageUpload';
+import ImageUpload from '../Inputs/ImageUpload/ImageUpload';
 import FormInput from '../../FormInput/FormInput';
 import Schemas from '../../../validators/validationSchemas';
 import Error from '../../Error/Error';

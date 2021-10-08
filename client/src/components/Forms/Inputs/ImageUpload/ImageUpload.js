@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import classNames from 'classnames';
 import { useField } from 'formik';
-import CONSTANTS from '../../../constants'
+import CONSTANTS from '../../../../constants'
 
 const ImageUpload = props => {
   const fileInput = useRef(null);

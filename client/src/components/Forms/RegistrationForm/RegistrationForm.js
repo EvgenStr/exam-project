@@ -5,7 +5,7 @@ import Error from '../../Error/Error';
 import { authActionRegister, clearAuth } from '../../../actions/actionCreator';
 import styles from './RegistrationForm.module.sass';
 import FormInput from '../../FormInput/FormInput';
-import RoleInput from '../../RoleInput/RoleInput';
+import RoleInput from '../Inputs/RoleInput/RoleInput';
 import AgreeTermOfServiceInput
   from '../../AgreeTermOfServiceInput/AgreeTermOfServiceInput';
 import CONSTANTS from '../../../constants';
