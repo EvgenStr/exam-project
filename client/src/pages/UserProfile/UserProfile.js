@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import Header from '../../components/Header/Header';
 import styles from './UserProfile.module.sass';
 import CONSTANTS from '../../constants';
-import UserInfo from '../../components/UserInfo/UserInfo';
+import UserData from '../../components/UserData/UserData';
 import PayForm from '../../components/Forms/PayForm/PayForm';
 import {
   cashOut,
@@ -62,7 +62,7 @@ const UserProfile = props => {
           </div>
         </div>
         {profileModeView === CONSTANTS.USER_INFO_MODE ? (
-          <UserInfo />
+          <UserData />
         ) : (
           <div className={styles.container}>
             {parseInt(balance) === 0 ? (

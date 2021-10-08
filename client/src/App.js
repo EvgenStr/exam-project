@@ -11,12 +11,12 @@ import StartContestPage from './pages/StartContestPage/StartContestPage';
 import Dashboard from './pages/Dashboard/Dashboard';
 import ContestPage from './pages/ContestPage/ContestPage';
 import UserProfile from './pages/UserProfile/UserProfile';
-import PrivateHoc from './components/PrivateHoc/PrivateHoc';
+import PrivateHoc from './components/Hocs/PrivateHoc/PrivateHoc';
 import NotFound from './components/NotFound/NotFound';
 import ContestCreationPage from './pages/ContestCreation/ContestCreationPage';
 import ConfirmationResetPasswordPage from './pages/ConfirmationResetPasswordPage';
 import ChatContainer from './components/Chat/ChatComponents/ChatContainer/ChatContainer';
-import OnlyNotAuthorizedUserHoc from './components/OnlyNotAuthorizedUserHoc/OnlyNotAuthorizedUserHoc';
+import OnlyNotAuthorizedUserHoc from './components/Hocs/OnlyNotAuthorizedUserHoc/OnlyNotAuthorizedUserHoc';
 import EventsPage from './pages/EventsPage';
 import CONSTANTS from './constants';
 import {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { onlyForNotAuthorize } from '../../actions/actionCreator';
-import Spinner from '../Spinner/Spinner';
+import { onlyForNotAuthorize } from '../../../actions/actionCreator';
+import Spinner from '../../Spinner/Spinner';
 
 const OnlyNotAuthorizedUserHoc = Component => {
   const mapStateToProps = state => state.auth;

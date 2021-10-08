@@ -6,9 +6,9 @@ import {
   changeEditModeOnUserProfile,
 } from '../../actions/actionCreator';
 import CONSTANTS from '../../constants';
-import styles from './UserInfo.module.sass';
+import styles from './UserData.module.sass';
 
-const UserInfo = props => {
+const UserData = props => {
   const updateUserData = values => {
     const formData = new FormData();
     formData.append('file', values.file);
@@ -94,4 +94,4 @@ const mapDispatchToProps = dispatch => ({
   changeEditMode: data => dispatch(changeEditModeOnUserProfile(data)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(UserData);
