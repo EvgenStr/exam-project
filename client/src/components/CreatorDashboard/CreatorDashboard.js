@@ -11,7 +11,7 @@ import {
   getDataForContest,
 } from '../../actions/actionCreator';
 import ContestsContainer from '../ContestsContainer/ContestsContainer';
-import ContestBox from '../ContestBox/ContestBox';
+import ContestBox from '../Contest/ContestBox/ContestBox';
 import styles from './CreatorDashboard.module.sass';
 import TryAgain from '../TryAgain/TryAgain';
 

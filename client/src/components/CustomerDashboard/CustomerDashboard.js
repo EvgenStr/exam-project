@@ -8,7 +8,7 @@ import {
 } from '../../actions/actionCreator';
 import CONSTANTS from '../../constants';
 import ContestsContainer from '../ContestsContainer/ContestsContainer';
-import ContestBox from '../ContestBox/ContestBox';
+import ContestBox from '../Contest/ContestBox/ContestBox';
 import styles from './CustomerDashboard.module.sass';
 import TryAgain from '../TryAgain/TryAgain';
 
