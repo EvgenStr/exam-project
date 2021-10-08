@@ -2,9 +2,9 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { confirmAlert } from 'react-confirm-alert';
 import cx from 'classnames';
-import { moderationActionSetStatus } from '../../../../../actions/actionCreator';
+import { moderationActionSetStatus } from '../../../../../../actions/actionCreator';
 import styles from './Buttons.module.sass';
-import CONSTANTS from '../../../../../constants';
+import CONSTANTS from '../../../../../../constants';
 
 function Buttons ({ id, status }) {
   const dispatch = useDispatch();

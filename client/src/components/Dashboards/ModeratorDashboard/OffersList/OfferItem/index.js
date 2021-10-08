@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import Buttons from './Buttons';
-import CONSTANTS from '../../../../constants';
+import CONSTANTS from '../../../../../constants';
 import styles from './OfferItem.module.sass';
 
 function OfferItem ({ offer }) {

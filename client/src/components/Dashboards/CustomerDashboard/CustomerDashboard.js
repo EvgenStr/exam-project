@@ -5,12 +5,12 @@ import {
   getContestsForCustomer,
   clearContestList,
   setNewCustomerFilter,
-} from '../../actions/actionCreator';
-import CONSTANTS from '../../constants';
-import ContestsContainer from '../Contest/ContestsContainer/ContestsContainer';
-import ContestBox from '../Contest/ContestBox/ContestBox';
+} from '../../../actions/actionCreator';
+import CONSTANTS from '../../../constants';
+import ContestsContainer from '../../Contest/ContestsContainer/ContestsContainer';
+import ContestBox from '../../Contest/ContestBox/ContestBox';
 import styles from './CustomerDashboard.module.sass';
-import TryAgain from '../TryAgain/TryAgain';
+import TryAgain from '../../TryAgain/TryAgain';
 
 class CustomerDashboard extends React.Component {
   loadMore = startFrom => {

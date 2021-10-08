@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { moderationActionGetOffers } from '../../actions/actionCreator';
+import { moderationActionGetOffers } from '../../../actions/actionCreator';
 import OffersList from './OffersList';
-import Pagination from '../Pagination';
-import Spinner from '../Spinner/Spinner';
+import Pagination from '../../Pagination';
+import Spinner from '../../Spinner/Spinner';
 import styles from './ModeratorDashboard.module.sass';
-import CONSTANTS from '../../constants';
+import CONSTANTS from '../../../constants';
 const limit = CONSTANTS.OFFERS_PER_PAGE;
 
 function ModeratorDashboard () {

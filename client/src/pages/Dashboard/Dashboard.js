@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import CONSTANTS from '../../constants';
-import CustomerDashboard from '../../components/CustomerDashboard/CustomerDashboard';
-import CreatorDashboard from '../../components/CreatorDashboard/CreatorDashboard';
-import ModeratorDashboard from '../../components/ModeratorDashboard';
+import CustomerDashboard from '../../components/Dashboards/CustomerDashboard/CustomerDashboard';
+import CreatorDashboard from '../../components/Dashboards/CreatorDashboard/CreatorDashboard';
+import ModeratorDashboard from '../../components/Dashboards/ModeratorDashboard';
 import Header from '../../components/Header/Header';
 
 const Dashboard = props => {
