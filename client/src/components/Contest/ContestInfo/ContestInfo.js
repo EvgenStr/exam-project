@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../../Brief/Brief.module.sass'
+import styles from '../Brief/Brief.module.sass'
 import CONSTANTS from '../../../constants'
 import LogoContestSpecialInfo from './LogoContestSpecialInfo'
 import NameContestSpecialInfo from './NameContestSpecialInfo'

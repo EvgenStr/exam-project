@@ -18,7 +18,7 @@ import styles from './ContestPage.module.sass';
 import OfferBox from '../../components/OfferBox/OfferBox';
 import OfferForm from '../../components/OfferForm/OfferForm';
 import CONSTANTS from '../../constants';
-import Brief from '../../components/Brief/Brief';
+import Brief from '../../components/Contest/Brief/Brief';
 import Spinner from '../../components/Spinner/Spinner';
 import TryAgain from '../../components/TryAgain/TryAgain';
 import 'react-image-lightbox/style.css';
