@@ -10,14 +10,15 @@ import Payment from './pages/Payment/Payment';
 import StartContestPage from './pages/StartContestPage/StartContestPage';
 import Dashboard from './pages/Dashboard/Dashboard';
 import ContestPage from './pages/ContestPage/ContestPage';
+import EventsPage from './pages/EventsPage';
+import HowItWorksPage from './pages/HowItWorksPage';
 import UserProfile from './pages/UserProfile/UserProfile';
-import PrivateHoc from './components/Hocs/PrivateHoc/PrivateHoc';
 import NotFound from './components/NotFound/NotFound';
 import ContestCreationPage from './pages/ContestCreation/ContestCreationPage';
 import ConfirmationResetPasswordPage from './pages/ConfirmationResetPasswordPage';
 import ChatContainer from './components/Chat/ChatComponents/ChatContainer/ChatContainer';
+import PrivateHoc from './components/Hocs/PrivateHoc/PrivateHoc';
 import OnlyNotAuthorizedUserHoc from './components/Hocs/OnlyNotAuthorizedUserHoc/OnlyNotAuthorizedUserHoc';
-import EventsPage from './pages/EventsPage';
 import CONSTANTS from './constants';
 import {
   authActionRefresh,
@@ -118,6 +119,7 @@ function App () {
             title: 'LOGO',
           })}
         />
+        <Route exact path='/howitworks' component={HowItWorksPage} />
         <Route exact path='/dashboard' component={PrivateHoc(Dashboard)} />
         <Route exact path='/contest/:id' component={PrivateHoc(ContestPage)} />
         <Route exact path='/account' component={PrivateHoc(UserProfile)} />
