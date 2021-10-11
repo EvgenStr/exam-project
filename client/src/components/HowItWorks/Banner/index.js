@@ -1,5 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
+import ModalVideo from './ModalVideo';
 import styles from './Banner.module.sass';
 
 function Banner () {
@@ -18,13 +19,7 @@ function Banner () {
               and Agency-level validation services.
             </p>
             <div className={styles.player}>
-              <a
-                class='btn btn-primary btn-wide btn-pill transition-3d-hover mb-2 mb-sm-0 mr-sm-2'
-                href='https://vimeo.com/368584367'
-              >
-                <small class='mr-2 fas fa-play '></small>
-                Play Video
-              </a>
+              <ModalVideo />
             </div>
           </div>
         </div>
