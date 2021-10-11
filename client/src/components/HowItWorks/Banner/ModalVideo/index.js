@@ -19,13 +19,17 @@ function ModalVideo () {
       <Modal
         show={modalShow}
         size='lg'
-        dialogClassName='modal-90w'
         aria-labelledby='contained-modal-title-vcenter'
         centered
         onHide={() => setModalShow(false)}
       >
-        <Modal.Header closeButton />
-        <Modal.Body>
+        {modalShow && (
+          <div
+            className={styles.close}
+            onClick={() => setModalShow(false)}
+          ></div>
+        )}
+        <Modal.Body className={styles.modal}>
           <div className={styles.playerWrapper}>
             <ReactPlayer
               className={styles.reactPlayer}
@@ -33,7 +37,7 @@ function ModalVideo () {
               controls
               width='100%'
               height='100%'
-            />{' '}
+            />
           </div>
         </Modal.Body>
       </Modal>
