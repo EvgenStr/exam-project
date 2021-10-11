@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import ModalVideo from './ModalVideo';
+import BannerImage from './BannerImage';
 import styles from './Banner.module.sass';
 
 function Banner () {
@@ -23,7 +24,9 @@ function Banner () {
             </div>
           </div>
         </div>
-        <div className='col-lg-5 mb-4'></div>
+        <div className='col-lg-5 mb-4'>
+          <BannerImage />
+        </div>
       </div>
     </section>
   );
