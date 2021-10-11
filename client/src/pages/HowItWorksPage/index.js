@@ -1,13 +1,14 @@
 import React from 'react';
 import Header from '../../components/Header/Header';
-import styles from './HowItWorksPage.module.sass'
+import Banner from '../../components/HowItWorks/Banner';
+import styles from './HowItWorksPage.module.sass';
 
 function HowItWorksPage () {
   return (
     <>
       <Header />
       <main>
-        <section className={styles.banner}></section>
+        <Banner />
       </main>
     </>
   );
