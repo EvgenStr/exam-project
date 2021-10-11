@@ -25,6 +25,7 @@ import {
   addEventBadgeAction,
 } from './actions/actionCreator';
 import 'react-toastify/dist/ReactToastify.css';
+import  './App.scss' ;
 
 function App () {
   const dispatch = useDispatch();
