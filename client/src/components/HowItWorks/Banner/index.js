@@ -6,7 +6,7 @@ import styles from './Banner.module.sass';
 
 function Banner () {
   return (
-    <section className={cx('container', styles.banner)}>
+    <section className={cx('container py-5', styles.banner)}>
       <div className='row'>
         <div className='col-lg-7 mb-7 mb-lg-0'>
           <span className='btn btn-xs btn-soft-primary btn-pill mb-2'>
