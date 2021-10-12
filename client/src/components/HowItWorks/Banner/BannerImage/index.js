@@ -14,8 +14,6 @@ function BannerImage () {
           viewBox='0 0 1342.8 1166.1'
           style={{ enableBackground: 'new 0 0 1342.8 1166.1' }}
           xmlSpace='preserve'
-          className='injected-svg js-svg-injector'
-          data-parent='#SVGeasyStart'
         >
           <path
             className={cx(styles.appUser0, 'fill-gray-300')}

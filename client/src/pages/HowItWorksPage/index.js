@@ -8,7 +8,7 @@ function HowItWorksPage () {
   return (
     <>
       <Header />
-      <main>
+      <main className={styles.mainContainer}>
         <Banner />
         <ServicesSection />
       </main>
