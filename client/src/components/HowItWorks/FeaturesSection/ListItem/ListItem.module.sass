@@ -1,0 +1,36 @@
+.mediaBody
+  flex: 1
+
+.steps
+  position: relative
+  padding-left: 2.5rem
+  &::before
+    position: absolute
+    top: 0
+    bottom: 0
+    right: 0
+    left: -.25rem
+    width: 2rem
+    height: .0625rem
+    border-top: 1px solid #e7eaf3
+    margin: auto auto auto 0
+    content: ""
+  &::after
+    position: absolute
+    top: 0
+    bottom: 0
+    right: 0
+    left: -.3125rem
+    width: .0625rem
+    height: 100%
+    border-right: 1px solid #e7eaf3
+    margin: auto auto auto 0
+    content: ""
+  &:first-child
+    &::after
+      height: 50%
+      top: auto
+  &:last-child
+    &::after
+      height: 50%
+      bottom: auto
