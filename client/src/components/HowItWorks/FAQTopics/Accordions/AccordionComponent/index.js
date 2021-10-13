@@ -11,7 +11,7 @@ function AccordionComponent ({ id, title, data }) {
     );
   });
   return (
-    <div id={id}>
+    <div id={id} className={'py-5'}>
       <h3 className='text-primary fw-bold'>{title}</h3>
       <Accordion defaultActiveKey={0}>{items}</Accordion>
     </div>

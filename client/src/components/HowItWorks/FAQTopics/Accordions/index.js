@@ -3,9 +3,14 @@ import AccordionComponent from './AccordionComponent';
 import accordionsData from './accordionsData.json';
 
 function Accordions () {
-  const accordionsList = accordionsData.map((accordion, i) => (
-    <AccordionComponent key={i} {...accordion} />
-  ));
+  const accordionsList = accordionsData.map((accordion, i, arr) => {
+    return (
+      <>
+        <AccordionComponent key={i} {...accordion} />
+        {i + 1 !== arr.length && <hr class='my-0' />}
+      </>
+    );
+  });
   return <div className={'col-lg-9'}>{accordionsList}</div>;
 }
 
