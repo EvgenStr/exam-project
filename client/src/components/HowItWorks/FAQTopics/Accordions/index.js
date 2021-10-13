@@ -7,7 +7,7 @@ function Accordions () {
     return (
       <>
         <AccordionComponent key={i} {...accordion} />
-        {i + 1 !== arr.length && <hr class='my-0' />}
+        {i + 1 !== arr.length && <hr class='mb-5' />}
       </>
     );
   });
