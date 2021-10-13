@@ -1,5 +1,6 @@
 import React from 'react';
 import Nav from './Nav';
+import Accordions from './Accordions';
 
 function FAQTopics () {
   return (
@@ -8,6 +9,7 @@ function FAQTopics () {
         <div className={'col-lg-3 mb-5 mb-lg-0'}>
           <Nav />
         </div>
+          <Accordions />
       </div>
     </section>
   );
