@@ -23,6 +23,10 @@
 .transition-3d-hover {
   transition: all 0.2s ease-in-out;
 }
+.transition-3d-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 11px rgba(255,255,255,.35);
+}
 
 // FOR SVG
 .fill-gray-300 {
