@@ -2,7 +2,6 @@ import React from 'react';
 import cx from 'classnames';
 import styles from './ListItem.module.sass';
 
-
 function ListItem ({ data, index }) {
   return (
     <li className={cx('py-3', styles.steps)}>

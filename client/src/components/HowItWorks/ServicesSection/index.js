@@ -3,7 +3,7 @@ import Card from './Card';
 import cardsData from './cardsData.json';
 
 function ServicesSection () {
-  const cards = cardsData.map((card,i )=> <Card key={i}  {...card} />);
+  const cards = cardsData.map((card, i) => <Card key={i} {...card} />);
   return (
     <section className={'container-lg py-5'}>
       <div className={'text-center mx-md-auto mb-5'}>
