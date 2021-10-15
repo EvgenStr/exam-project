@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
 import Banner from '../../components/HowItWorks/Banner';
 import ServicesSection from '../../components/HowItWorks/ServicesSection';
 import FeaturesSection from '../../components/HowItWorks/FeaturesSection';
@@ -18,6 +19,8 @@ function HowItWorksPage () {
         <hr className={'my-0'} />
         <FAQTopics />
         <CTASection />
+
+        <Footer />
       </main>
     </>
   );
