@@ -5,7 +5,7 @@ import styles from './LeftFigure.module.sass';
 function LeftFigure () {
   return (
     <figure
-      className={cx(styles.figure, 'position-absolute top-0 left-0 w-100')}
+      className={cx(styles.figure, 'position-absolute top-0 start-0 w-100')}
     >
       <svg
         xmlns='http://www.w3.org/2000/svg'

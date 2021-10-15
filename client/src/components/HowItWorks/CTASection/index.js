@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 import LeftFigure from './Figures/LeftFigure';
+import RightFigure from './Figures/RightFigure';
 import styles from './CTASection.module.sass';
 
 function CTASection () {
@@ -9,10 +10,10 @@ function CTASection () {
     <section
       className={cx(
         styles.bgGradient,
-        'position-relative bg-primary text-center  overflow-hidden',
+        'position-relative bg-primary text-center overflow-hidden',
       )}
     >
-      <div className={cx(styles.content, 'container py-5 px-2')}>
+      <div className={cx(styles.content, 'container-xl py-5 px-2')}>
         <h3 className='h2 text-info fw-bold mb-2'>Ready to get started?</h3>
         <p className='lead text-white mb-3'>
           Fill out your contest brief and begin receiving custom name
@@ -26,6 +27,7 @@ function CTASection () {
         </Link>
       </div>
       <LeftFigure />
+      <RightFigure />
     </section>
   );
 }
