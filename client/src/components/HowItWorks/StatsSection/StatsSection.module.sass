@@ -7,12 +7,13 @@
 
 .verticalLine
   position: relative
-  &::after
-    position: absolute
-    right: -.9375rem
-    top: 50%
-    height: 4rem
-    border-left: 1px solid rgba(30,32,34,.2)
-    content: ""
-    margin-top: -2rem
-    transform: rotate(15deg)
+  @media ( min-width: 768px )
+    &::after
+      position: absolute
+      right: -.9375rem
+      top: 50%
+      height: 4rem
+      border-left: 1px solid rgba(30,32,34,.2)
+      content: ""
+      margin-top: -2rem
+      transform: rotate(15deg)
