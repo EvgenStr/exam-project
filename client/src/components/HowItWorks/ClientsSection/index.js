@@ -1,7 +1,9 @@
 import React from 'react';
+import ClientLogo from './ClientLogo';
 import clientsData from './clientsData.json';
 
 function ClientsSection () {
+  const clients = clientsData.map(client => <ClientLogo {...client} />);
   return (
     <section className='container-md'>
       <div className='row align-items-lg-center mb-4'>
@@ -11,7 +13,9 @@ function ClientsSection () {
           </div>
         </div>
         <div className='col-md-7 col-lg-8 mb-5 mb-md-0'>
-          <div className='row justify-content-center border-top pt-5'></div>
+          <div className='row justify-content-center align-items-center border-top pt-5'>
+            {clients}
+          </div>
         </div>
       </div>
     </section>
