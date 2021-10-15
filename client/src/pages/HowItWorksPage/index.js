@@ -7,6 +7,7 @@ import FeaturesSection from '../../components/HowItWorks/FeaturesSection';
 import FAQTopics from '../../components/HowItWorks/FAQTopics';
 import CTASection from '../../components/HowItWorks/CTASection';
 import StatsSection from '../../components/HowItWorks/StatsSection';
+import ClientsSection from '../../components/HowItWorks/ClientsSection';
 import styles from './HowItWorksPage.module.sass';
 
 function HowItWorksPage () {
@@ -21,7 +22,7 @@ function HowItWorksPage () {
         <FAQTopics />
         <CTASection />
         <StatsSection />
-
+        <ClientsSection />
         <Footer />
       </main>
     </>
