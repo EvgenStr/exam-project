@@ -6,8 +6,8 @@ function Accordions () {
   const accordionsList = accordionsData.map((accordion, i, arr) => {
     return (
       <>
-        <AccordionComponent key={i} {...accordion} />
-        {i + 1 !== arr.length && <hr class='mb-5' />}
+        <AccordionComponent key={accordion.id} {...accordion} />
+        {i + 1 !== arr.length && <hr key={i} className='mb-5' />}
       </>
     );
   });
