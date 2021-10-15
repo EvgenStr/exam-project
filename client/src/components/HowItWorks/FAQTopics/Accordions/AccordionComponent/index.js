@@ -11,10 +11,10 @@ function AccordionComponent ({ id, title, data }) {
     );
   });
   return (
-    <div id={id} className={'pb-5'}>
+    <>
       <h3 className='text-primary fw-bold mb-2'>{title}</h3>
       <Accordion defaultActiveKey={0}>{items}</Accordion>
-    </div>
+    </>
   );
 }
 

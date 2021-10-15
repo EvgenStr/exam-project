@@ -3,7 +3,9 @@ import ClientLogo from './ClientLogo';
 import clientsData from './clientsData.json';
 
 function ClientsSection () {
-  const clients = clientsData.map(client => <ClientLogo {...client} />);
+  const clients = clientsData.map(client => (
+    <ClientLogo key={client.name} {...client} />
+  ));
   return (
     <section className='container-md'>
       <div className='row align-items-lg-center mb-4'>

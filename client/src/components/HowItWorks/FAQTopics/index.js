@@ -6,7 +6,7 @@ function FAQTopics () {
   return (
     <section className={'container-lg mt-5'}>
       <div className={'row'}>
-        <div className={'col-lg-3 mb-5 mb-lg-0'}>
+        <div className={'col-lg-3 mb-5 pb-3'}>
           <Nav />
         </div>
           <Accordions />
