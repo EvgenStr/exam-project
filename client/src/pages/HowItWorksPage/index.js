@@ -6,6 +6,7 @@ import ServicesSection from '../../components/HowItWorks/ServicesSection';
 import FeaturesSection from '../../components/HowItWorks/FeaturesSection';
 import FAQTopics from '../../components/HowItWorks/FAQTopics';
 import CTASection from '../../components/HowItWorks/CTASection';
+import StatsSection from '../../components/HowItWorks/StatsSection';
 import styles from './HowItWorksPage.module.sass';
 
 function HowItWorksPage () {
@@ -19,6 +20,7 @@ function HowItWorksPage () {
         <hr className={'my-0'} />
         <FAQTopics />
         <CTASection />
+        <StatsSection />
 
         <Footer />
       </main>
