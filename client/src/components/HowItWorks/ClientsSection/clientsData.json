@@ -1,0 +1,18 @@
+[
+  {
+    "name": "forbes",
+    "imgSrc": "sponsors/Forbes-inactive.png"
+  },
+  {
+    "name": "next web",
+    "imgSrc": "sponsors/the_next_web_inactive.png"
+  },
+  {
+    "name": "chicago tribune",
+    "imgSrc": "sponsors/chicago.svg"
+  },
+  {
+    "name": "mashable",
+    "imgSrc": "sponsors/mashable-inactive.png"
+  }
+]

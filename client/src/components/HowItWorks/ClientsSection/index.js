@@ -1,4 +1,5 @@
 import React from 'react';
+import clientsData from './clientsData.json';
 
 function ClientsSection () {
   return (
@@ -10,9 +11,7 @@ function ClientsSection () {
           </div>
         </div>
         <div className='col-md-7 col-lg-8 mb-5 mb-md-0'>
-          <div className='row justify-content-center border-top pt-5'>
-            
-          </div>
+          <div className='row justify-content-center border-top pt-5'></div>
         </div>
       </div>
     </section>
