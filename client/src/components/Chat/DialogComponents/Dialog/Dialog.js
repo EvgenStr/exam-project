@@ -8,7 +8,7 @@ import {
 } from '../../../../actions/actionCreator';
 import ChatHeader from '../../ChatComponents/ChatHeader/ChatHeader';
 import styles from './Dialog.module.sass';
-import ChatInput from '../../ChatComponents/ChatInut/ChatInput';
+import ChatInput from '../../ChatComponents/ChatInput/ChatInput';
 
 class Dialog extends React.Component {
   componentDidMount () {
@@ -38,7 +38,7 @@ class Dialog extends React.Component {
     const messagesArray = [];
     const { messages, userId } = this.props;
     let currentTime = moment();
-    messages.forEach((message, i) => {
+    messages.forEach((message) => {
       if (!currentTime.isSame(message.createdAt, 'date')) {
         messagesArray.push(
           <div key={message.createdAt} className={styles.date}>
