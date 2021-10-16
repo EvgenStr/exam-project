@@ -33,13 +33,6 @@ module.exports = (sequelize, DataTypes) => {
           model: 'Users',
           key: 'id',
         },
-        validate: {
-          validator (value) {
-            if (value === this.customerId) {
-              throw new Error('Users should not be the same.');
-            }
-          },
-        },
       },
       blackList: {
         allowNull: false,
@@ -55,6 +48,13 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'Conversation',
+      validate: {
+        UsersNotEqual () {
+          if (this.creatorId === this.customerId) {
+            throw new Error('Users should not be the same.');
+          }
+        },
+      },
     },
   );
   return Conversation;
