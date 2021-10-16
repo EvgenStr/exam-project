@@ -14,7 +14,8 @@ module.exports.addMessage = async (req, res, next) => {
       tokenData: { userId, role },
       body: { recipient, messageBody },
     } = req;
-    const participants = [userId, recipient];
+    const participants =
+      role === CONSTANTS.CUSTOMER ? [userId, recipient] : [recipient, userId];
     const { customerId, creatorId } = prepareRoles(role, userId, recipient);
 
     const [conversation] = await chatQueries.findOrCreateConversation(
@@ -32,8 +33,14 @@ module.exports.addMessage = async (req, res, next) => {
       conversation.id,
     );
     newMessage.dataValues.participants = participants;
+    const interlocutor = await chatQueries.getInterlocutor(recipient);
 
-    const preview = createPreview(conversation.id, newMessage, participants);
+    const preview = createPreview(
+      conversation.id,
+      newMessage,
+      participants,
+      interlocutor,
+    );
 
     socketController.getNotificationController().emitNewMessage({
       recipient,
@@ -61,6 +68,10 @@ module.exports.getChat = async (req, res, next) => {
       userId,
       interlocutorId,
     );
+
+    if (parseInt(interlocutorId) === parseInt(userId)) {
+      return next(createHttpError(500, 'Users should not be the same.'));
+    }
 
     const [conversation] = await chatQueries.findOrCreateConversation(
       customerId,
@@ -194,7 +205,7 @@ module.exports.updateCatalogName = async (req, res, next) => {
     const catalog = await chatQueries.getCatalog(catalogId);
     catalog.catalogName = catalogName;
     const updatedCatalog = await catalog.save();
-    updatedCatalog.dataValues._id = updatedCatalog.id;
+
     if (!updatedCatalog) {
       return next(createHttpError(500, 'Catalog name can"t be updated'));
     }
@@ -224,8 +235,6 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
     if (!updatedCatalog) {
       return next(createHttpError(500, 'Conversation can"t be added'));
     }
-
-    updatedCatalog.dataValues._id = updatedCatalog.id;
 
     res.send(updatedCatalog);
   } catch (e) {

@@ -60,15 +60,21 @@ module.exports.prepareRoles = (role, userId, interlocutorId) => {
   };
 };
 
-module.exports.createPreview = (conversationId, newMessage, participants) => {
+module.exports.createPreview = (
+  conversationId,
+  newMessage,
+  participants,
+  interlocutor,
+) => {
   return {
-    _id: conversationId,
+    id: conversationId,
     sender: newMessage.userId,
     text: newMessage.body,
-    createAt: newMessage.createdAt,
+    createdAt: newMessage.createdAt,
     participants,
     blackList: [false, false],
     favoriteList: [false, false],
+    interlocutor,
   };
 };
 
@@ -82,7 +88,7 @@ module.exports.prepareConversations = (conversations, role) => {
       conversation.customerId,
       conversation.creatorId,
     ];
-    conversation.dataValues._id = conversation.id;
+    conversation.dataValues.id = conversation.id;
     conversation.sender = null;
     conversation.text = '';
     if (conversation.Messages[0]) {

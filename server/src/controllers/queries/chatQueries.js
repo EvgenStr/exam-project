@@ -57,7 +57,7 @@ module.exports.newCatalog = async (chatId, catalogName, userId) => {
     },
     { raw: true },
   );
-  catalog.dataValues._id = catalog.id;
+
   return catalog;
 };
 
@@ -67,9 +67,6 @@ module.exports.getAllUserCatalogs = async userId => {
     where: { userId },
   });
 
-  catalogs.forEach(catalog => {
-    catalog._id = catalog.id;
-  });
   return catalogs;
 };
 
