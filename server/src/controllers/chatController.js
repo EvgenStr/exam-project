@@ -31,7 +31,7 @@ module.exports.addMessage = async (req, res, next) => {
       messageBody,
       conversation.id,
     );
-    newMessage.participants = participants;
+    newMessage.dataValues.participants = participants;
 
     const preview = createPreview(conversation.id, newMessage, participants);
 
