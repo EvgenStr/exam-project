@@ -13,7 +13,7 @@ module.exports.findOrCreateConversation = async (customerId, creatorId) =>
   });
 
 module.exports.createMessage = async (userId, body, conversationId) =>
-  await Message.create({ userId, body, conversationId });
+  await Message.create({ sender:userId, body, conversationId });
 
 module.exports.getConversationMessages = async conversationInstance =>
   await conversationInstance.getMessages();

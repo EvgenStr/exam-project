@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'id',
       });
       User.hasMany(models.Message, {
-        foreignKey: 'userId',
+        foreignKey: 'sender',
         targetKey: 'id',
       });
       User.hasMany(models.ResetToken, {
