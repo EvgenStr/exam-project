@@ -50,7 +50,11 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'Conversation',
       validate: {
         UsersNotEqual () {
-          if (this.creatorId === this.customerId) {
+          if (
+            this.creatorId &&
+            this.customerId &&
+            parseInt(this.creatorId) === parseInt(this.customerId)
+          ) {
             throw new Error('Users should not be the same.');
           }
         },
