@@ -5,7 +5,6 @@ import CONSTANTS from '../../../../../constants';
 import { deleteEventAction } from '../../../../../actions/actionCreator';
 import styles from './DeleteButton.module.sass';
 function DeleteButton ({ startDate }) {
-  console.log(startDate);
   const dispatch = useDispatch();
   return (
     <button

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { confirmAlert } from 'react-confirm-alert';
 import cx from 'classnames';
@@ -49,4 +50,8 @@ function Buttons ({ id, status }) {
     </div>
   );
 }
+Buttons.propTypes = {
+  id: PropTypes.number,
+  styles: PropTypes.string,
+};
 export default Buttons;

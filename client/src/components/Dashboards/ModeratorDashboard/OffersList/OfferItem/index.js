@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Buttons from './Buttons';
 import CONSTANTS from '../../../../../constants';
@@ -46,4 +47,7 @@ function OfferItem ({ offer }) {
     </article>
   );
 }
+OfferItem.propTypes = {
+  offer: PropTypes.object.isRequired,
+};
 export default OfferItem;
