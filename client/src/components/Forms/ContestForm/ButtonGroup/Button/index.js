@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import styles from './Button.module.sass';
 
@@ -26,5 +27,13 @@ function Button ({ data: { badge, description, value }, active, handler }) {
     </div>
   );
 }
-
+Button.propTypes = {
+  data: PropTypes.shape({
+    badge: PropTypes.string,
+    description: PropTypes.string,
+    value: PropTypes.string,
+  }),
+  active: PropTypes.string,
+  handler: PropTypes.func,
+};
 export default Button;

@@ -51,7 +51,7 @@ function Buttons ({ id, status }) {
   );
 }
 Buttons.propTypes = {
-  id: PropTypes.number,
-  styles: PropTypes.string,
+  id: PropTypes.node,
+  status: PropTypes.string,
 };
 export default Buttons;
