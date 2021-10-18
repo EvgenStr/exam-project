@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './ProgressBar.module.sass';
 
 function ProgressBar ({ timeLeft, progress, name }) {
@@ -13,5 +14,9 @@ function ProgressBar ({ timeLeft, progress, name }) {
     </div>
   );
 }
-
+ProgressBar.propTypes = {
+  timeLeft: PropTypes.string,
+  progress: PropTypes.number,
+  name: PropTypes.string,
+};
 export default ProgressBar;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { formatDistanceToNowStrict, isAfter } from 'date-fns';
 import ProgressBar from './ProgressBar';
 import DeleteButton from './DeleteButton';
@@ -32,4 +33,7 @@ function EventsListItem ({ event }) {
     </div>
   );
 }
+EventsListItem.propTypes = {
+  event: PropTypes.object.isRequired,
+};
 export default EventsListItem;

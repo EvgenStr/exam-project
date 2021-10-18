@@ -18,4 +18,5 @@ function EventsList () {
 
   return <div className={styles.container}>{eventsList}</div>;
 }
+
 export default EventsList;

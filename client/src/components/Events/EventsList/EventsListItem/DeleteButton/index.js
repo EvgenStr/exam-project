@@ -1,9 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import CONSTANTS from '../../../../../constants';
 import { deleteEventAction } from '../../../../../actions/actionCreator';
 import styles from './DeleteButton.module.sass';
 function DeleteButton ({ startDate }) {
+  console.log(startDate);
   const dispatch = useDispatch();
   return (
     <button
@@ -19,5 +21,7 @@ function DeleteButton ({ startDate }) {
     </button>
   );
 }
-
+DeleteButton.propTypes = {
+  startDate: PropTypes.number,
+};
 export default DeleteButton;
