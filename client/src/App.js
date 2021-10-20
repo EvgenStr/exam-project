@@ -25,7 +25,7 @@ import {
   addEventBadgeAction,
 } from './actions/actionCreator';
 import 'react-toastify/dist/ReactToastify.css';
-import  './App.scss' ;
+import './App.scss';
 
 function App () {
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ function App () {
     events.forEach(event => {
       const currentTime = Date.now();
       const reminder = event.reminderDate - currentTime;
-      if (reminder > 0 && reminder < 60000) {
+      if (reminder > 0 && reminder < CONSTANTS.EVENT_CHECK_INTERVAL) {
         dispatch(addEventBadgeAction());
         toast(`Your event ${event.name} is starting soon`);
       }
@@ -51,7 +51,7 @@ function App () {
   useEffect(() => {
     const interval = setInterval(() => {
       checkEventReminderTime();
-    }, 60000);
+    }, CONSTANTS.EVENT_CHECK_INTERVAL);
     return () => clearInterval(interval);
   });
 
