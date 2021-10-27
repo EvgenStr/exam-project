@@ -1,5 +1,4 @@
 .idea/
 node_modules/
 uploadFiles/
-.env
 src/logs/*.json
